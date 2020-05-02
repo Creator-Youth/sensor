@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link href="css/reset.css" rel="stylesheet" />
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <link href="css/index.css" rel="stylesheet" />
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/f.js"></script>
+    <title>统计信息管理</title>
+</head>
+<body>
+    <div class="PublicHead clearfix">
+        <div class="leftBox clearfix">
+            <!--<div class="companyLogo">
+                <img src="images/logo.jpg" />
+            </div>-->
+            <!--<i class="iconfont icon-caidan Js_MenuList"></i>-->
+
+            <div class="companyText">
+                宿舍就寝管理系统
+            </div>
+        </div>
+        <div class="RightBox clearfix">
+            <div class="UserPhotoBox">
+                <div class="UserPic">
+                    <img src="images/user.jpg" />
+                </div>
+                <div class="UserName">
+                    管理员
+                </div>
+            </div>
+            <a href="index.html">
+                <div class="dropOutBox">
+                    <i class="iconfont icon-app_icons--">
+                    </i>
+                    <span>退出</span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="PublicDownWhole clearfix">
+        <!--左侧-->
+        <div class="leftBox Js_leftBox">
+            <ul>
+                <a href="UserManagement.html"> <li><i class="iconfont icon-yonghuguanli"></i><span>学生信息管理</span></li></a>
+                <a href="OrderManagement.html">
+                    <li><i class="iconfont icon-tubiao_dingdan"></i><span>传感器信息管理</span></li>
+                </a>
+                <a href="ClassificationManagement.html">
+                    <li class="Select"><i class="iconfont icon-fenlei"></i><span>统计信息管理</span></li>
+                </a>
+                <a href="ProductManagement.html">      <li><i class="iconfont icon-weibiaoti1"></i><span>联系方式管理</span></li></a>
+            </ul>
+        </div>
+        <!--右侧-->
+        <div class="RightBox Js_RightBox">
+            <div class="PublicContentBox">
+                <!--公用指向页面名字-->
+                <div class="PublicPointToAgeText">
+                    <span class="span1">分类查询统计 </span> <span class="span2">分类查询统计管理列表（下面将通过列表展示所有查询到违纪的传感器）</span>
+                </div>
+                <!--查询-->
+                <!--<div class="InquireBox clearfix">
+                    <div class="InquireleftBox">
+                        <div class="Text">手机号：</div>
+                        <div class="InputDiv">   <input class="phoneInput" placeholder="请输入你需要查询的手机号" /></div>
+                    </div>
+                    <div class="PublicBtnIcon Color1Btn fr">
+                        <i class="iconfont icon-icon-chaxun"></i>
+                        <span>查询</span>
+                    </div>
+                </div>-->
+                <!--表修改-->
+                <div class="InquireTableBox">
+                    <div class="headbox">
+                        <div class="headboxtext">
+                            <span class="span1">后台分类查询列表（默认展示所有数据）</span>
+                        </div>
+
+                        <tr><td>选择查询条件(下拉列表): &nbsp; <span></span></td>
+                        <td>
+                            <select class="phoneInput" id="stats">
+                                <option>请选择你的产品分类</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                            </select>
+                        </td></tr>
+
+                        <!--批量删除-->
+                        <div class="PublicBtnIcon Color5Btn">
+                            <i class="iconfont  icon-shanchu"></i>
+                            <span>开始查询</span>
+                        </div>
+
+                        <!--div class="PublicBtnIcon Color2Btn fr Js_edit">
+                            <i class="iconfont icon-changyongtubiao-mianxing-"></i>
+                            <span>添加</span>
+                        </div-->
+                    </div>
+
+                    <!--查询到的表格-->
+
+                    <div class="InquireSelectTable">
+                        <table class="PublicTableCss">
+                            <thead>
+                                <tr>
+                                    <!--td>
+                                        <input id="inputcheck" class="inputcheck" type="checkbox" name="inputcheck" />
+                                        <label for="inputcheck"></label>
+                                        <span>全选</span>
+                                    </td-->
+                                    <td>ID</td>
+                                    <td width="400">传感器ID</td>
+                                    <td width="1600">处理情况(下拉列表选择)  </td>
+                                    <td width="1600">操作</td>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <!--td>
+                                        <input id="aa" class="inputcheck" type="checkbox" name="inputcheck" />
+                                        <label for="aa"></label>
+                                    </td-->
+                                    <td>1</td>
+                                    <td>SC0001</td>
+                                    <div>
+                                        <td>
+                                            <select id="stat">
+                                                <option value="楼层">已处理</option>
+                                                <option value="楼层">未处理</option>
+                                            </select>
+                                        </td>
+                                    </div>
+
+                                    <td>
+                                        <div class="PublicTableBtnIcon Color3Btn Js_edit">
+                                            <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
+                                            <span>查询具体违纪情况</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!--分页-->
+                    <div class="PageNumber">
+                        <div class="NumbersBox">
+                            <div class="LeftArrow">
+                                上一页
+                            </div>
+                            <ul>
+                                <li class="Select">1</li>
+                                <li class="">2</li>
+                                <li class="">...</li>
+                                <li class="">4</li>
+                                <li class="">5</li>
+                            </ul>
+                            <div class="RightArrow ">
+                                下一页
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--添加用户浮层-->
+    <div class="PublicFloatBox adduser">
+        <div class="f_MiddleBox wid400">
+            <div class="f_Head">
+                <span>提示信息</span>
+                <i class="Js_closeBtn iconfont icon-buoumaotubiao20 fr"></i>
+            </div>
+            <div class="f_content">
+                <div class="f_alonediv">
+                    <div>
+                        提示：请先在处理情况下拉列表中选择，再点击确定将跳转到传感器具体信息展示页面。
+                    </div>
+                </div>
+
+                <div class="f_alonediv1">
+                    <div class="f_alone_name">
+                    </div>
+                    <div class="f_alone_input1">
+                        <!--publicbtn-->
+                        <div class="publicf_btn">
+                            <div class="publicf_btn1">
+                                确定
+                            </div>
+                            <div class="publicf_btn2 fr Js_closeBtn">
+                                取消
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--返回顶部-->
+    <a href="javaScript:void();" class="back-to-top"><i class="iconfont icon-fanhuidingbu"></i> </a>
+</body>
+</html>

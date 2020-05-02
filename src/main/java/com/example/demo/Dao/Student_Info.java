@@ -20,9 +20,9 @@ public class Student_Info {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    //学生编号
+    //学号
     @Column
-    String stdent_id;
+    String student_id;
 
     //学生姓名
     @Column
@@ -35,6 +35,10 @@ public class Student_Info {
     //老师编号
     @Column
     String teacher_id;
+
+    //学生班级
+    @Column
+    String class_name;
 
     //老师姓名
     @Column
@@ -53,7 +57,7 @@ public class Student_Info {
         this.dormitory=dormitory;
         this.id=id;
         this.sensor_id=sensor_id;
-        this.stdent_id=stdent_id;
+        this.student_id=stdent_id;
         this.student_name=student_name;
         this.teacher_id=teacher_id;
         this.teacher_name=teacher_name;
