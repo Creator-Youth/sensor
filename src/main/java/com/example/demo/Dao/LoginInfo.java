@@ -4,6 +4,7 @@ package com.example.demo.Dao;/*
  *
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "loginInfo")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class LoginInfo {
 
     @Id

@@ -12,6 +12,6 @@ import java.util.List;
 
 public interface UserInfoJpa extends JpaRepository<LoginInfo,Integer> {
 
-    /*@Query("select * from loginInfo by ?1")
-    LoginInfo findbyId(int id);*/
+    @Query("select loginInfo from LoginInfo loginInfo where user_name= ?1")
+    LoginInfo findbyUsername(String user_name);
 }
