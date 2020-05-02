@@ -5,25 +5,21 @@ package com.example.demo.Controller;/*
  */
 
 import com.example.demo.Dao.LoginInfo;
-import com.example.demo.Services.Jpa.UserInfoJpa;
+import com.example.demo.Services.Jpa.LoginInfoJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping(value = "login")
 public class LoginController {
 
     @Autowired
-    private UserInfoJpa userInfoJpa;
+    private LoginInfoJpa loginInfoJpa;
 
     @PostMapping(value = "/getAllById")
     @ResponseBody
     public LoginInfo getById(int id){
-        return userInfoJpa.getOne(id);
+        return loginInfoJpa.getOne(id);
     }
 
 
@@ -34,7 +30,7 @@ public class LoginController {
         Boolean judge = true;
         System.out.println(user_name);
         System.out.println(password);
-        LoginInfo loginInfo = userInfoJpa.findbyUsername(user_name);
+        LoginInfo loginInfo = loginInfoJpa.findbyUsername(user_name);
         if(loginInfo == null || loginInfo.getPassword() !=password){
             judge=false;
         }
