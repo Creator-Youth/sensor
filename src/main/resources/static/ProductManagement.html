@@ -20,6 +20,7 @@
         }else{
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
+
         xmlhttp.open("get","teacher/findAll",true);
         xmlhttp.onreadystatechange=function(){
             if (xmlhttp.status == 200) {
@@ -35,6 +36,12 @@
     }
 
     function display(Json){
+
+
+        //content="<div class='PublicDownWhole clearfix'>";
+        //content+="<div class='RightBox'>";
+        //content+="<div class='PublicContentBox'>";
+
         content="";
         content+=" <div class='InquireSelectTable'>";
         content+="<table class='PublicTableCss'>";
@@ -61,12 +68,12 @@
             content+="<input id='aa' class='inputcheck' type='checkbox' name='inputcheck' />";
             content+="<label for='aa'></label>";
             content+="</td>";
-            content+="<td>"+Json[i].id+"</td>";//ID
-            content+="<td>"+Json[i].teacher_id+"</td>";//编号
-            content+="<td width='200'>"+Json[i].teacher_name+"</td>";//姓名
+            content+="<td>"+Json[i].id+                           "</td>";//ID
+            content+="<td>"+Json[i].teacher_id+                   "</td>";//编号
+            content+="<td width='200'>"+Json[i].teacher_name+     "</td>";//姓名
             content+="<td width='400'>"+Json[i].teacher_dormitory+"</td>";//联系方式
-            content+="<td>"+Json[i].class_name+"</td>";//班级
-            content+="<td"+Json[i].gender+"</td>";//性别
+            content+="<td>"+Json[i].class_name+                   "</td>";//班级
+            content+="<td>"+Json[i].gender+                       "</td>";//性别
             content+="<td>";
             content+="<div class='PublicTableBtnIcon Color3Btn Js_edit'>";
             content+="<i class='iconfont icon-tubiaozhizuomobanyihuifu-'></i>";
@@ -199,8 +206,6 @@
 
     <!-- alert通用 提示是否删除-->
     <div class="PublicFloatBox f_delete">
-     
-
             <div class="f_MiddleBox wid260">
                 <div class="f_Head">
                     <span>提示消息</span>
@@ -223,9 +228,8 @@
                     </div>
                 </div>
             </div>
-
-
     </div>
+
     <!--添加修改产品信息浮层-->
     <div class="PublicFloatBox adduser">
         <div class="kongfx">
@@ -310,10 +314,11 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
+
+
 </body>
 </html>
