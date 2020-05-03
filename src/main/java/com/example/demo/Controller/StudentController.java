@@ -28,13 +28,20 @@ public class StudentController {
         return id;
     }
 
-    @PostMapping(value = "/save")
+    @PostMapping (value = "/save")
     @ResponseBody
     //添加学生信息
-    public String saveInfo(@RequestBody Student_Info student_info){
-        //studentinfoJpa.saveAndFlush(student_info)
+    public String saveInfo(@RequestParam("student_id") String  student_id,
+                           @RequestParam("student_name") String  student_name,
+                           @RequestParam("class_name") String  class_name,
+                                       @RequestParam("teacher_id") String  teacher_id,
+                                       @RequestParam("teacher_name") String  teacher_name,
+                           @RequestParam("dormitory") String doymitory
+    ){
+        Student_Info studentInfo = new Student_Info();
+        studentInfo.setTeacher_name(teacher_name);
         try{
-            studentinfoJpa.save(student_info);
+            studentinfoJpa.save(studentInfo);
         }catch (Exception e){
             return "false";
         }
@@ -49,7 +56,7 @@ public class StudentController {
                                   @RequestParam("class_name") String  class_name){
         Student_Info studentInfo = null;
         List<Student_Info> list = new ArrayList<>();
-        List<Student_Info> result = new ArrayList<>();
+        List<Student_Info> result = list;
         studentInfo = studentinfoJpa.getByStudentId(student_id);
         if(null != studentInfo){list.add(studentInfo);}
 
@@ -63,5 +70,12 @@ public class StudentController {
         }
         return list;
         //为空表示为查询到信息。
+    }
+
+    //查询所有学生信息
+    @GetMapping(value = "findAll")
+    @ResponseBody
+    public List<Student_Info> findAll(){
+        return studentinfoJpa.findAll();
     }
 }

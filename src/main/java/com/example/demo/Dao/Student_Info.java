@@ -48,7 +48,7 @@ public class Student_Info {
     @Column
     String dormitory;
 
-    Student_Info(){
+    public Student_Info(){
 
     }
 
