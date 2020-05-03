@@ -14,7 +14,6 @@
 
 <body onload="myfuction()">
 <SCRIPT type="text/javascript">
-    var val;
     function myfuction() {
         var result='';
         if(window.XMLHttpRequest){
@@ -100,7 +99,7 @@
         teacher_name = document.getElementById("teacher_name").value;
         dormitory = document.getElementById("dormitory").value;
         class_name = document.getElementById("class_name").value;
-        alert(student_id+student_name);
+
         if(window.XMLHttpRequest){
             xmlhttp = new XMLHttpRequest();
         }else{
@@ -126,6 +125,33 @@
             "&teacher_name="+teacher_name+
             "&teacher_id="+teacher_id+
             "&sensor_id="+sensor_id+
+            "&student_name="+student_name);
+    }
+
+    function selectInfo() {
+        student_id = document.getElementById("sel_studentId").value;
+        student_name = document.getElementById("sel_studentName").value;
+        class_name = document.getElementById("sel_className").value;
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("post","student/getInfo",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    var value = xmlhttp.responseText;
+                    var json = eval("("+value+")");
+                    var result=display(json);
+                    $("#test").html(result);
+                }
+
+            }
+        }
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlhttp.send("student_id="+student_id+
+            "&class_name="+class_name+
             "&student_name="+student_name);
     }
 </SCRIPT>
@@ -179,21 +205,21 @@
             <div class="InquireBox clearfix">
                 <div class="InquireleftBox">
                     <div class="Text">学号：</div>
-                    <div class="InputDiv">   <input class="phoneInput" placeholder="请输入你需要查询的学生学号" /></div>
+                    <div class="InputDiv">   <input class="phoneInput" type="text" name="sel_studentId" id="sel_studentId" placeholder="请输入你需要查询的学生学号" /></div>
                 </div>
                 <div class="InquireleftBox">
                     <div class="Text">姓名：</div>
-                    <div class="InputDiv">   <input class="phoneInput" placeholder="或输入你需要查询的学生学号" /></div>
+                    <div class="InputDiv">   <input class="phoneInput" type="text" name="sel_studentName" id="sel_studentName" placeholder="或输入你需要查询的学生姓名" /></div>
                 </div>
                 <div class="InquireleftBox">
                     <div class="Text">班级：</div>
-                    <div class="InputDiv">   <input class="phoneInput" placeholder="或通过班级进行查询" /></div>
+                    <div class="InputDiv">   <input class="phoneInput" type="text" name="sel_className" id="sel_className" placeholder="或通过班级进行查询" /></div>
                 </div>
                 <div class="InquireleftBox">
                     <div class="Text">查询条件输入其一即可</div>
                 </div>
                 <div class="PublicBtnIcon Color1Btn fr">
-                    <i class="iconfont icon-icon-chaxun"></i>
+                    <i class="iconfont icon-icon-chaxun" onclick="selectInfo()" ></i>
                     <span>查询</span>
                 </div>
             </div>
