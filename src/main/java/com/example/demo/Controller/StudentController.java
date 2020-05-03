@@ -36,10 +36,15 @@ public class StudentController {
                            @RequestParam("class_name") String  class_name,
                                        @RequestParam("teacher_id") String  teacher_id,
                                        @RequestParam("teacher_name") String  teacher_name,
-                           @RequestParam("dormitory") String doymitory
+                           @RequestParam("dormitory") String dormitory
     ){
         Student_Info studentInfo = new Student_Info();
         studentInfo.setTeacher_name(teacher_name);
+        studentInfo.setTeacher_id(teacher_id);
+        studentInfo.setStudent_name(student_name);
+        studentInfo.setSensor_id(class_name);
+        studentInfo.setDormitory(dormitory);
+        studentInfo.setStudent_id(student_id);
         try{
             studentinfoJpa.save(studentInfo);
         }catch (Exception e){

@@ -11,318 +11,377 @@
     <script src="js/f.js"></script>
     <title>系统管理</title>
 </head>
-<body>
-    <div class="PublicHead clearfix">
-        <div class="leftBox clearfix">
-            <!--<div class="companyLogo">
-                <img src="images/logo.jpg" />
-            </div>-->
-            <!--<i class="iconfont icon-caidan Js_MenuList"></i>-->
 
-            <div class="companyText">
-                宿舍就寝管理系统
+<body onload="myfuction()">
+<SCRIPT type="text/javascript">
+    var val;
+    function myfuction() {
+        var result='';
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("get","student/findAll",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    var value = xmlhttp.responseText;
+                    var json = eval("("+value+")");
+                    result=display(json);
+                    $("#test").html(result);
+                }
+            }
+        }
+        xmlhttp.send();
+
+        alert("准备开始获取最新数据");
+
+    }
+
+    function display(json) {
+        content="<div class='InquireSelectTable'>";
+        content+="<table class='PublicTableCss'>";
+        content+="<thead>";
+        content+="<tr>";
+        content+="<td>";
+        content+="<input id='inputcheck' class='inputcheck' type='checkbox' name='inputcheck' />";
+        content+="<label for='inputcheck'></label>";
+        content+="<span>全选</span>";
+        content+="</td>";
+        content+="<td>ID</td>";
+        content+="<td width='100'>学号</td>";
+        content+="<td width='100'>姓名</td>";
+        content+="<td>传感器编号</td>";
+        content+="<td width='100'>学生班级</td>";
+        content+="<td width='125'>老师编号</td>";
+        content+="<td width='125'>老师姓名</td>";
+        content+="<td width='300'>宿舍（楼层编号-宿舍编号-床位）</td>";
+        content+="<td width='100'>操作</td>";
+        content+=" </tr>";
+        content+="</thead>";
+        content+="<tbody>";
+        for(i=0;i<json.length;i++){
+            content+="<tr>";
+            content+="<td><input id='a' class='inputcheck' type='checkbox' name='inputcheck' />";
+            content+="<label for='aa'></label>";
+            content+="</td> " ;
+            content+="<td>"+json[i].id           +"</td>";//编号
+            content+="<td>"+json[i].student_id   +"</td>";//学号
+            content+="<td>"+json[i].student_name +"</td>";//姓名
+            content+="<td>"+json[i].sensor_id    +"</td>";//传感器编号
+            content+="<td>"+json[i].class_name   +"</td>";//班级
+            content+="<td>"+json[i].teacher_id   +"</td>";//老师编号
+            content+="<td>"+json[i].teacher_name +"</td>";//老师姓名
+            content+="<td>"+json[i].dormitory    +"</td>";//宿舍
+            content+="<td>";
+            content+="<div class='PublicTableBtnIcon Color3Btn Js_edit'>";
+            content+="<i class='iconfont icon-tubiaozhizuomobanyihuifu-'></i>";
+            content+="<span>编辑</span>";
+            content+="</div>";
+            content+="<div class='PublicTableBtnIcon Color4Btn Js_delete'>";
+            content+="<i class='iconfont icon-shanchu'></i>";
+            content+="<span>删除</span>";
+            content+="</div>";
+            content+="</td>";
+            content+="</tr>";
+        }
+        content+="</tbody>";
+        content+="</table>";
+        content+="</div>";
+        return content;
+    }
+
+    function addStuent() {
+        student_id = document.getElementById("student_id").value;
+        student_name  = document.getElementById("student_name").value;
+        sensor_id = document.getElementById("sensor_id").value;
+        teacher_id = document.getElementById("teacher_id").value;
+        teacher_name = document.getElementById("teacher_name").value;
+        dormitory = document.getElementById("dormitory").value;
+        class_name = document.getElementById("class_name").value;
+        alert(student_id+student_name);
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("post","student/save",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    if(xmlhttp.responseText=="flase"){
+                        alert("添加失败，请检查");
+                    }else {
+                        alert("添加成功");
+                        window.location.href=("UserManagement.html");
+                    }
+                }
+            }
+        }
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlhttp.send("student_id="+student_id+
+            "&class_name="+class_name+
+            "&dormitory="+dormitory+
+            "&teacher_name="+teacher_name+
+            "&teacher_id="+teacher_id+
+            "&sensor_id="+sensor_id+
+            "&student_name="+student_name);
+    }
+</SCRIPT>
+<div class="PublicHead clearfix">
+    <div class="leftBox clearfix">
+        <div class="companyText">
+            宿舍就寝管理系统
+        </div>
+    </div>
+    <div class="RightBox clearfix">
+        <div class="UserPhotoBox">
+            <div class="UserPic">
+                <img src="images/user.jpg" />
+            </div>
+            <div class="UserName">
+                管理员
             </div>
         </div>
-        <div class="RightBox clearfix">
-            <div class="UserPhotoBox">
-                <div class="UserPic">
-                    <img src="images/user.jpg" />
-                </div>
-                <div class="UserName">
-                    管理员
-                </div>
+        <a href="index.html">
+            <div class="dropOutBox">
+                <i class="iconfont icon-app_icons--">
+                </i>
+                <span>退出</span>
             </div>
-            <a href="index.html">
-                <div class="dropOutBox">
-                    <i class="iconfont icon-app_icons--">
-                    </i>
-                    <span>退出</span>
-                </div>
+        </a>
+    </div>
+</div>
+
+<div class="PublicDownWhole clearfix">
+    <!--左侧-->
+    <div class="leftBox Js_leftBox">
+        <ul>
+            <a href="UserManagement.html"> <li class="Select"><i class="iconfont icon-yonghuguanli"></i><span>学生信息管理</span></li></a>
+            <a href="OrderManagement.html">
+                <li><i class="iconfont icon-tubiao_dingdan"></i><span>传感器信息管理</span></li>
             </a>
-        </div>
+            <a href="ClassificationManagement.html">
+                <li><i class="iconfont icon-fenlei"></i><span>统计信息管理</span></li>
+            </a>
+            <a href="ProductManagement.html">      <li><i class="iconfont icon-weibiaoti1"></i><span>联系方式管理</span></li></a>
+        </ul>
     </div>
-
-
-    <div class="PublicDownWhole clearfix">
-        <!--左侧-->
-        <div class="leftBox Js_leftBox">
-            <ul>
-                <a href="UserManagement.html"> <li class="Select"><i class="iconfont icon-yonghuguanli"></i><span>学生信息管理</span></li></a>
-                <a href="OrderManagement.html">
-                    <li><i class="iconfont icon-tubiao_dingdan"></i><span>传感器信息管理</span></li>
-                </a>
-                <a href="ClassificationManagement.html">
-                    <li><i class="iconfont icon-fenlei"></i><span>统计信息管理</span></li>
-                </a>
-                <a href="ProductManagement.html">      <li><i class="iconfont icon-weibiaoti1"></i><span>联系方式管理</span></li></a>
-            </ul>
-        </div>
-        <!--右侧-->
-        <div class="RightBox Js_RightBox">
-            <div class="PublicContentBox">
-                <!--公用指向页面名字-->
-                <div class="PublicPointToAgeText">
-                    <span class="span1">学生信息管理</span> <span class="span2">学生信息管理列表</span>
+    <!--右侧-->
+    <div class="RightBox Js_RightBox">
+        <div class="PublicContentBox">
+            <!--公用指向页面名字-->
+            <div class="PublicPointToAgeText">
+                <span class="span1">学生信息管理</span> <span class="span2">学生信息管理列表</span>
+            </div>
+            <!--查询-->
+            <div class="InquireBox clearfix">
+                <div class="InquireleftBox">
+                    <div class="Text">学号：</div>
+                    <div class="InputDiv">   <input class="phoneInput" placeholder="请输入你需要查询的学生学号" /></div>
                 </div>
-                <!--查询-->
-                <div class="InquireBox clearfix">
-                    <div class="InquireleftBox">
-                        <div class="Text">学号：</div>
-                        <div class="InputDiv">   <input class="phoneInput" placeholder="请输入你需要查询的学生学号" /></div>
-                    </div>
-                    <div class="InquireleftBox">
-                        <div class="Text">姓名：</div>
-                        <div class="InputDiv">   <input class="phoneInput" placeholder="或输入你需要查询的学生学号" /></div>
-                    </div>
-                    <div class="InquireleftBox">
-                        <div class="Text">班级：</div>
-                        <div class="InputDiv">   <input class="phoneInput" placeholder="或通过班级进行查询" /></div>
-                    </div>
-                    <div class="InquireleftBox">
-                        <div class="Text">查询条件输入其一即可</div>
-                    </div>
-                    <div class="PublicBtnIcon Color1Btn fr">
-                        <i class="iconfont icon-icon-chaxun"></i>
-                        <span>查询</span>
-                    </div>
+                <div class="InquireleftBox">
+                    <div class="Text">姓名：</div>
+                    <div class="InputDiv">   <input class="phoneInput" placeholder="或输入你需要查询的学生学号" /></div>
                 </div>
-                <!--表修改-->
-                <div class="InquireTableBox">
-                    <div class="headbox">
-                        <div class="headboxtext">
-                            <span class="span1">学生信息管理列表</span>
-                        </div>
-                        <!--批量删除-->
-                        <div class="PublicBtnIcon Color5Btn">
-                            <i class="iconfont  icon-shanchu"></i>
-                            <span>批量删除</span>
-                        </div>
-
-                        <div class="PublicBtnIcon Color2Btn fr Js_edit">
-                            <i class="iconfont icon-changyongtubiao-mianxing-"></i>
-                            <span>添加</span>
-                        </div>
-                    </div>
-
-                    <!--查询到的表格-->
-
-                    <div class="InquireSelectTable">
-                        <table class="PublicTableCss">
-                            <thead>
-                                <tr>
-                                    <td>
-                                        <input id="inputcheck" class="inputcheck" type="checkbox" name="inputcheck" />
-                                        <label for="inputcheck"></label>
-                                        <span>全选</span>
-                                    </td>
-                                    <td>ID</td>
-                                    <td width="100">学号</td>
-                                    <td width="100">姓名</td>
-                                    <td>传感器编号</td>
-                                    <td width="100">学生班级</td>
-                                    <td width="125">老师编号</td>
-                                    <td width="125">老师姓名</td>
-                                    <td width="300">宿舍（楼层编号-宿舍编号-床位）</td>
-                                    <td width="100">操作</td>
-                                </tr>
-
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <input id="aa" class="inputcheck" type="checkbox" name="inputcheck" />
-                                        <label for="aa"></label>
-                                    </td>
-                                    <td>1</td>
-                                    <td>B16010409</td>
-                                    <td>王一一</td>
-                                    <td>SC001</td>
-                                    <td>0001</td>
-                                    <td>RE001</td>
-                                    <td>王一三</td>
-                                    <td>34-105-1</td>
-                                    <td>
-                                        <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                            <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
-                                            <span>编辑</span>
-                                        </div>
-
-                                        <div class="PublicTableBtnIcon Color4Btn Js_delete">
-                                            <i class="iconfont icon-shanchu"></i>
-                                            <span>删除</span>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-
-                    </div>
-                    <!--分页-->
-                    <div class="PageNumber">
-                        <div class="NumbersBox">
-                            <div class="LeftArrow">
-                                上一页
-                            </div>
-                            <ul>
-                                <li class="Select">1</li>
-                                <li class="">2</li>
-                                <li class="">...</li>
-                                <li class="">4</li>
-                                <li class="">5</li>
-                            </ul>
-                            <div class="RightArrow ">
-                                下一页
-                            </div>
-                        </div>
-                    </div>
-
-
+                <div class="InquireleftBox">
+                    <div class="Text">班级：</div>
+                    <div class="InputDiv">   <input class="phoneInput" placeholder="或通过班级进行查询" /></div>
+                </div>
+                <div class="InquireleftBox">
+                    <div class="Text">查询条件输入其一即可</div>
+                </div>
+                <div class="PublicBtnIcon Color1Btn fr">
+                    <i class="iconfont icon-icon-chaxun"></i>
+                    <span>查询</span>
                 </div>
             </div>
+            <!--表修改-->
+            <div class="InquireTableBox">
+                <div class="headbox">
+                    <div class="headboxtext">
+                        <span class="span1">学生信息管理列表</span>
+                    </div>
+                    <!--批量删除-->
+                    <div class="PublicBtnIcon Color5Btn">
+                        <i class="iconfont  icon-shanchu"></i>
+                        <span>批量删除</span>
+                    </div>
 
-        </div>
-    </div>
-
-
-    <!-- alert通用 提示是否删除-->
-    <div class="PublicFloatBox f_delete">
-        <div class="f_MiddleBox wid260">
-            <div class="f_Head">
-                <span>提示消息</span>
-                <i class="Js_closeBtn iconfont icon-buoumaotubiao20 fr"></i>
-            </div>
-            <div class="f_content clearfix">
-                <!--提示消息内容-->
-                <div class="f_someText">
-                    <i class="iconfont icon-tishi"></i>
-                    <span>确定删除此信息？</span>
+                    <div class="PublicBtnIcon Color2Btn fr Js_edit">
+                        <i class="iconfont icon-changyongtubiao-mianxing-"></i>
+                        <span>添加</span>
+                    </div>
                 </div>
-                <!--按钮-->
-                <div class="f_pormatBtn  clearfix">
-                    <div class="f_pormatBtn1">
-                        确定
+                <!--查询到的表格-->
+                <div id ="test"></div>
+
+                <!--分页-->
+                <div class="PageNumber">
+                    <div class="NumbersBox">
+                        <div class="LeftArrow">
+                            上一页
+                        </div>
+                        <ul>
+                            <li class="Select">1</li>
+                            <li class="">2</li>
+                            <li class="">...</li>
+                            <li class="">4</li>
+                            <li class="">5</li>
+                        </ul>
+                        <div class="RightArrow ">
+                            下一页
+                        </div>
                     </div>
-                    <div class="f_pormatBtn2">
-                        取消
-                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- alert通用 提示是否删除-->
+<div class="PublicFloatBox f_delete">
+    <div class="f_MiddleBox wid260">
+        <div class="f_Head">
+            <span>提示消息</span>
+            <i class="Js_closeBtn iconfont icon-buoumaotubiao20 fr"></i>
+        </div>
+        <div class="f_content clearfix">
+            <!--提示消息内容-->
+            <div class="f_someText">
+                <i class="iconfont icon-tishi"></i>
+                <span>确定删除此信息？</span>
+            </div>
+            <!--按钮-->
+            <div class="f_pormatBtn  clearfix">
+                <div class="f_pormatBtn1">
+                    确定
+                </div>
+                <div class="f_pormatBtn2">
+                    取消
                 </div>
             </div>
         </div>
     </div>
-    <!--添加用户浮层-->
-    <div class="PublicFloatBox adduser">
-        <div class="f_MiddleBox wid400">
-            <div class="f_Head">
-                <span>添加学生（必须完善所有信息才能提交）</span>
-                <i class="Js_closeBtn iconfont icon-buoumaotubiao20 fr"></i>
+</div>
+<!--添加用户浮层-->
+<div class="PublicFloatBox adduser">
+    <div class="f_MiddleBox wid400">
+        <div class="f_Head">
+            <span>添加学生（必须完善所有信息才能提交）</span>
+            <i class="Js_closeBtn iconfont icon-buoumaotubiao20 fr"></i>
+        </div>
+        <div class="f_content">
+            <div class="f_alonediv">
+                <div class="f_alone_name">
+                    学号:
+                </div>
+                <div class="f_alone_input">
+                    <input class="f_p_input" type="text" name="student_id" id="student_id" />
+                </div>
+                <!--提示消息-->
+                <div class="f_pormat">
+                    请输入学生学号
+                </div>
             </div>
-            <div class="f_content">
-                <div class="f_alonediv">
-                    <div class="f_alone_name">
-                        学号:
-                    </div>
-                    <div class="f_alone_input">
-                        <input class="f_p_input" />
-                    </div>
-                    <!--提示消息-->
-                    <div class="f_pormat">
-                        请输入学生学号
-                    </div>
+            <div class="f_alonediv">
+                <div class="f_alone_name">
+                    姓名:
                 </div>
-                <div class="f_alonediv">
-                    <div class="f_alone_name">
-                        姓名:
-                    </div>
-                    <div class="f_alone_input">
-                        <input class="f_p_input" />
-                    </div>
-                    <!--提示消息-->
-                    <div class="f_pormat">
-                        请输入学生姓名
-                    </div>
+                <div class="f_alone_input">
+                    <input class="f_p_input" type="text" name="student_name" id="student_name" />
                 </div>
-                <div class="f_alonediv">
-                    <div class="f_alone_name">
-                        传感器编号:
-                    </div>
-                    <div class="f_alone_input">
-                        <input class="f_p_input" />
-                    </div>
-                    <!--提示消息-->
-                    <div class="f_pormat">
-                        请输入学生对应传感器编号：、
-                    </div>
+                <!--提示消息-->
+                <div class="f_pormat">
+                    请输入学生姓名
                 </div>
-                <div class="f_alonediv">
-                    <div class="f_alone_name">
-                        学生班级:
-                    </div>
-                    <div class="f_alone_input">
-                        <input class="f_p_input" />
-                    </div>
-                    <!--提示消息-->
-                    <div class="f_pormat">
-                        请输入学生班级
-                    </div>
+            </div>
+            <div class="f_alonediv">
+                <div class="f_alone_name">
+                    传感器编号:
                 </div>
-                <div class="f_alonediv">
-                    <div class="f_alone_name">
-                        老师编号:
-                    </div>
-                    <div class="f_alone_input">
-                        <input class="f_p_input" />
-                    </div>
-                    <!--提示消息-->
-                    <div class="f_pormat">
-                        请输入学生老师的编号
-                    </div>
+                <div class="f_alone_input">
+                    <input class="f_p_input" type="text" name="sensor_id" id="sensor_id"/>
                 </div>
-                <div class="f_alonediv">
-                    <div class="f_alone_name">
-                        姓名:
-                    </div>
-                    <div class="f_alone_input">
-                        <input class="f_p_input" />
-                    </div>
-                    <!--提示消息-->
-                    <div class="f_pormat">
-                        请输入学生老师的姓名
-                    </div>
+                <!--提示消息-->
+                <div class="f_pormat">
+                    请输入学生对应传感器编号：、
                 </div>
-                <div class="f_alonediv">
-                    <div class="f_alone_name">
-                        宿舍位置:
-                    </div>
-                    <div class="f_alone_input">
-                        <input class="f_p_input" />
-                    </div>
-                    <!--提示消息-->
-                    <div class="f_pormat">
-                        请输入学生所住位置（格式：楼层编号—宿舍编号-床位）
-                    </div>
+            </div>
+            <div class="f_alonediv">
+                <div class="f_alone_name">
+                    学生班级:
                 </div>
-                <div class="f_alonediv1">
-                    <div class="f_alone_name">
-                    </div>
-                    <div class="f_alone_input1">
-                        <!--publicbtn-->
-                        <div class="publicf_btn">
-                            <div class="publicf_btn1">
-                                确定
-                            </div>
-                            <div class="publicf_btn2 fr Js_closeBtn">
-                                取消
-                            </div>
+                <div class="f_alone_input">
+                    <input class="f_p_input" type="text" name="class_name" id="class_name" />
+                </div>
+                <!--提示消息-->
+                <div class="f_pormat">
+                    请输入学生班级
+                </div>
+            </div>
+            <div class="f_alonediv">
+                <div class="f_alone_name">
+                    老师编号:
+                </div>
+                <div class="f_alone_input">
+                    <input class="f_p_input" type="text" name="teacher_id" id="teacher_id"/>
+                </div>
+                <!--提示消息-->
+                <div class="f_pormat">
+                    请输入学生老师的编号
+                </div>
+            </div>
+            <div class="f_alonediv">
+                <div class="f_alone_name">
+                    姓名:
+                </div>
+                <div class="f_alone_input">
+                    <input class="f_p_input" type="text" name="teacher_name" id="teacher_name"/>
+                </div>
+                <!--提示消息-->
+                <div class="f_pormat">
+                    请输入学生老师的姓名
+                </div>
+            </div>
+            <div class="f_alonediv">
+                <div class="f_alone_name">
+                    宿舍位置:
+                </div>
+                <div class="f_alone_input">
+                    <input class="f_p_input" type="text" name="dormitory" id="dormitory" />
+                </div>
+                <!--提示消息-->
+                <div class="f_pormat">
+                    请输入学生所住位置（格式：楼层编号—宿舍编号-床位）
+                </div>
+            </div>
+            <div class="f_alonediv1">
+                <div class="f_alone_name">
+                </div>
+                <div class="f_alone_input1">
+                    <!--publicbtn-->
+                    <div class="publicf_btn">
+                        <div class="publicf_btn1" onclick="addStuent()">
+                            确定
+                        </div>
+                        <div class="publicf_btn2 fr Js_closeBtn">
+                            取消
                         </div>
                     </div>
                 </div>
-
             </div>
+
         </div>
     </div>
+</div>
 
-    <!--返回顶部-->
-    <a href="javaScript:void();" class="back-to-top"><i class="iconfont icon-fanhuidingbu"></i> </a>
+<!--返回顶部-->
+<a href="javaScript:void();" class="back-to-top"><i class="iconfont icon-fanhuidingbu"></i> </a>
 </body>
 </html>
