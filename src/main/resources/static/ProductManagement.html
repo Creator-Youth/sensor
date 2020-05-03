@@ -11,7 +11,80 @@
     <script src="js/f.js"></script>
     <title>联系方式管理</title>
 </head>
-<body>
+<body onload="firstLoad()" >
+<script type="text/javascript">
+    function firstLoad() {
+        var result='';
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("get","teacher/findAll",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    var value = xmlhttp.responseText;
+                    var json = eval("("+value+")");
+                    result=display(json);
+                    $("#data").html(result);
+                }
+            }
+        }
+        xmlhttp.send();
+    }
+
+    function display(Json){
+        content="";
+        content+=" <div class='InquireSelectTable'>";
+        content+="<table class='PublicTableCss'>";
+        content+="<thead>";
+        content+=" <tr>";
+        content+=" <td>";
+        content+=" <input id='inputcheck' class='inputcheck' type='checkbox' name='inputcheck' />";
+        content+=" <label for='inputcheck'></label>";
+        content+=" <span>全选</span>";
+        content+="</td>";
+        content+="<td>ID</td>";
+        content+="<td>老师编号</td>";
+        content+="<td>老师姓名</td>";
+        content+="<td>老师联系方式（电话号码+住址）</td>";
+        content+="<td>老师班级</td>";
+        content+="<td>老师性别</td>";
+        content+="<td>操作</td>";
+        content+="</tr>";
+        content+="</thead>";
+        content+="<tbody>";
+        for(i=0;i<Json.length;i++){
+            content+="<tr>";
+            content+="<td>";
+            content+="<input id='aa' class='inputcheck' type='checkbox' name='inputcheck' />";
+            content+="<label for='aa'></label>";
+            content+="</td>";
+            content+="<td>"+Json[i].id+"</td>";//ID
+            content+="<td>"+Json[i].teacher_id+"</td>";//编号
+            content+="<td width='200'>"+Json[i].teacher_name+"</td>";//姓名
+            content+="<td width='400'>"+Json[i].teacher_dormitory+"</td>";//联系方式
+            content+="<td>"+Json[i].class_name+"</td>";//班级
+            content+="<td"+Json[i].gender+"</td>";//性别
+            content+="<td>";
+            content+="<div class='PublicTableBtnIcon Color3Btn Js_edit'>";
+            content+="<i class='iconfont icon-tubiaozhizuomobanyihuifu-'></i>";
+            content+="<span>编辑</span>";
+            content+="</div>";
+            content+=" <div class='PublicTableBtnIcon Color4Btn Js_delete'>";
+            content+="<i class='iconfont icon-shanchu'></i>";
+            content+="<span>删除</span>";
+            content+="</div>";
+            content+="</td>";
+            content+="</tr>";
+        }
+        content+="</tbody>";
+        content+="</table>";
+        content+="</div>";
+        return content;
+    }
+</script>
     <div class="PublicHead clearfix">
         <div class="leftBox clearfix">
             <!--<div class="companyLogo">
@@ -98,55 +171,7 @@
 
                     <!--查询到的表格-->
 
-                    <div class="InquireSelectTable">
-                        <table class="PublicTableCss">
-                            <thead>
-                                <tr>
-                                    <td>
-                                        <input id="inputcheck" class="inputcheck" type="checkbox" name="inputcheck" />
-                                        <label for="inputcheck"></label>
-                                        <span>全选</span>
-                                    </td>
-                                    <td>ID</td>
-                                    <td>老师编号</td>
-                                    <td>老师姓名</td>
-                                    <td>老师联系方式（姓名+住址）</td>
-                                    <td>老师班级</td>
-                                    <td>老师性别</td>
-                                    <td>操作</td>
-                                </tr>
-
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <input id="aa" class="inputcheck" type="checkbox" name="inputcheck" />
-                                        <label for="aa"></label>
-                                    </td>
-                                    <td>1</td>
-                                    <td>001</td>
-                                    <td width="200">WXXS</td>
-                                    <td width="400">12345678911+南邮柳苑34栋105-1</td>
-                                    <td>01</td>
-                                    <td>男</td>
-                                    <td>
-
-                                        <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                            <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
-                                            <span>编辑</span>
-                                        </div>
-
-                                        <div class="PublicTableBtnIcon Color4Btn Js_delete">
-                                            <i class="iconfont icon-shanchu"></i>
-                                            <span>删除</span>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-
-                    </div>
+                    <div id="data"></div>
                     <!--分页-->
                     <div class="PageNumber">
                         <div class="NumbersBox">
