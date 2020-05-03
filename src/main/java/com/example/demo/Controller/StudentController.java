@@ -28,7 +28,7 @@ public class StudentController {
         return id;
     }
 
-    @RequestMapping(value = "/save")
+    @PostMapping(value = "/save")
     @ResponseBody
     //添加学生信息
     public String saveInfo(@RequestBody Student_Info student_info){
@@ -42,30 +42,26 @@ public class StudentController {
     }
 
     //查询学生信息
-    @RequestMapping(value = "/getInfo")
+    @PostMapping(value = "/getInfo")
     @ResponseBody
     public  List<Student_Info> getInfo(@RequestParam("student_id") String  student_id,
                                   @RequestParam("student_name") String  student_name,
                                   @RequestParam("class_name") String  class_name){
-        //studentinfoJpa.saveAndFlush(student_info)
         Student_Info studentInfo = null;
         List<Student_Info> list = new ArrayList<>();
-        if(student_id !=null && student_name==null&& class_name==null){
-            studentInfo = studentinfoJpa.getByStudentId(student_id);
-        }else if(student_id ==null && student_name!=null&& class_name==null){
-            studentInfo = studentinfoJpa.getByStudentName(student_name);
-        }else if(student_id ==null && student_name==null&& class_name!=null){
-            list = studentinfoJpa.getByClassName(class_name);
-        }else{
-            return list;
-        }
+        List<Student_Info> result = new ArrayList<>();
+        studentInfo = studentinfoJpa.getByStudentId(student_id);
+        if(null != studentInfo){list.add(studentInfo);}
 
-        if(null == studentInfo){
-            return list;
-        }else{
-            list.add(studentInfo);
-            return list;
+        studentInfo = studentinfoJpa.getByStudentName(student_name);
+        if(null != studentInfo){list.add(studentInfo);}
+
+        result = studentinfoJpa.getByClassName(class_name);
+        for (Student_Info stu:result
+             ) {
+            list.add(stu);
         }
+        return list;
         //为空表示为查询到信息。
     }
 }
