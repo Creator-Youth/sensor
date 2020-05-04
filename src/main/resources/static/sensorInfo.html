@@ -27,7 +27,7 @@
                 if (xmlhttp.readyState == 4) {
                     var value = xmlhttp.responseText;
                     var json = eval("("+value+")");
-                    result=display(json);
+                    result=play(json);
                     $("#test").html(result);
                 }
             }
@@ -35,52 +35,55 @@
         xmlhttp.send();
         alert("开始刷新数据")
     }
-
-    function display(Json) {
+    function play(json) {
         content="<div class='InquireSelectTable'>";
         content+="<table class='PublicTableCss'>";
         content+="<thead>";
         content+="<tr>";
+        content+="<td>";
+        content+="<input id='inputcheck' class='inputcheck' type='checkbox' name='inputcheck' />";
+        content+="<label for='inputcheck'></label>";
+        content+="<span></span>";
+        content+="</td>";
         content+="<td>ID</td>";
-        content+="<td width='200'>传感器ID</td>";
-        content+="<td width='200'>学生姓名</td>";
-        content+="<td width='200'>班主任</td>";
-        content+="<td>是否在床上</td>";
-        content+="<td>是否在说话</td>";
-        content+="<td>是否在开灯</td>";
-        content+="<td>是否损坏</td>";
-        content+="<td>操作</td>";
-        content+="</tr>";
+        content+="<td width='100'>传感器ID</td>";
+        content+="<td width='100'>学生姓名</td>";
+        content+="<td>班主任</td>";
+        content+="<td width='100'>是否在床上</td>";
+        content+="<td width='125'>是否在说话</td>";
+        content+="<td width='125'>是否在开灯</td>";
+        content+="<td width='300'>是否损坏</td>";
+        content+="<td width='100'>操作</td>";
+        content+=" </tr>";
         content+="</thead>";
-        content+="</table>";
-        content+="</div>";
         content+="<tbody>";
-        for(i=0;i<Json.length;i++){
-            content+=" <tr>";
-            content+="<td>"+Json[i].id+"</td>";
-            content+="<td>"+Json[i].sensor_id+"</td>";
-            content+="<td>"+Json[i].student_name+"</td>";
-            content+="<td>"+Json[i].teacher_name+"</td>";
-            if(Json[i].is_bed == true){content+="<td>"+"未在床上休息"+"</td>";}
-            if(Json[i].is_bed == false){content+="<td>"+"未违纪"+"</td>";}
-            if(Json[i].is_noise == true){content+="<td>"+"说话"+"</td>";}
-            if(Json[i].is_noise == false){content+="<td>"+"未违纪"+"</td>";}
-            if(Json[i].is_light == true){content+="<td>"+"未熄灯"+"</td>";}
-            if(Json[i].is_light == false){content+="<td>"+"未违纪"+"</td>";}
-            if(Json[i].is_good == true){content+="<td>"+"未损坏"+"</td>";}
-            if(Json[i].is_good == false){content+="<td>"+"已损坏"+"</td>";}
+        for(i=0;i<json.length;i++){
+            content+="<tr>";
+            content+="<td><input id='a' class='inputcheck' type='checkbox' name='inputcheck' />";
+            content+="<label for='aa'></label>";
+            content+="</td> " ;
+            content+="<td>"+json[i].id+"</td>";
+            content+="<td>"+json[i].sensor_id+"</td>";
+            content+="<td>"+json[i].student_name+"</td>";
+            content+="<td>"+json[i].teacher_name+"</td>";
+            if(json[i].is_bed == true){content+="<td>"+"未在床上休息"+"</td>";} else{content+="<td>"+"未违纪"+"</td>";}
+            if(json[i].is_noise == true){content+="<td>"+"说话"+"</td>";}      else{content+="<td>"+"未违纪"+"</td>";}
+            if(json[i].is_light == true){content+="<td>"+"未熄灯"+"</td>";}    else{content+="<td>"+"未违纪"+"</td>";}
+            if(json[i].is_good == true){content+="<td>"+"未损坏"+"</td>";}     else{content+="<td>"+"已损坏"+"</td>";}
             content+="<td>";
             content+="<div class='PublicTableBtnIcon Color3Btn Js_edit'>";
             content+="<i class='iconfont icon-tubiaozhizuomobanyihuifu-'></i>";
-            content+="<span>查看学生信息</span>";
+            content+="<span>查看对应学生信息</span>";
             content+="</div>";
             content+="</td>";
             content+="</tr>";
         }
         content+="</tbody>";
+        content+="</table>";
+        content+="</div>";
         return content;
-
     }
+
 </script>>
     <div class="PublicHead clearfix">
         <div class="leftBox clearfix">
@@ -163,7 +166,7 @@
 
                     <!--查询到的表格-->
 
-                    <div id="result">
+                    <div id="test"></div>
 
                     <!--分页-->
                     <div class="PageNumber">
