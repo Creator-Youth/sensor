@@ -51,5 +51,4 @@ public class BadSensor_Info {
 
     public BadSensor_Info(){}
 
-
 }

@@ -11,7 +11,35 @@
     <script src="js/f.js"></script>
     <title>传感器信息管理</title>
 </head>
-<body>
+<body onload="firstLoad()">
+<script type="text/javascript">
+    
+    function firstLoad() {
+        var result='';
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("get","sensor/getAllInfo",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    var value = xmlhttp.responseText;
+                    var json = eval("("+value+")");
+                    result=display(json);
+                    $("#test").html(result);
+                }
+            }
+        }
+        xmlhttp.send();
+        alert("开始刷新数据")
+    }
+
+    function display(Json) {
+
+    }
+</script>>
     <div class="PublicHead clearfix">
         <div class="leftBox clearfix">
             <!--<div class="companyLogo">
@@ -47,7 +75,7 @@
         <div class="leftBox">
             <ul>
                 <a href="UserManagement.html"> <li class=""><i class="iconfont icon-yonghuguanli"></i><span>学生信息管理</span></li></a>
-                <a href="OrderManagement.html">
+                <a href="sensorInfo.html">
                     <li class="Select"><i class="iconfont icon-tubiao_dingdan"></i><span>传感器信息管理</span></li>
                 </a>
                 <a href="ClassificationManagement.html">
