@@ -37,6 +37,48 @@
     }
 
     function display(Json) {
+        content="<div class='InquireSelectTable'>";
+        content+="<table class='PublicTableCss'>";
+        content+="<thead>";
+        content+="<tr>";
+        content+="<td>ID</td>";
+        content+="<td width='200'>传感器ID</td>";
+        content+="<td width='200'>学生姓名</td>";
+        content+="<td width='200'>班主任</td>";
+        content+="<td>是否在床上</td>";
+        content+="<td>是否在说话</td>";
+        content+="<td>是否在开灯</td>";
+        content+="<td>是否损坏</td>";
+        content+="<td>操作</td>";
+        content+="</tr>";
+        content+="</thead>";
+        content+="</table>";
+        content+="</div>";
+        content+="<tbody>";
+        for(i=0;i<Json.length;i++){
+            content+=" <tr>";
+            content+="<td>"+Json[i].id+"</td>";
+            content+="<td>"+Json[i].sensor_id+"</td>";
+            content+="<td>"+Json[i].student_name+"</td>";
+            content+="<td>"+Json[i].teacher_name+"</td>";
+            if(Json[i].is_bed == true){content+="<td>"+"未在床上休息"+"</td>";}
+            if(Json[i].is_bed == false){content+="<td>"+"未违纪"+"</td>";}
+            if(Json[i].is_noise == true){content+="<td>"+"说话"+"</td>";}
+            if(Json[i].is_noise == false){content+="<td>"+"未违纪"+"</td>";}
+            if(Json[i].is_light == true){content+="<td>"+"未熄灯"+"</td>";}
+            if(Json[i].is_light == false){content+="<td>"+"未违纪"+"</td>";}
+            if(Json[i].is_good == true){content+="<td>"+"未损坏"+"</td>";}
+            if(Json[i].is_good == false){content+="<td>"+"已损坏"+"</td>";}
+            content+="<td>";
+            content+="<div class='PublicTableBtnIcon Color3Btn Js_edit'>";
+            content+="<i class='iconfont icon-tubiaozhizuomobanyihuifu-'></i>";
+            content+="<span>查看学生信息</span>";
+            content+="</div>";
+            content+="</td>";
+            content+="</tr>";
+        }
+        content+="</tbody>";
+        return content;
 
     }
 </script>>
@@ -74,14 +116,14 @@
         <!--左侧-->
         <div class="leftBox">
             <ul>
-                <a href="UserManagement.html"> <li class=""><i class="iconfont icon-yonghuguanli"></i><span>学生信息管理</span></li></a>
+                <a href="studentInfo.html"> <li class=""><i class="iconfont icon-yonghuguanli"></i><span>学生信息管理</span></li></a>
                 <a href="sensorInfo.html">
                     <li class="Select"><i class="iconfont icon-tubiao_dingdan"></i><span>传感器信息管理</span></li>
                 </a>
-                <a href="ClassificationManagement.html">
+                <a href="message.html">
                     <li><i class="iconfont icon-fenlei"></i><span>统计信息管理</span></li>
                 </a>
-                <a href="ProductManagement.html">      <li><i class="iconfont icon-weibiaoti1"></i><span>联系方式管理</span></li></a>
+                <a href="teacherInfo.html">      <li><i class="iconfont icon-weibiaoti1"></i><span>联系方式管理</span></li></a>
             </ul>
         </div>
         <!--右侧-->
@@ -121,57 +163,8 @@
 
                     <!--查询到的表格-->
 
-                    <div class="InquireSelectTable">
-                        <table class="PublicTableCss">
-                            <thead>
-                                <tr>
-                                    <td>
-                                        <input id="inputcheck" class="inputcheck" type="checkbox" name="inputcheck" />
-                                        <label for="inputcheck"></label>
-                                        <span>全选</span>
-                                    </td>
-                                    <td>ID</td>
-                                    <td width="200">传感器ID</td>
-                                    <td width="200">学生姓名</td>
-                                    <td width="200">班主任</td>
-                                    <td>是否在床上</td>
-                                    <td>是否在说话</td>
-                                    <td>是否在开灯</td>
-                                    <td>是否损坏</td>
-                                    <td>操作</td>
-                                </tr>
+                    <div id="result">
 
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <input id="aa" class="inputcheck" type="checkbox" name="inputcheck" />
-                                        <label for="aa"></label>
-                                    </td>
-                                    <td>1</td>
-                                    <td>SC0001</td>
-                                    <td>wxs</td>
-                                    <td>wxs</td>
-                                    <td>yes</td>
-                                    <td>yes</td>
-                                    <td>yes</td>
-                                    <td>yes</td>
-                                    <td>
-                                        <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                            <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
-                                            <span>编辑</span>
-                                        </div>
-
-                                        <div class="PublicTableBtnIcon Color4Btn Js_delete">
-                                            <i class="iconfont icon-shanchu"></i>
-                                            <span>删除</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
                     <!--分页-->
                     <div class="PageNumber">
                         <div class="NumbersBox">

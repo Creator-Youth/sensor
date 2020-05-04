@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface BadSensorInfoJpa extends JpaRepository<BadSensor_Info, Integer> {
-    @Query("select badInfo from BadSensor_Info badinfo where sensor_id = ?1")
+    @Query("select badInfo from BadSensor_Info badInfo where sensor_id = ?1")
     BadSensor_Info getById(String sensor_id);
 }
