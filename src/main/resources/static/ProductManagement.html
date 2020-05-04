@@ -35,6 +35,11 @@
         xmlhttp.send();
     }
 
+    function windowsAddTeacher() {
+        window.open("Login.html" ,"","width=480,height=480");
+
+    }
+
     function display(Json){
 
 
@@ -76,7 +81,7 @@
             content+="<td>"+Json[i].gender+                       "</td>";//性别
             content+="<td>";
             content+="<div class='PublicTableBtnIcon Color3Btn Js_edit'>";
-            content+="<i class='iconfont icon-tubiaozhizuomobanyihuifu-'></i>";
+            content+="<i class='iconfont icon-tubiaozhizuomobanyihuifu-' onclick='windowsAddTeacher()'></i>";
             content+="<span>编辑</span>";
             content+="</div>";
             content+=" <div class='PublicTableBtnIcon Color4Btn Js_delete'>";
