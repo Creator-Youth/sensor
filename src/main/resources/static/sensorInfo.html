@@ -27,7 +27,7 @@
                 if (xmlhttp.readyState == 4) {
                     var value = xmlhttp.responseText;
                     var json = eval("("+value+")");
-                    result=play(json);
+                    result=display(json);
                     $("#test").html(result);
                 }
             }
@@ -35,7 +35,12 @@
         xmlhttp.send();
         alert("开始刷新数据")
     }
-    function play(json) {
+    function jump(studentName) {
+        alert("开始跳转页面，学生姓名为："+studentName);
+        url = "studentInfo.html?studentName="+studentName; //拼接即可。
+        window.location.href= url;
+    }
+    function display(json) {
         content="<div class='InquireSelectTable'>";
         content+="<table class='PublicTableCss'>";
         content+="<thead>";
@@ -72,7 +77,7 @@
             if(json[i].is_good == true){content+="<td>"+"未损坏"+"</td>";}     else{content+="<td>"+"已损坏"+"</td>";}
             content+="<td>";
             content+="<div class='PublicTableBtnIcon Color3Btn Js_edit'>";
-            content+="<i class='iconfont icon-tubiaozhizuomobanyihuifu-'></i>";
+            content+="<i class='iconfont icon-tubiaozhizuomobanyihuifu-' onclick='jump(\""+json[i].student_name+"\")'></i>";
             content+="<span>查看对应学生信息</span>";
             content+="</div>";
             content+="</td>";
@@ -84,7 +89,30 @@
         return content;
     }
 
-</script>>
+    function selectInfo() {
+        sensorId = document.getElementById("sensorId").value;
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("post","sensor/getInfoBySensorID",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    var value = xmlhttp.responseText;
+                    var json = eval("("+value+")");
+                    var result=display(json);
+                    $("#test").html(result);
+                }
+
+            }
+        }
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlhttp.send("sensorId="+sensorId);
+        alert("开始刷新数据")
+    }
+</script>
     <div class="PublicHead clearfix">
         <div class="leftBox clearfix">
             <!--<div class="companyLogo">
@@ -140,10 +168,10 @@
                 <div class="InquireBox clearfix">
                     <div class="InquireleftBox">
                         <div class="Text">传感器ID：</div>
-                        <div class="InputDiv">   <input class="phoneInput" placeholder="请输入你需要查询的传感器ID" /></div>
+                        <div class="InputDiv">  <input class="phoneInput" id ="sensorId" name="sensorId" placeholder="请输入你需要查询的传感器ID" /></div>
                     </div>
                     <div class="PublicBtnIcon Color1Btn fr">
-                        <i class="iconfont icon-icon-chaxun"></i>
+                        <i class="iconfont icon-icon-chaxun" onclick="selectInfo()"></i>
                         <span>查询</span>
                     </div>
                 </div>

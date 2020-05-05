@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 //
@@ -52,6 +53,21 @@ public class StudentController {
         }
         return "true";
     }
+
+    //通过姓名查询学生信息
+    @PostMapping(value = "/getInfoByname")
+    @ResponseBody
+    public  List<Student_Info> getInfoByName(@RequestParam("studentName") String  studentName){
+        Student_Info studentInfo = null;
+        List<Student_Info> list = new ArrayList<>();
+        studentInfo = studentinfoJpa.getByStudentName(studentName);
+        list.add(studentInfo);
+
+        return list;
+        //为空表示为查询到信息。
+    }
+
+
 
     //查询学生信息
     @PostMapping(value = "/getInfo")
