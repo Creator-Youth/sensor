@@ -58,8 +58,12 @@
                 if (xmlhttp.readyState == 4) {
                     var value = xmlhttp.responseText;
                     var json = eval("("+value+")");
-                    result=display(json);
-                    $("#test").html(result);
+                    if(json.length==0){
+                        alert("未查到数据，请检查");
+                    }else{
+                        result=display(json);
+                        $("#test").html(result);
+                    }
                 }
             }
         }
@@ -142,7 +146,7 @@
                         alert("添加失败，请检查");
                     }else {
                         alert("添加成功");
-                        window.location.href=("UserManagement.html");
+                        window.location.href=("studentTnfo.html");
                     }
                 }
             }
