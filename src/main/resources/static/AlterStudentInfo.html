@@ -13,14 +13,55 @@
 </head>
 <body onload="firstLoad()">
 <script>
-    var json;
+
     function firstLoad() {
         //var studentName = location.search.split("=")[1];
         var index = getParams();
         var studentName = index['studentName'];
         selectInfoByName(studentName);
-
     }
+
+    function last() {
+        window.location.href=("javascript:history.go(-1)");
+    }
+
+    function addStuent() {
+        student_id = document.getElementById("student_id").value;
+        student_name  = document.getElementById("student_name").value;
+        sensor_id = document.getElementById("sensor_id").value;
+        teacher_id = document.getElementById("teacher_id").value;
+        teacher_name = document.getElementById("teacher_name").value;
+        dormitory = document.getElementById("dormitory").value;
+        class_name = document.getElementById("class_name").value;
+
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("post","student/save",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    if(xmlhttp.responseText=="flase"){
+                        alert("添加失败，请检查");
+                    }else {
+                        alert("添加成功");
+                        window.location.href=("javascript:history.go(-1)");
+                    }
+                }
+            }
+        }
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlhttp.send("student_id="+student_id+
+            "&class_name="+class_name+
+            "&dormitory="+dormitory+
+            "&teacher_name="+teacher_name+
+            "&teacher_id="+teacher_id+
+            "&sensor_id="+sensor_id+
+            "&student_name="+student_name);
+    }
+
 
     function selectInfoByName(studentNmae) {
         if(window.XMLHttpRequest){
@@ -33,12 +74,141 @@
             if (xmlhttp.status == 200) {
                 if (xmlhttp.readyState == 4) {
                     var value = xmlhttp.responseText;
-                     json = eval("("+value+")");
+                    var json = eval("("+value+")");
+                    var i=0;
+                    var studentId = json[i].student_id;
+                    var studentName = json[i].student_name;
+                    var sensorId = json[i].sensor_id;
+                    var className = json[i].class_name;
+                    var teacherId = json[i].teacher_id;
+                    var teacherName = json[i].teacher_name;
+                    var dormitory = json[i].dormitory;
+                    var result=display(studentId,studentName,sensorId,className,teacherId,teacherName,dormitory);
+                    $("#test").html(result);
                 }
             }
         }
         xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
         xmlhttp.send("studentName="+studentNmae)
+
+    }
+    function display(studentId,studentName,sensorId,className,teacherId,teacherName,dormitory) {
+        content="<div class=\"f_MiddleBox wid400\">\n" +
+            "         <div class=\"f_Head\">\n" +
+            "                <span>修改学生信息（必须完善所有信息才能提交）</span>\n" +
+            "                <i class=\"Js_closeBtn iconfont icon-buoumaotubiao20 fr\"></i>\n" +
+            "            </div>\n" +
+            "            <div class=\"f_content\">\n" +
+            "            <div class=\"f_alonediv\">\n" +
+            "                    <div class=\"f_alone_name\">\n" +
+            "                        学号:\n" +
+            "                    </div>\n" +
+            "                    <div class=\"f_alone_input\">\n" +
+            "                    <input class=\"f_p_input\" type=\"text\" name=\"student_id\" id=\"student_id\" \n";
+        content+="placeholder= "+studentId+">\n" +
+            "                </div>\n" +
+            "                <!--提示消息-->\n" +
+            "                <div class=\"f_pormat\">\n" +
+            "                    请输入学生学号\n" +
+            "                </div>\n" +
+            "            </div>\n" +
+            "            <div class=\"f_alonediv\">\n" +
+            "                <div class=\"f_alone_name\">\n" +
+            "                    姓名:\n" +
+            "                </div>\n" +
+            "                <div class=\"f_alone_input\">\n" +
+            "                    <input class=\"f_p_input\" type=\"text\" name=\"student_name\" id=\"student_name\" \n";
+        content+="placeholder= "+studentName+">\n" +
+            "                </div>\n" +
+            "                <!--提示消息-->\n" +
+            "                <div class=\"f_pormat\">\n" +
+            "                    请输入学生姓名\n" +
+            "                </div>\n" +
+            "            </div>\n" +
+            "            <div class=\"f_alonediv\">\n" +
+            "                <div class=\"f_alone_name\">\n" +
+            "                    传感器编号:\n" +
+            "                </div>\n" +
+            "                <div class=\"f_alone_input\">\n" +
+            "                    <input class=\"f_p_input\" type=\"text\" name=\"sensor_id\" id=\"sensor_id\" \n" ;
+        content+="placeholder= "+sensorId+">\n" +
+            "                </div>\n" +
+            "                <!--提示消息-->\n" +
+            "                <div class=\"f_pormat\">\n" +
+            "                    请输入学生对应传感器编号：、\n" +
+            "                </div>\n" +
+            "            </div>\n" +
+            "            <div class=\"f_alonediv\">\n" +
+            "                <div class=\"f_alone_name\">\n" +
+            "                    学生班级:\n" +
+            "                </div>\n" +
+            "                <div class=\"f_alone_input\">\n" +
+            "                    <input class=\"f_p_input\" type=\"text\" name=\"class_name\" id=\"class_name\" \n" ;
+        content+="placeholder= "+className+">\n" +
+            "                </div>\n" +
+            "                <!--提示消息-->\n" +
+            "                <div class=\"f_pormat\">\n" +
+            "                    请输入学生班级\n" +
+            "                </div>\n" +
+            "            </div>\n" +
+            "            <div class=\"f_alonediv\">\n" +
+            "                <div class=\"f_alone_name\">\n" +
+            "                    老师编号:\n" +
+            "                </div>\n" +
+            "                <div class=\"f_alone_input\">\n" +
+            "                    <input class=\"f_p_input\" type=\"text\" name=\"teacher_id\" id=\"teacher_id\" \n" ;
+        content+="placeholder= "+teacherName+">\n" +
+            "                </div>\n" +
+            "                <!--提示消息-->\n" +
+            "                    <div class=\"f_pormat\">\n" +
+            "                        请输入学生老师的编号\n" +
+            "                    </div>\n" +
+            "                </div>\n" +
+            "                <div class=\"f_alonediv\">\n" +
+            "                    <div class=\"f_alone_name\">\n" +
+            "                        姓名:\n" +
+            "                    </div>\n" +
+            "                    <div class=\"f_alone_input\">\n" +
+            "                        <input class=\"f_p_input\" type=\"text\" name=\"teacher_name\" id=\"teacher_name\" \n" ;
+        content+="placeholder= "+teacherName+">\n" +
+            "                    </div>\n" +
+            "                <!--提示消息-->\n" +
+            "                    <div class=\"f_pormat\">\n" +
+            "                        请输入学生老师的姓名\n" +
+            "                    </div>\n" +
+            "                </div>\n" +
+            "                <div class=\"f_alonediv\">\n" +
+            "                    <div class=\"f_alone_name\">\n" +
+            "                         宿舍位置:\n" +
+            "                    </div>\n" +
+            "                    <div class=\"f_alone_input\">\n" +
+            "                        <input class=\"f_p_input\" type=\"text\" name=\"dormitory\" id=\"dormitory\" \n" ;
+        content+="placeholder= "+dormitory+">\n" +
+            "                    </div>\n" +
+            "                <!--提示消息-->\n" +
+            "                    <div class=\"f_pormat\">\n" +
+            "                        请输入学生所住位置（格式：楼层编号—宿舍编号-床位）\n" +
+            "                    </div>\n" +
+            "                </div>\n" +
+            "                <div class=\"f_alonediv1\">\n" +
+            "                    <div class=\"f_alone_name\">\n" +
+            "                    </div>\n" +
+            "                    <div class=\"f_alone_input1\">\n" +
+            "                    <!--publicbtn-->\n" +
+            "                        <div class=\"publicf_btn\">\n" +
+            "                            <div class=\"publicf_btn1\" onclick=\"addStuent()\">\n" +
+            "                            确定\n" +
+            "                            </div>\n" +
+            "                            <div class=\"publicf_btn2 fr Js_closeBtn\"  onclick=\"last()\">\n" +
+            "                            取消\n" +
+            "                            </div>\n" +
+            "                        </div>\n" +
+            "                    </div>\n" +
+            "                </div>\n" +
+            "\n" +
+            "            </div>\n" +
+            "     </div>\n"
+        return content;
 
     }
 
@@ -57,114 +227,7 @@
         return theRequest;
     }
 </script>
-    <div class="f_MiddleBox wid400">
-         <div class="f_Head">
-                <span>修改学生信息（必须完善所有信息才能提交）</span>
-                <i class="Js_closeBtn iconfont icon-buoumaotubiao20 fr"></i>
-            </div>
-            <div class="f_content">
-            <div class="f_alonediv">
-                    <div class="f_alone_name">
-                        学号:
-                    </div>
-                    <div class="f_alone_input">
-                    <input class="f_p_input" type="text" name="student_id" id="student_id" />
-                </div>
-                <!--提示消息-->
-                <div class="f_pormat">
-                    请输入学生学号
-                </div>
-            </div>
-            <div class="f_alonediv">
-                <div class="f_alone_name">
-                    姓名:
-                </div>
-                <div class="f_alone_input">
-                    <input class="f_p_input" type="text" name="student_name" id="student_name" />
-                </div>
-                <!--提示消息-->
-                <div class="f_pormat">
-                    请输入学生姓名
-                </div>
-            </div>
-            <div class="f_alonediv">
-                <div class="f_alone_name">
-                    传感器编号:
-                </div>
-                <div class="f_alone_input">
-                    <input class="f_p_input" type="text" name="sensor_id" id="sensor_id"/>
-                </div>
-                <!--提示消息-->
-                <div class="f_pormat">
-                    请输入学生对应传感器编号：、
-                </div>
-            </div>
-            <div class="f_alonediv">
-                <div class="f_alone_name">
-                    学生班级:
-                </div>
-                <div class="f_alone_input">
-                    <input class="f_p_input" type="text" name="class_name" id="class_name" />
-                </div>
-                <!--提示消息-->
-                <div class="f_pormat">
-                    请输入学生班级
-                </div>
-            </div>
-            <div class="f_alonediv">
-                <div class="f_alone_name">
-                    老师编号:
-                </div>
-                <div class="f_alone_input">
-                    <input class="f_p_input" type="text" name="teacher_id" id="teacher_id"/>
-                </div>
-                <!--提示消息-->
-                    <div class="f_pormat">
-                        请输入学生老师的编号
-                    </div>
-                </div>
-                <div class="f_alonediv">
-                    <div class="f_alone_name">
-                        姓名:
-                    </div>
-                    <div class="f_alone_input">
-                        <input class="f_p_input" type="text" name="teacher_name" id="teacher_name"/>
-                    </div>
-                <!--提示消息-->
-                    <div class="f_pormat">
-                        请输入学生老师的姓名
-                    </div>
-                </div>
-                <div class="f_alonediv">
-                    <div class="f_alone_name">
-                         宿舍位置:
-                    </div>
-                    <div class="f_alone_input">
-                        <input class="f_p_input" type="text" name="dormitory" id="dormitory" />
-                    </div>
-                <!--提示消息-->
-                    <div class="f_pormat">
-                        请输入学生所住位置（格式：楼层编号—宿舍编号-床位）
-                    </div>
-                </div>
-                <div class="f_alonediv1">
-                    <div class="f_alone_name">
-                    </div>
-                    <div class="f_alone_input1">
-                    <!--publicbtn-->
-                        <div class="publicf_btn">
-                            <div class="publicf_btn1" onclick="addStuent()">
-                            确定
-                            </div>
-                            <div class="publicf_btn2 fr Js_closeBtn">
-                            取消
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-     </div>
+<div id = "test"></div>
 
 </body>
 </html>
