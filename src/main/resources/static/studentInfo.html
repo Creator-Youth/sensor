@@ -45,6 +45,14 @@
         }
         return theRequest;
     }
+
+    //页面跳转函数
+    function jump(studentName) {
+        //alert("开始跳转至修改页面，学生姓名为："+studentName);
+        url = "AlterStudentInfo.html?studentName="+studentName; //拼接即可。
+        //window.location.href= url;
+        window.open(url,"","height=550, width=450");
+    }
     function myfuction() {
         var result='';
         if(window.XMLHttpRequest){
@@ -108,7 +116,7 @@
             content+="<td>"+json[i].dormitory    +"</td>";//宿舍
             content+="<td>";
             content+="<div class='PublicTableBtnIcon Color3Btn Js_edit'>";
-            content+="<i class='iconfont icon-tubiaozhizuomobanyihuifu-'></i>";
+            content+="<i class='iconfont icon-tubiaozhizuomobanyihuifu-'  target = \"_parent\" onclick='jump(\""+json[i].student_name+"\")'></i>";
             content+="<span>编辑</span>";
             content+="</div>";
             content+="<div class='PublicTableBtnIcon Color4Btn Js_delete'>";
