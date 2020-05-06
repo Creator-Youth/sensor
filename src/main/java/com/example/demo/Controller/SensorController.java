@@ -4,10 +4,14 @@ package com.example.demo.Controller;/*
  *
  */
 
+import com.example.demo.Dao.All_Info;
 import com.example.demo.Dao.BadSensor_Info;
 import com.example.demo.Dao.Sensor;
+import com.example.demo.Dao.Student_Info;
+import com.example.demo.Services.Jpa.AllInfoJpa;
 import com.example.demo.Services.Jpa.BadSensorInfoJpa;
 import com.example.demo.Services.Jpa.SensorJpa;
+import com.example.demo.Services.Jpa.StudentinfoJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +23,16 @@ import java.util.List;
 public class SensorController {
 
     @Autowired
+    StudentinfoJpa studentinfoJpa;
+
+    @Autowired
     SensorJpa sensorJpa;
 
     @Autowired
     BadSensorInfoJpa badSensorInfoJpa;
+
+    @Autowired
+    AllInfoJpa allInfoJpa;
 
     //查询损坏的传感器信息
     @GetMapping(value = "getAllInfo")
@@ -36,38 +46,61 @@ public class SensorController {
     @ResponseBody
     public List<BadSensor_Info> getInfoBySensorID(@RequestParam("sensorId")String sensorId){
         List<BadSensor_Info> list = new ArrayList<>();
-        list.add(badSensorInfoJpa.getById(sensorId));
-        return list;
+        BadSensor_Info badSensorInfo =null;
+        try{
+             badSensorInfo = badSensorInfoJpa.getById(sensorId);
+        }catch (Exception e){
+        }
+        if(null == badSensorInfo){
+            return new ArrayList<>();
+        }else{
+            list.add(badSensorInfo);
+            return list;
+        }
+
     }
 
     //添加传感器
     @PostMapping(value = "saveSensor")
     @ResponseBody
-    public Boolean saveSensor(@RequestParam("sensorName") String sensorName){
+    public String saveSensor(@RequestParam("sensorName") String sensorName){
         Sensor sensor = new Sensor();
-        sensor.setSensor_name(sensorName);
-        try{
-            sensorJpa.save(sensor);
-        }catch(Exception e){
-            return false;
+        if(null !=sensorJpa.getByName(sensorName)){
+            return "数据重复，添加失败";
         }
-        return true;
+        sensor.setSensor_name(sensorName);
+        sensor=sensorJpa.save(sensor);
+        if(sensor.getId()>0){
+            return "添加成功";
+        }else{
+            return "添加失败，请检查刷新重试";
+        }
     }
 
     //删除传感器
-    @PostMapping
+    @PostMapping(value = "deleteByName")
     @ResponseBody
-    public boolean deletebyNmae(@RequestParam("sensorName") String sensorName){
+    public String  deletebyNmae(@RequestParam("sensorName") String sensorName){
         Sensor sensor = sensorJpa.getByName(sensorName);
         if(null==sensor){
-            return false;
+            return "数据不存在";
         }try{
             sensorJpa.deleteById(sensor.getId());
-        }catch (Exception e){
-            return false;
-        }
-        return true;
+            Student_Info studentInfo= studentinfoJpa.getBySensorName(sensor.getSensor_name());
+             studentinfoJpa.delete(studentInfo);
 
+        }catch (Exception e){
+            return "删除失败，请检查重试";
+        }
+        return "删除成功";
+
+    }
+
+    //所有违纪传感器
+    @GetMapping(value = "getInfo")
+    @ResponseBody
+    public List<All_Info> getinfo(){
+        return allInfoJpa.findAll();
     }
 
 }

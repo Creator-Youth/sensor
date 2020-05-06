@@ -35,6 +35,10 @@
   content: "\e632";
 }
 
+.icon-icon-add:before {
+  content: "\e619";
+}
+
 .icon-xiala:before {
   content: "\e615";
 }
@@ -65,6 +69,10 @@
 
 .icon-shanchu:before {
   content: "\e616";
+}
+
+.icon-shanchuicon:before {
+  content: "\e613";
 }
 
 .icon-tubiao_dingdan:before {

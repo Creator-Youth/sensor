@@ -11,9 +11,10 @@
     <script src="js/f.js"></script>
     <title>传感器信息管理</title>
 </head>
-<body onload="firstLoad()">
+<body onload="Load()">
 <script type="text/javascript">
-    
+
+    //加载数据
     function firstLoad() {
         var result='';
         if(window.XMLHttpRequest){
@@ -34,6 +35,38 @@
         }
         xmlhttp.send();
         alert("开始刷新数据")
+    }
+
+    //首次加载
+    function Load() {
+        var index = getParams();
+        var sensor_id;
+        if(index == null){
+            sensor_id =null;
+        }else{
+            sensor_id = index['sensor_id'];
+        }
+        if(sensor_id ==null){
+            firstLoad();
+        }else{
+            selectInfoById(sensor_id);
+        }
+    }
+
+    //获取参数
+    function getParams(){
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = decodeURIComponent(strs[i].split("=")[1]);
+            }
+        }else{
+            return null;
+        }
+        return theRequest;
     }
     function jump(studentName) {
         alert("开始跳转页面，学生姓名为："+studentName);
@@ -112,6 +145,33 @@
         xmlhttp.send("sensorId="+sensorId);
         alert("开始刷新数据")
     }
+
+    function selectInfoById(sensor_id) {
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("post","sensor/getInfoBySensorID",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    var value = xmlhttp.responseText;
+                    var json = eval("("+value+")");
+                    if(json.length==0){
+                        alert("数据不存在或异常，请检查或联系王先首处理");
+                    }else{
+                        var result=display(json);
+                        $("#test").html(result);
+                    }
+                }
+            }
+        }
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlhttp.send("sensorId="+sensorId);
+        alert("开始刷新数据")
+    }
+
 </script>
     <div class="PublicHead clearfix">
         <div class="leftBox clearfix">

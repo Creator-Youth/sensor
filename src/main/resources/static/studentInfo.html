@@ -46,6 +46,26 @@
         return theRequest;
     }
 
+    function deleteById(ID){
+
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("post","student/deleteById",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    var value = xmlhttp.responseText;
+                    alert(value);
+                    window.location.href=("studentInfo.html");
+                }
+            }
+        }
+        xmlhttp.send("ID="+ID);
+    }
+
     //页面跳转函数
     function jump(studentName) {
         //alert("开始跳转至修改页面，学生姓名为："+studentName);
@@ -53,6 +73,7 @@
         //window.location.href= url;
         window.open(url,"","height=550, width=450");
     }
+
     function myfuction() {
         var result='';
         if(window.XMLHttpRequest){
@@ -120,7 +141,7 @@
             content+="<span>编辑</span>";
             content+="</div>";
             content+="<div class='PublicTableBtnIcon Color4Btn Js_delete'>";
-            content+="<i class='iconfont icon-shanchu'></i>";
+            content+="<i class='iconfont icon-shanchu' onclick='deleteById(\""+json[i].id+"\")'></i>";
             content+="<span>删除</span>";
             content+="</div>";
             content+="</td>";
@@ -141,33 +162,37 @@
         teacher_name = document.getElementById("teacher_name").value;
         dormitory = document.getElementById("dormitory").value;
         class_name = document.getElementById("class_name").value;
-
-        if(window.XMLHttpRequest){
-            xmlhttp = new XMLHttpRequest();
-        }else{
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.open("post","student/save",true);
-        xmlhttp.onreadystatechange=function(){
-            if (xmlhttp.status == 200) {
-                if (xmlhttp.readyState == 4) {
-                    if(xmlhttp.responseText=="flase"){
-                        alert("添加失败，请检查");
-                    }else {
-                        alert("添加成功");
-                        window.location.href=("studentTnfo.html");
+        if(student_id!=null && student_name!=null && teacher_id!=null && sensor_id!=null){
+            if(window.XMLHttpRequest){
+                xmlhttp = new XMLHttpRequest();
+            }else{
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.open("post","student/save",true);
+            xmlhttp.onreadystatechange=function(){
+                if (xmlhttp.status == 200) {
+                    if (xmlhttp.readyState == 4) {
+                        if(xmlhttp.responseText=="flase"){
+                            alert("添加失败，请检查");
+                        }else {
+                            alert("添加成功");
+                            window.location.href=("studentInfo.html");
+                        }
                     }
                 }
             }
+            xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+            xmlhttp.send("student_id="+student_id+
+                "&class_name="+class_name+
+                "&dormitory="+dormitory+
+                "&teacher_name="+teacher_name+
+                "&teacher_id="+teacher_id+
+                "&sensor_id="+sensor_id+
+                "&student_name="+student_name);
+        }else{
+            alert("检查字段是否未空再输入");
+            window.location.href=("studentInfo.html");
         }
-        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-        xmlhttp.send("student_id="+student_id+
-            "&class_name="+class_name+
-            "&dormitory="+dormitory+
-            "&teacher_name="+teacher_name+
-            "&teacher_id="+teacher_id+
-            "&sensor_id="+sensor_id+
-            "&student_name="+student_name);
     }
 
     function selectInfoByName(studentNmae) {

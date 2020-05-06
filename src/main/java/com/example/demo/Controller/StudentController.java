@@ -4,7 +4,9 @@ package com.example.demo.Controller;/*
  *
  */
 
+import com.example.demo.Dao.Sensor;
 import com.example.demo.Dao.Student_Info;
+import com.example.demo.Services.Jpa.SensorJpa;
 import com.example.demo.Services.Jpa.StudentinfoJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 //
 //处理学生信息接口
@@ -20,6 +23,9 @@ import java.util.List;
 public class StudentController {
     @Autowired
     StudentinfoJpa studentinfoJpa;
+
+    @Autowired
+    SensorJpa sensorJpa;
 
     @RequestMapping(value = "/update")
     @ResponseBody
@@ -94,9 +100,31 @@ public class StudentController {
     }
 
     //查询所有学生信息
-    @GetMapping(value = "findAll")
+    @GetMapping(value = "/findAll")
     @ResponseBody
     public List<Student_Info> findAll(){
         return studentinfoJpa.findAll();
     }
+
+    @PostMapping(value = "/deleteById")
+    @ResponseBody
+    public String deleteById(@RequestParam("ID") Object ID){
+        int id = (int) ID;
+        Student_Info studentInfo = studentinfoJpa.getOne(id);
+        if(null == studentInfo){
+            return "数据库异常，请联系王先首";
+        }else{
+            Sensor sensor = sensorJpa.getByName(studentInfo.getSensor_id());
+            if(null==sensor){
+                return "数据库异常，请联系王先首";
+            }else {
+                studentinfoJpa.delete(studentInfo);
+                sensorJpa.delete(sensor);
+                return "删除成功";
+            }
+        }
+
+    }
+
+
 }
