@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 //
 //处理学生信息接口
@@ -43,21 +41,28 @@ public class StudentController {
                            @RequestParam("class_name") String  class_name,
                                        @RequestParam("teacher_id") String  teacher_id,
                                        @RequestParam("teacher_name") String  teacher_name,
-                           @RequestParam("dormitory") String dormitory
+                           @RequestParam("dormitory") String dormitory,
+                           @RequestParam("sensor_id") String sensor_id
     ){
+        if(null !=studentinfoJpa.getByStudentName(student_name)
+                || null != studentinfoJpa.getByStudentId(student_id))
+        {
+            return "该学生已经存在";
+        }
         Student_Info studentInfo = new Student_Info();
+        studentInfo.setClass_name(class_name);
         studentInfo.setTeacher_name(teacher_name);
         studentInfo.setTeacher_id(teacher_id);
         studentInfo.setStudent_name(student_name);
-        studentInfo.setSensor_id(class_name);
+        studentInfo.setSensor_id(sensor_id);
         studentInfo.setDormitory(dormitory);
         studentInfo.setStudent_id(student_id);
         try{
             studentinfoJpa.save(studentInfo);
         }catch (Exception e){
-            return "false";
+            return "添加失败，请检查数据";
         }
-        return "true";
+        return "添加成功";
     }
 
     //通过姓名查询学生信息
@@ -108,13 +113,14 @@ public class StudentController {
 
     @PostMapping(value = "/deleteById")
     @ResponseBody
-    public String deleteById(@RequestParam("ID") Object ID){
-        int id = (int) ID;
+    public String deleteById(@RequestParam("ID") String ID){
+        int id = Integer.valueOf(ID);
         Student_Info studentInfo = studentinfoJpa.getOne(id);
         if(null == studentInfo){
             return "数据库异常，请联系王先首";
         }else{
-            Sensor sensor = sensorJpa.getByName(studentInfo.getSensor_id());
+            String sensor_id = studentInfo.getSensor_id();
+            Sensor sensor = sensorJpa.getBySensorId(sensor_id);
             if(null==sensor){
                 return "数据库异常，请联系王先首";
             }else {

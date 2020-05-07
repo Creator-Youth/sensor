@@ -19,5 +19,5 @@ public class Sensor {
 
     @Column
     //传感器编号
-    String sensor_name;
+    String sensor_id;
 }

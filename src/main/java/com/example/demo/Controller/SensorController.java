@@ -65,10 +65,10 @@ public class SensorController {
     @ResponseBody
     public String saveSensor(@RequestParam("sensorName") String sensorName){
         Sensor sensor = new Sensor();
-        if(null !=sensorJpa.getByName(sensorName)){
+        if(null !=sensorJpa.getBySensorId(sensorName)){
             return "数据重复，添加失败";
         }
-        sensor.setSensor_name(sensorName);
+        sensor.setSensor_id(sensorName);
         sensor=sensorJpa.save(sensor);
         if(sensor.getId()>0){
             return "添加成功";
@@ -81,12 +81,12 @@ public class SensorController {
     @PostMapping(value = "deleteByName")
     @ResponseBody
     public String  deletebyNmae(@RequestParam("sensorName") String sensorName){
-        Sensor sensor = sensorJpa.getByName(sensorName);
+        Sensor sensor = sensorJpa.getBySensorId(sensorName);
         if(null==sensor){
             return "数据不存在";
         }try{
             sensorJpa.deleteById(sensor.getId());
-            Student_Info studentInfo= studentinfoJpa.getBySensorName(sensor.getSensor_name());
+            Student_Info studentInfo= studentinfoJpa.getBySensorName(sensor.getSensor_id());
              studentinfoJpa.delete(studentInfo);
 
         }catch (Exception e){

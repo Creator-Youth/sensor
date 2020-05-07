@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface SensorJpa extends JpaRepository<Sensor,Integer> {
-    @Query("select sen from Sensor sen where sensor_name = ?1")
-    Sensor getByName (String name);
+    @Query("select sen from Sensor sen where sensor_id = ?1")
+    Sensor getBySensorId (String sensorId);
 
 }

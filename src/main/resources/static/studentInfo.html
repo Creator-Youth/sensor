@@ -14,6 +14,10 @@
 
 <body onload="firstLoad()">
 <SCRIPT type="text/javascript">
+
+    function returnLast() {
+        window.location.href=("studentInfo.html");
+    }
     
     function firstLoad() {
         //var studentName = location.search.split("=")[1];
@@ -47,7 +51,6 @@
     }
 
     function deleteById(ID){
-
         if(window.XMLHttpRequest){
             xmlhttp = new XMLHttpRequest();
         }else{
@@ -63,6 +66,7 @@
                 }
             }
         }
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
         xmlhttp.send("ID="+ID);
     }
 
@@ -141,7 +145,7 @@
             content+="<span>编辑</span>";
             content+="</div>";
             content+="<div class='PublicTableBtnIcon Color4Btn Js_delete'>";
-            content+="<i class='iconfont icon-shanchu' onclick='deleteById(\""+json[i].id+"\")'></i>";
+            content+="<i class='iconfont icon-shanchuicon' onclick='deleteById(\""+json[i].id+"\")'></i>";
             content+="<span>删除</span>";
             content+="</div>";
             content+="</td>";
@@ -155,6 +159,7 @@
 
 
     function addStuent() {
+        confirm("请确保学生对应传感器数据已经添加并确保传感器数据已经添加...");
         student_id = document.getElementById("student_id").value;
         student_name  = document.getElementById("student_name").value;
         sensor_id = document.getElementById("sensor_id").value;
@@ -321,7 +326,7 @@
                     </div>
                     <!--批量删除-->
                     <div class="PublicBtnIcon Color5Btn">
-                        <i class="iconfont  icon-shanchu"></i>
+                        <i class="iconfont  icon-shanchuicon"></i>
                         <span>批量删除</span>
                     </div>
 
@@ -395,7 +400,7 @@
         <div class="f_content">
             <div class="f_alonediv">
                 <div class="f_alone_name">
-                    学号:
+                    学生学号:
                 </div>
                 <div class="f_alone_input">
                     <input class="f_p_input" type="text" name="student_id" id="student_id" />
@@ -407,7 +412,7 @@
             </div>
             <div class="f_alonediv">
                 <div class="f_alone_name">
-                    姓名:
+                    学生姓名:
                 </div>
                 <div class="f_alone_input">
                     <input class="f_p_input" type="text" name="student_name" id="student_name" />
@@ -455,7 +460,7 @@
             </div>
             <div class="f_alonediv">
                 <div class="f_alone_name">
-                    姓名:
+                    老师姓名:
                 </div>
                 <div class="f_alone_input">
                     <input class="f_p_input" type="text" name="teacher_name" id="teacher_name"/>
@@ -486,7 +491,7 @@
                         <div class="publicf_btn1" onclick="addStuent()">
                             确定
                         </div>
-                        <div class="publicf_btn2 fr Js_closeBtn">
+                        <div class="publicf_btn2 fr Js_closeBtn" onclick="returnLast()">
                             取消
                         </div>
                     </div>
@@ -496,7 +501,6 @@
         </div>
     </div>
 </div>
-
 <!--返回顶部-->
 <a href="javaScript:void();" class="back-to-top"><i class="iconfont icon-fanhuidingbu"></i> </a>
 </body>
