@@ -3,15 +3,8 @@ package com.example.demo.Controller;/*
  *  time : 2020-05-2020/5/4-8:36 下午
  *
  */
-
-import com.example.demo.Dao.All_Info;
-import com.example.demo.Dao.BadSensor_Info;
-import com.example.demo.Dao.Sensor;
-import com.example.demo.Dao.Student_Info;
-import com.example.demo.Services.Jpa.AllInfoJpa;
-import com.example.demo.Services.Jpa.BadSensorInfoJpa;
-import com.example.demo.Services.Jpa.SensorJpa;
-import com.example.demo.Services.Jpa.StudentinfoJpa;
+import com.example.demo.Dao.*;
+import com.example.demo.Services.Jpa.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,30 +27,42 @@ public class SensorController {
     @Autowired
     AllInfoJpa allInfoJpa;
 
-    //查询损坏的传感器信息
-    @GetMapping(value = "getAllInfo")
+    @Autowired
+    DataJpa dataJpa;
+
+    //查询所有损坏的传感器信息
+    @GetMapping(value = "getAllBadInfo")
     @ResponseBody
     public List<BadSensor_Info> getAllInfo(){
         return badSensorInfoJpa.findAll();
     }
 
-    //查询损坏的传感器信息
+    //查询传感器违纪信息
     @PostMapping(value = "getInfoBySensorID")
     @ResponseBody
     public List<BadSensor_Info> getInfoBySensorID(@RequestParam("sensorId")String sensorId){
         List<BadSensor_Info> list = new ArrayList<>();
-        BadSensor_Info badSensorInfo =null;
+        BadSensor_Info badSensorInfo =new BadSensor_Info();
+        Data data = null;
         try{
-             badSensorInfo = badSensorInfoJpa.getById(sensorId);
+              data=dataJpa.getDataBySensorID (sensorId);
         }catch (Exception e){
         }
-        if(null == badSensorInfo){
+        if(null == data){
             return new ArrayList<>();
         }else{
+            badSensorInfo.setStudent_name(data.getStudent_name());
+            badSensorInfo.setTeacher_name(studentinfoJpa
+                    .getBySensorName(data.getSensor_id())
+                    .getTeacher_name());
+            badSensorInfo.setSensor_id(data.getSensor_id());
+            badSensorInfo.setIs_light(data.getHave_used()==1);
+            badSensorInfo.setIs_bed(data.getHave_inbed()==1);
+            badSensorInfo.setIs_noise(data.getHave_noise()==1);
+            badSensorInfo.setIs_good(true);
             list.add(badSensorInfo);
             return list;
         }
-
     }
 
     //添加传感器
@@ -87,7 +92,7 @@ public class SensorController {
         }try{
             sensorJpa.deleteById(sensor.getId());
             Student_Info studentInfo= studentinfoJpa.getBySensorName(sensor.getSensor_id());
-             studentinfoJpa.delete(studentInfo);
+            studentinfoJpa.delete(studentInfo);
 
         }catch (Exception e){
             return "删除失败，请检查重试";

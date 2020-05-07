@@ -15,6 +15,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "AllInfo")
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+
+//违纪传感器信息表
 public class All_Info {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,5 +30,5 @@ public class All_Info {
     @Column
     Boolean judge;
 
-    All_Info(){}
+    public All_Info(){}
 }

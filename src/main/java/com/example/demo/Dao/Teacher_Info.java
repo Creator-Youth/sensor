@@ -14,6 +14,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "TeacherInfo")
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+//老师信息表
 public class Teacher_Info {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

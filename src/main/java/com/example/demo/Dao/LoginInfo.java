@@ -13,6 +13,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "loginInfo")
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+//登录表
 public class LoginInfo {
 
     @Id

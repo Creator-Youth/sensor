@@ -13,6 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name = "data")
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+//传感器接收信息表
 public class Data {
     //自增主键
     @Id
@@ -50,5 +51,9 @@ public class Data {
     //是否吵闹
     @Column
     private int have_noise;
+
+    @Column
+    //传感器ID
+    private String sensor_id;
 
 }

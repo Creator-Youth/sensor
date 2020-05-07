@@ -6,6 +6,9 @@ package com.example.demo.Services.Jpa;/*
 
 import com.example.demo.Dao.Data;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 public interface DataJpa extends JpaRepository<Data,Integer> {
+    @Query("select data from Data data where sensor_id = ?1")
+    Data getDataBySensorID(String sensorId);
 }

@@ -5,7 +5,6 @@ package com.example.demo.Dao;/*
  */
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,7 +14,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "SensorInfo")
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
-
+//数据处理表
 public class Sensor_Info {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

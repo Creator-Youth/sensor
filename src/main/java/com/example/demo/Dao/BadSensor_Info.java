@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "BadSensorInfo")
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
-
+//损坏传感器信息表
 public class BadSensor_Info {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

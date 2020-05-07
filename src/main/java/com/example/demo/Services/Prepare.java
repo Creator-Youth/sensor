@@ -1,24 +1,19 @@
-package com.example.demo.Controller;/*
+package com.example.demo.Services;/*
  *  @author huajishaonian
- *  time : 2020-04-2020/4/18-9:32 下午
+ *  time : 2020-05-2020/5/7-3:16 下午
  *
  */
 
 import com.example.demo.Dao.*;
 import com.example.demo.Services.Jpa.*;
-import com.example.demo.Services.Prepare;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-@RestController
-@RequestMapping(value = "login")
-public class LoginController {
-
+public class Prepare {
     @Autowired
     SensorJpa sensorJpa;
 
@@ -33,31 +28,10 @@ public class LoginController {
 
     @Autowired
     AllInfoJpa allInfoJpa;
-    @Autowired
-    private LoginInfoJpa loginInfoJpa;
 
-    @PostMapping(value = "/getAllById")
-    @ResponseBody
-    public LoginInfo getById(int id){
-        return loginInfoJpa.getOne(id);
+    public Prepare(){
+
     }
-
-
-    /*验证登录接口*/
-    @PostMapping(value = "/getPasswordByusername")
-    @ResponseBody
-    public Boolean getPasswordByUsername(@RequestParam("user_name") String user_name, @RequestParam("password") String password){
-        Boolean judge = true;
-       // preLogin();
-        System.out.println(user_name);
-        System.out.println(password);
-        LoginInfo loginInfo = loginInfoJpa.findbyUsername(user_name);
-        if(loginInfo == null || loginInfo.getPassword() !=password){
-            judge=false;
-        }
-        return judge;
-    }
-
     public void preLogin(){
         //获取数据库里面的所有传感器传感器
         List<Sensor> preSensorList = sensorJpa.findAll();
@@ -65,8 +39,9 @@ public class LoginController {
         List<Data> preDataList = dataJpa.findAll();
         //获取损坏传感器的信息
         HashSet<String> hashSet = new HashSet<>();
+        HashMap<String,String> hashMap = new HashMap<>();
         for ( Data data: preDataList
-        ) {
+             ) {
             if(data.getHave_inbed() ==0 || data.getHave_noise()==0 || data.getHave_used()==0){
                 All_Info allInfo = new All_Info();
                 allInfo.setSensor_id(data.getSensor_id());
@@ -75,6 +50,7 @@ public class LoginController {
 
             }
             hashSet.add(data.getSensor_id());
+            hashMap.put(data.getSensor_id(),data.getStudent_name());
         }
 
         List<BadSensor_Info> list = new ArrayList<>();
@@ -89,8 +65,7 @@ public class LoginController {
                 badSensorInfo.setIs_noise(false);
                 badSensorInfo.setIs_light(false);
                 badSensorInfo.setSensor_id(sensor.getSensor_id());
-                Student_Info studentInfo = studentinfoJpa.getBySensorName(sensor.getSensor_id());
-                badSensorInfo.setStudent_name(studentInfo.getStudent_name()); // 学生姓名;
+                badSensorInfo.setStudent_name(hashMap.get(sensor.getSensor_id())); // 学生姓名;
                 badSensorInfo.setTeacher_name(
                         studentinfoJpa.getBySensorName(
                                 sensor.getSensor_id())
@@ -101,9 +76,4 @@ public class LoginController {
         //更新损坏传感器信息表
         badSensorInfoJpa.saveAll(list);
     }
-
-
-
-
-
 }

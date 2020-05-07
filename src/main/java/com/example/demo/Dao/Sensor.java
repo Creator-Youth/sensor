@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "Sensor")
+//所有传感器
 public class Sensor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
