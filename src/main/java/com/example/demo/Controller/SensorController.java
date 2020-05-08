@@ -101,6 +101,19 @@ public class SensorController {
 
     }
 
+    //处理违纪
+    @PostMapping(value = "deleteAllInfoById")
+    @ResponseBody
+    public String deleteAllInfoById(@RequestParam("sensor_id") String sensor_id){
+        try{
+            allInfoJpa.deleteById(allInfoJpa.getAllInfoById(sensor_id).getId());
+        }catch (Exception e){
+            return "处理失败";
+        }
+        return "处理成功";
+    }
+
+
     //所有违纪传感器
     @GetMapping(value = "getInfo")
     @ResponseBody

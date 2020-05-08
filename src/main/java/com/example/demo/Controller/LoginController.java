@@ -48,7 +48,9 @@ public class LoginController {
     @ResponseBody
     public Boolean getPasswordByUsername(@RequestParam("user_name") String user_name, @RequestParam("password") String password){
         Boolean judge = true;
-       // preLogin();
+        if(allInfoJpa.count()<1){
+            preLogin();
+        }
         System.out.println(user_name);
         System.out.println(password);
         LoginInfo loginInfo = loginInfoJpa.findbyUsername(user_name);
@@ -100,6 +102,11 @@ public class LoginController {
         }
         //更新损坏传感器信息表
         badSensorInfoJpa.saveAll(list);
+    }
+
+    public void postSignOut(){
+        allInfoJpa.deleteAll();
+        badSensorInfoJpa.deleteAll();
     }
 
 

@@ -35,6 +35,28 @@
         xmlhttp.send();
 
     }
+
+    function deleteAllInfoById(sensor_id) {
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("post","sensor/deleteAllInfoById",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    var value = xmlhttp.responseText;
+                    alert(value);
+                }
+
+            }
+        }
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlhttp.send("sensor_id="+sensor_id);
+
+    }
+
     function addSensor() {
         sensorName = document.getElementById("sensorName").value;
         if(window.XMLHttpRequest){
@@ -86,6 +108,10 @@
             content+="<i class='iconfont icon-tubiaozhizuomobanyihuifu-'  target = \"_parent\" onclick='jump(\""+json[i].sensor_id+"\")'></i>";
             content+="<span>查询具体违纪情况</span>";
             content+="</div>";
+            content+="<div class='PublicTableBtnIcon Color3Btn Js_edit'>";
+            content+="<i class='iconfont icon-app_icons--'  target = \"_parent\" onclick='deleteAllInfoById(\""+json[i].sensor_id+"\")'></i>";
+            content+="<span>已处理违纪情况</span>";
+            content+="</div>";
             content+="</td>";
             content+="</tr>";
         }
@@ -96,6 +122,7 @@
     }
     
     function jump(sensor_id) {
+
         alert("开始跳转页面，传感器编号："+sensor_id);
         url = "sensorInfo.html?sensor_id="+sensor_id; //拼接即可。
         window.location.href= url;
