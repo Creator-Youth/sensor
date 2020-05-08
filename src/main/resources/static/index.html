@@ -9,7 +9,35 @@
     <title>管理员登录页</title>
 </head>
 <body>
-    <div class="LoginBox">
+<script>
+    function tishi() {
+        alert("请联系王先首");
+    }
+    function test(){
+        user_name = document.getElementById("user_name").value;
+        password  = document.getElementById("password").value;
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("post","login/getPasswordByusername",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    if(xmlhttp.responseText=="false"){
+                        alert("账号不存在或者密码错误");
+                    }else if(xmlhttp.responseText=="true") {
+                        window.location.href=("studentInfo.html");
+                    }
+                }
+            }
+        }
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlhttp.send("user_name="+user_name+"&password="+password);
+    }
+</script>
+<div class="LoginBox">
         <div class="VerticalCenteredBox">
             <div class="LoginHead">
                 南邮宿舍就寝管理系统
@@ -39,34 +67,6 @@
             </div>
 
         </div>
-    </div>
-    <script>
-        function tishi() {
-            alert("请联系王先首");
-        }
-        function test(){
-            user_name = document.getElementById("user_name").value;
-            password  = document.getElementById("password").value;
-            if(window.XMLHttpRequest){
-                xmlhttp = new XMLHttpRequest();
-            }else{
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.open("post","login/getPasswordByusername",true);
-            xmlhttp.onreadystatechange=function(){
-                if (xmlhttp.status == 200) {
-                    if (xmlhttp.readyState == 4) {
-                        if(xmlhttp.responseText=="true"){
-                            alert("账号不存在或者密码错误");
-                        }else {
-                            window.location.href=("studentInfo.html");
-                        }
-                    }
-                }
-            }
-            xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-            xmlhttp.send("user_name="+user_name+"&password="+password);
-        }
-    </script>
+</div>
 </body>
 </html>

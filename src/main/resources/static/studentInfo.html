@@ -72,7 +72,7 @@
 
     //页面跳转函数
     function jump(studentName) {
-        //alert("开始跳转至修改页面，学生姓名为："+studentName);
+        confirm("确定修改学生："+studentName+"的信息？");
         url = "AlterStudentInfo.html?studentName="+studentName; //拼接即可。
         //window.location.href= url;
         window.open(url,"","height=550, width=450");
@@ -159,7 +159,7 @@
 
 
     function addStuent() {
-        confirm("请确保学生对应传感器数据已经添加并确保传感器数据已经添加...");
+        confirm("请确认学生对应传感器数据已经添加...");
         student_id = document.getElementById("student_id").value;
         student_name  = document.getElementById("student_name").value;
         sensor_id = document.getElementById("sensor_id").value;

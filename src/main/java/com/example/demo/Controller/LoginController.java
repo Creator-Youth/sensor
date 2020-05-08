@@ -47,17 +47,18 @@ public class LoginController {
     @PostMapping(value = "/getPasswordByusername")
     @ResponseBody
     public Boolean getPasswordByUsername(@RequestParam("user_name") String user_name, @RequestParam("password") String password){
-        Boolean judge = true;
         if(allInfoJpa.count()<1){
             preLogin();
         }
-        System.out.println(user_name);
-        System.out.println(password);
         LoginInfo loginInfo = loginInfoJpa.findbyUsername(user_name);
-        if(loginInfo == null || loginInfo.getPassword() !=password){
-            judge=false;
+        if(null == loginInfo){
+            return false;
         }
-        return judge;
+        if(loginInfo.getPassword().equals(password)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public void preLogin(){
