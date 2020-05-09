@@ -148,6 +148,10 @@
         xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
         xmlhttp.send("sensorName="+sensorName);
     }
+
+    function test() {
+        alert("测试成功");
+    }
 </script>
 <div class="PublicHead clearfix">
     <div class="leftBox clearfix">
@@ -224,7 +228,7 @@
                             <tr>
                                 <td>
                                     <div>
-                                        <a class="push_button red" href="#">01</a>
+                                        <a class="push_button red" onclick="test()">01</a>
                                     </div>
                                 </td>
                                 <td >
