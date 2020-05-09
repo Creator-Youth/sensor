@@ -105,7 +105,9 @@ body { /* background: #f1f1f1; */ }
 .InquireTableBox { background: #fff; }
 
 .InquireSelectTable { margin: 20px 10px 0 10px; overflow: auto; }
+.InquireSelectTableCount { margin: 20px 10px 0 20px; overflow: auto; }
 .PublicTableCss { border-collapse: collapse; border-spacing: 0; border: 1px solid #ccc; }
+.PublicTableCssCount { border-collapse: collapse; border-spacing: 0; border: 1px solid #ccc; }
 .PublicTableCss thead { background: #e2e2e2; }
 .PublicTableCss thead tr { }
 .PublicTableCss thead tr td { max-width: 135px; padding: 10px 15px; text-align: center; font-weight: bold; position: relative; white-space: nowrap; }
