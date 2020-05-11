@@ -42,6 +42,19 @@ body {
     display: block;
     margin: 30px;
 }
+
+.push_button_dormitory {
+    position: relative;
+    width:100px;
+    height:25px;
+    text-align:center;
+    color:#FFF;
+    text-decoration:none;
+    line-height:30px;
+    font-family:'Oswald', Helvetica;
+    display: block;
+    margin: 30px;
+}
 .push_button:before {
     background:#f0f0f0;
     background-image:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#D0D0D0), to(#f0f0f0));

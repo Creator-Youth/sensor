@@ -9,6 +9,9 @@ import com.example.demo.Dao.Student_Info;
 import com.example.demo.Services.Jpa.SensorJpa;
 import com.example.demo.Services.Jpa.StudentinfoJpa;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -108,7 +111,9 @@ public class StudentController {
     @GetMapping(value = "/findAll")
     @ResponseBody
     public List<Student_Info> findAll(){
-        return studentinfoJpa.findAll();
+        Pageable pageable = PageRequest.of(0,20);
+        Page<Student_Info> page = studentinfoJpa.findAll(pageable);
+        return page.getContent();
     }
 
     @PostMapping(value = "/deleteById")

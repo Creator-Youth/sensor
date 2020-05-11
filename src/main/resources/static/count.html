@@ -11,155 +11,14 @@
     <script src="js/f.js"></script>
     <title>统计信息管理</title>
 </head>
-<body onload="firstLoad()">
+<body>
 <script>
-
-    function firstLoad() {
-        if(window.XMLHttpRequest){
-            xmlhttp = new XMLHttpRequest();
-        }else{
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.open("get","sensor/getInfo",true);
-        xmlhttp.onreadystatechange=function(){
-            if (xmlhttp.status == 200) {
-                if (xmlhttp.readyState == 4) {
-                    var value = xmlhttp.responseText;
-                    var json = eval("("+value+")");
-                    result=display(json);
-                    $("#test").html(result);
-                }
-            }
-        }
-        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-        xmlhttp.send();
-
-    }
-
-    function deleteAllInfoById(sensor_id) {
-        if(window.XMLHttpRequest){
-            xmlhttp = new XMLHttpRequest();
-        }else{
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.open("post","sensor/deleteAllInfoById",true);
-        xmlhttp.onreadystatechange=function(){
-            if (xmlhttp.status == 200) {
-                if (xmlhttp.readyState == 4) {
-                    var value = xmlhttp.responseText;
-                    alert(value);
-                }
-
-            }
-        }
-        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-        xmlhttp.send("sensor_id="+sensor_id);
-
-    }
-
-    function addSensor() {
-        sensorName = document.getElementById("sensorName").value;
-        if(window.XMLHttpRequest){
-            xmlhttp = new XMLHttpRequest();
-        }else{
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.open("post","sensor/saveSensor",true);
-        xmlhttp.onreadystatechange=function(){
-            if (xmlhttp.status == 200) {
-                if (xmlhttp.readyState == 4) {
-                    var value = xmlhttp.responseText;
-                    alert(value);
-                }
-            }
-        }
-        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-        xmlhttp.send("sensorName="+sensorName);
-    }
-
-
-    function display(json) {
-        content="<div class='InquireSelectTable'>";
-        content+="<table class='PublicTableCss'>";
-        content+="<thead>";
-        content+="<tr>";
-        content+="<td>";
-        content+="<input id='inputcheck' class='inputcheck' type='checkbox' name='inputcheck' />";
-        content+="<label for='inputcheck'></label>";
-        content+="<span></span>";
-        content+="</td>";
-        content+="<td>ID</td>";
-        content+="<td >传感器编号</td>";
-        content+="<td >处理情况</td>";
-        content+="<td >操作</td>";
-        content+=" </tr>";
-        content+="</thead>";
-        content+="<tbody>";
-        for(i=0;i<json.length;i++){
-            content+="<tr>";
-            content+="<td><input id='a' class='inputcheck' type='checkbox' name='inputcheck' />";
-            content+="<label for='aa'></label>";
-            content+="</td> " ;
-            content+="<td>"+json[i].id           +"</td>";//编号
-            content+="<td>"+json[i].sensor_id    +"</td>";//传感器编号
-            content+="<td>"+"未处理"+"</td>";//宿舍
-            content+="<td>";
-            content+="<div class='PublicTableBtnIcon Color3Btn Js_edit'>";
-            content+="<i class='iconfont icon-tubiaozhizuomobanyihuifu-'  target = \"_parent\" onclick='jump(\""+json[i].sensor_id+"\")'></i>";
-            content+="<span>查询具体违纪情况</span>";
-            content+="</div>";
-            content+="<div class='PublicTableBtnIcon Color3Btn Js_edit'>";
-            content+="<i class='iconfont icon-app_icons--'  target = \"_parent\" onclick='deleteAllInfoById(\""+json[i].sensor_id+"\")'></i>";
-            content+="<span>已处理违纪情况</span>";
-            content+="</div>";
-            content+="</td>";
-            content+="</tr>";
-        }
-        content+="</tbody>";
-        content+="</table>";
-        content+="</div>";
-        return content;
-    }
-
-    function jump(sensor_id) {
-
-        alert("开始跳转页面，传感器编号："+sensor_id);
-        url = "sensorInfo.html?sensor_id="+sensor_id; //拼接即可。
-        window.location.href= url;
-    }
-    function deleteByName() {
-        alert("确定删除？传感器对应学生信息也将一并删除");
-        sensorName = document.getElementById("sensorName").value;
-        if(window.XMLHttpRequest){
-            xmlhttp = new XMLHttpRequest();
-        }else{
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.open("post","sensor/deleteByName",true);
-        xmlhttp.onreadystatechange=function(){
-            if (xmlhttp.status == 200) {
-                if (xmlhttp.readyState == 4) {
-                    var value = xmlhttp.responseText;
-                    alert(value);
-                }
-
-            }
-        }
-        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-        xmlhttp.send("sensorName="+sensorName);
-    }
-
     function test() {
         alert("测试成功");
     }
 </script>
 <div class="PublicHead clearfix">
     <div class="leftBox clearfix">
-        <!--<div class="companyLogo">
-            <img src="images/logo.jpg" />
-        </div>-->
-        <!--<i class="iconfont icon-caidan Js_MenuList"></i>-->
-
         <div class="companyText">
             宿舍就寝管理系统
         </div>
@@ -193,7 +52,7 @@
            </ul>
     </div>
     <!--右侧-->
-    <div class="RightBox Js_RightBox">
+    <div class="RightBoxCount Js_RightBox">
         <div class="PublicContentBox">
             <!--公用指向页面名字-->
             <div class="PublicPointToAgeText">
@@ -209,6 +68,7 @@
                     <i class="iconfont icon-icon-add" onclick="addSensor()"></i>
                     <span>查询</span>
                 </div>
+
             </div>
 
         </div>
@@ -228,235 +88,188 @@
                             <tr>
                                 <td>
                                     <div>
-                                        <a class="push_button red" onclick="test()">01</a>
+                                        <a class="push_button red" onclick="test()">宿舍楼编号：01</a>
                                     </div>
                                 </td>
                                 <td >
                                     <div>
-                                        <a class="push_button blue" href="#">02</a>
+                                        <a class="push_button blue" href="#">宿舍楼编号：02</a>
                                     </div>
                                 </td>
                                 <td >
                                     <div>
-                                        <a class="push_button red" href="#">03</a>
+                                        <a class="push_button red" href="#">宿舍楼编号：03</a>
                                     </div>
                                 </td>
                                 <td >
                                     <div>
-                                        <a class="push_button blue" href="#">04</a>
+                                        <a class="push_button blue" href="#">宿舍楼编号：04</a>
+                                    </div>
+                                </td>
+
+                                <td >
+                                    <div>
+                                        <a class="push_button blue" href="#">宿舍楼编号：06</a>
                                     </div>
                                 </td>
                             </tr>
                         </thead>
-                        <!--tbody>
+                    </table>
+
+                <table>
+                    <thead>
+                    <tr>
+                        <td >
+                            <div style="height: 25px" >
+                                <a >楼层: </a>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div>
+                                <a class="push_button_dormitory red" onclick="test()">楼层编号：01</a>
+                            </div>
+                        </td>
+                        <td >
+                            <div>
+                                <a class="push_button_dormitory blue" href="#">楼层编号：02</a>
+                            </div>
+                        </td>
+                        <td >
+                            <div>
+                                <a class="push_button_dormitory red" href="#">楼层编号：03</a>
+                            </div>
+                        </td>
+                        <td >
+                            <div>
+                                <a class="push_button_dormitory blue" href="#">楼层编号：04</a>
+                            </div>
+                        </td>
+                        <td >
+                            <div>
+                                <a class="push_button_dormitory blue" href="#">楼层编号：05</a>
+                            </div>
+                        </td>
+                        <td >
+                            <div>
+                                <a class="push_button_dormitory blue" href="#">楼层编号：06</a>
+                            </div>
+                        </td>
+
+
+                        <td >
+                            <div>
+                                <a class="push_button_dormitory blue" href="#">楼层编号：07</a>
+                            </div>
+                        </td>
+                    </tr>
+                    </thead>
+                </table>
+
+                        <table>
+                            <thead>
                             <tr>
                                 <td>
-                                    <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                        <i class="iconfontcount icon-tubiaozhizuomobanyihuifu-"></i>
-                                        <span>查询具体违纪情况</span>
+                                    <div>
+                                        <a class="push_button red" onclick="test()">宿舍楼编号：01</a>
                                     </div>
                                 </td>
-                                <td  style="background-color:red">
-                                    <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                        <i class="iconfontcount "></i>
-                                        <span>查询具体违纪情况</span>
+                                <td >
+                                    <div>
+                                        <a class="push_button blue" href="#">宿舍楼编号：02</a>
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                        <i class="iconfontcount icon-tubiaozhizuomobanyihuifu-"></i>
-                                        <span>查询具体违纪情况</span>
+                                <td >
+                                    <div>
+                                        <a class="push_button red" href="#">宿舍楼编号：03</a>
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                        <i class="iconfontcount icon-tubiaozhizuomobanyihuifu-"></i>
-                                        <span>查询具体违纪情况</span>
+                                <td >
+                                    <div>
+                                        <a class="push_button blue" href="#">宿舍楼编号：04</a>
+                                    </div>
+                                </td>
+
+                                <td >
+                                    <div>
+                                        <a class="push_button blue" href="#">宿舍楼编号：06</a>
                                     </div>
                                 </td>
                             </tr>
-                        </tbody-->
-                    </table>
-                </div>
-
-
-            <!--div class="InquireSelectTable">
-                <table class="PublicTableCss">
+                            </thead>
+                        </table>
+                <table>
                     <thead>
                     <tr>
-                        <td width="1000" height="50">
+                        <td>
                             <div>
-                                <span>05</span>
+                                <a class="push_button red" onclick="test()">宿舍楼编号：01</a>
                             </div>
                         </td>
                         <td >
                             <div>
-                                <span>06</span>
+                                <a class="push_button blue" href="#">宿舍楼编号：02</a>
                             </div>
                         </td>
                         <td >
                             <div>
-                                <span>07</span>
+                                <a class="push_button red" href="#">宿舍楼编号：03</a>
                             </div>
                         </td>
                         <td >
                             <div>
-                                <span>08</span>
+                                <a class="push_button blue" href="#">宿舍楼编号：04</a>
+                            </div>
+                        </td>
+
+                        <td >
+                            <div>
+                                <a class="push_button blue" href="#">宿舍楼编号：06</a>
                             </div>
                         </td>
                     </tr>
                     </thead>
-                    <tbody>
+                </table>
+
+                <table>
+                    <thead>
                     <tr>
                         <td>
-                            <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
-                                <span>查询具体违纪情况</span>
+                            <div>
+                                <a class="push_button red" onclick="test()">宿舍楼编号：01</a>
                             </div>
                         </td>
-                        <td>
-                            <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
-                                <span>查询具体违纪情况</span>
+                        <td >
+                            <div>
+                                <a class="push_button blue" href="#">宿舍楼编号：02</a>
                             </div>
                         </td>
-                        <td>
-                            <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
-                                <span>查询具体违纪情况</span>
+                        <td >
+                            <div>
+                                <a class="push_button red" href="#">宿舍楼编号：03</a>
                             </div>
                         </td>
-                        <td>
-                            <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
-                                <span>查询具体违纪情况</span>
+                        <td >
+                            <div>
+                                <a class="push_button blue" href="#">宿舍楼编号：04</a>
+                            </div>
+                        </td>
+
+                        <td >
+                            <div>
+                                <a class="push_button blue" href="#">宿舍楼编号：06</a>
                             </div>
                         </td>
                     </tr>
-                    </tbody>
+                    </thead>
                 </table>
             </div>
-
-            <div class="InquireSelectTable">
-                <table class="PublicTableCss">
-                    <thead>
-                    <tr>
-                        <td width="1000" height="50">
-                            <div>
-                                <span>09</span>
-                            </div>
-                        </td>
-                        <td >
-                            <div>
-                                <span>10</span>
-                            </div>
-                        </td>
-                        <td >
-                            <div>
-                                <span>11</span>
-                            </div>
-                        </td>
-                        <td >
-                            <div>
-                                <span>12</span>
-                            </div>
-                        </td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
-                                <span>查询具体违纪情况</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
-                                <span>查询具体违纪情况</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
-                                <span>查询具体违纪情况</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
-                                <span>查询具体违纪情况</span>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="InquireSelectTable">
-                <table class="PublicTableCss">
-                    <thead>
-                    <tr>
-                        <td width="1000" height="50">
-                            <div>
-                                <span>13</span>
-                            </div>
-                        </td>
-                        <td >
-                            <div>
-                                <span>14</span>
-                            </div>
-                        </td>
-                        <td >
-                            <div>
-                                <span>15</span>
-                            </div>
-                        </td>
-                        <td >
-                            <div>
-                                <span>16</span>
-                            </div>
-                        </td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
-                                <span>查询具体违纪情况</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
-                                <span>查询具体违纪情况</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
-                                <span>查询具体违纪情况</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="PublicTableBtnIcon Color3Btn Js_edit">
-                                <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
-                                <span>查询具体违纪情况</span>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table-->
-            </div>
-            <!--分页-->
+            <!--底层-->
             <div class="PageNumber">
                 <div class="NumbersBox">
                     <div class="LeftArrow">
                         进入后台管理系统
                     </div>
-
                 </div>
             </div>
         </div>
@@ -498,6 +311,6 @@
     </div>
 </div>
 <!--返回顶部-->
-<a href="javaScript:void();" class="back-to-top"><i class="iconfont icon-fanhuidingbu"></i> </a>
+<a class="back-to-top"><i class="iconfont icon-fanhuidingbu"></i> </a>
 </body>
 </html>

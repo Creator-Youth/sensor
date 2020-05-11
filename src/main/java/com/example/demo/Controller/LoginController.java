@@ -6,18 +6,18 @@ package com.example.demo.Controller;/*
 
 import com.example.demo.Dao.*;
 import com.example.demo.Services.Jpa.*;
-import com.example.demo.Services.Prepare;
+import com.example.demo.Services.PreStament.preJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "login")
 public class LoginController {
+    @Autowired
+    preJob prejob;
 
     @Autowired
     SensorJpa sensorJpa;
@@ -49,6 +49,11 @@ public class LoginController {
     public Boolean getPasswordByUsername(@RequestParam("user_name") String user_name, @RequestParam("password") String password){
         if(allInfoJpa.count()<1){
             preLogin();
+        }
+        if(studentinfoJpa.count()<100){
+            //prejob.preData();
+            //prejob.preforSensor();
+            prejob.preStudentInfo();
         }
         LoginInfo loginInfo = loginInfoJpa.findbyUsername(user_name);
         if(null == loginInfo){

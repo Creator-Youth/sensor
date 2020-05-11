@@ -60,7 +60,7 @@ body { /* background: #f1f1f1; */ }
 .PublicDownWhole .leftBox ul li.Select span { color: #fff; }
 
 .PublicDownWhole .RightBox { display: inline-block; position: relative; left: 13%; background: #f1f1f1; height: 100%; width: 83%; float: left; padding: 2%; vertical-align: top; }
-
+.PublicDownWhole .RightBoxCount { display: inline-block; position: relative; left: 4%; background: #f1f1f1; height: 100%; width: 103%; float: left; padding: 2%; vertical-align: top; }
 /*右侧盒子公用样式*/
 .PublicContentBox { }
 .PublicPointToAgeText { padding: 0 0 2% 0; /* background: #f1f1f1; */ font-weight: bold; }

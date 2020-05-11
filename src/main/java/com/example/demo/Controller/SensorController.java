@@ -6,10 +6,15 @@ package com.example.demo.Controller;/*
 import com.example.demo.Dao.*;
 import com.example.demo.Services.Jpa.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 @RestController
 @RequestMapping(value = "sensor")
@@ -34,7 +39,9 @@ public class SensorController {
     @GetMapping(value = "getAllBadInfo")
     @ResponseBody
     public List<BadSensor_Info> getAllInfo(){
-        return badSensorInfoJpa.findAll();
+        Pageable pageable =PageRequest.of(0,20);
+        Page<BadSensor_Info> page = badSensorInfoJpa.findAll(pageable);
+        return page .getContent();
     }
 
     //查询传感器违纪信息
