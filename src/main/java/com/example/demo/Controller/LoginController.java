@@ -9,13 +9,20 @@ import com.example.demo.Services.Jpa.*;
 import com.example.demo.Services.PreStament.preJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "login")
 public class LoginController {
+
+    @Autowired
+    DormitoryJpa dormitoryJpa;
+
     @Autowired
     preJob prejob;
 
@@ -47,14 +54,22 @@ public class LoginController {
     @PostMapping(value = "/getPasswordByusername")
     @ResponseBody
     public Boolean getPasswordByUsername(@RequestParam("user_name") String user_name, @RequestParam("password") String password){
-        if(allInfoJpa.count()<1){
+
+       //prejob.preData();
+       // prejob.preforSensor();
+        //prejob.preStudentInfo();
+        /*if(allInfoJpa.count()<1){
             preLogin();
-        }
-        if(studentinfoJpa.count()<100){
-            //prejob.preData();
-            //prejob.preforSensor();
-            prejob.preStudentInfo();
-        }
+        }*/
+        Dormitory dormitory = new Dormitory();
+        /*for(int i =1;i<=20;i++){
+            StringBuffer stringBuffer = new StringBuffer();
+            stringBuffer.append(i);
+            dormitory.setDormitory_loucen(stringBuffer.toString());
+            dormitoryJpa.save(dormitory);
+            dormitory=new Dormitory();
+
+        }*/
         LoginInfo loginInfo = loginInfoJpa.findbyUsername(user_name);
         if(null == loginInfo){
             return false;
@@ -67,46 +82,45 @@ public class LoginController {
     }
 
     public void preLogin(){
+
         //获取数据库里面的所有传感器传感器
-        List<Sensor> preSensorList = sensorJpa.findAll();
+        List<String> sensorList = sensorJpa.findAllSensorId();
+
         //获取能够接收信息的所有传感器
-        List<Data> preDataList = dataJpa.findAll();
-        //获取损坏传感器的信息
-        HashSet<String> hashSet = new HashSet<>();
-        for ( Data data: preDataList
-        ) {
-            if(data.getHave_inbed() ==0 || data.getHave_noise()==0 || data.getHave_used()==0){
-                All_Info allInfo = new All_Info();
-                allInfo.setSensor_id(data.getSensor_id());
-                allInfo.setJudge(false);
-                allInfoJpa.save(allInfo);
+        List<String > dataList = dataJpa.findAllSensorId();
+        //所有传感器信息
 
-            }
-            hashSet.add(data.getSensor_id());
+        List<String> list1 = dataJpa.getByNoise(0);
+        List<String> list2 = dataJpa.getByBed(0);
+        List<String> list3 = dataJpa.getByUsed(0);
+        list1.addAll(list2);
+        list1.addAll(list3);
+        HashSet<String> ser_allInfo = new HashSet<>(list1);  //违纪信息
+        List<All_Info> allinfoList = new ArrayList<>();
+        All_Info allInfo = new All_Info();
+        for (String sensorId : ser_allInfo
+             ) {
+            allInfo.setSensor_id(sensorId);
+            allInfo.setJudge(false);
+            allinfoList.add(allInfo);
+            allInfo = new All_Info();
         }
+        allInfoJpa.saveAll(allinfoList);
 
+        sensorList.removeAll(dataList);
         List<BadSensor_Info> list = new ArrayList<>();
-
-        for(Sensor sensor:preSensorList){
-            if(hashSet.contains(sensor.getSensor_id())){
-                continue;
-            }else{
+        for(String sensorid : sensorList){
                 BadSensor_Info badSensorInfo = new BadSensor_Info();
                 badSensorInfo.setIs_bed(false);
                 badSensorInfo.setIs_good(false);
                 badSensorInfo.setIs_noise(false);
                 badSensorInfo.setIs_light(false);
-                badSensorInfo.setSensor_id(sensor.getSensor_id());
-                Student_Info studentInfo = studentinfoJpa.getBySensorName(sensor.getSensor_id());
+                badSensorInfo.setSensor_id(sensorid);
+                Student_Info studentInfo = studentinfoJpa.getBySensorName(sensorid);
                 badSensorInfo.setStudent_name(studentInfo.getStudent_name()); // 学生姓名;
-                badSensorInfo.setTeacher_name(
-                        studentinfoJpa.getBySensorName(
-                                sensor.getSensor_id())
-                                .getTeacher_name()); //  获取老师姓名
+                badSensorInfo.setTeacher_name(studentInfo.getTeacher_name()); //  获取老师姓名
                 list.add(badSensorInfo);
-            }
         }
-        //更新损坏传感器信息表
         badSensorInfoJpa.saveAll(list);
     }
 

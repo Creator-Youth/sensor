@@ -25,4 +25,7 @@ public interface StudentinfoJpa extends JpaRepository<Student_Info,Integer> {
     @Query("select stu from Student_Info stu where sensor_id= ?1")
     Student_Info getBySensorName(String sensor_id);
 
+    @Query("select stu.sensor_id from Student_Info stu where dormitory like concat( ?1 ,'%') ")
+    List<String> getByDormitoryCen(String str);
+
 }

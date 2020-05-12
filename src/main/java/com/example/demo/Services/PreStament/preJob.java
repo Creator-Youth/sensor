@@ -13,6 +13,8 @@ import com.example.demo.Services.Jpa.StudentinfoJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -35,11 +37,12 @@ public class preJob {
     public void preforSensor(){
         Sensor sensor = new Sensor();
 
-        for(int i= 21;i<=840;i++){
+        for(int i= 1;i<=840;i++){
             StringBuffer stringBuffer = new StringBuffer();
-
             stringBuffer.append("SEN00");
-            if(i<100){
+            if(i<10){
+                stringBuffer.append("00");
+            }else if(10<=i &&i<100){
                 stringBuffer.append(0);
             }else{}
             stringBuffer.append(i);
@@ -53,11 +56,13 @@ public class preJob {
 
     public void preStudentInfo(){
         Student_Info studentInfo = new Student_Info();
-        for(int i =21;i<=840;i++){
+        for(int i =1;i<=840;i++){
             //传感器编号
             StringBuffer stringBuffer = new StringBuffer();
             stringBuffer.append("SEN00");
-            if(i<100){
+            if(i<10){
+                stringBuffer.append("00");
+            }else if(10<=i &&i<100){
                 stringBuffer.append(0);
             }else{}
             stringBuffer.append(i);
@@ -66,7 +71,9 @@ public class preJob {
             //学生姓名
             stringBuffer = new StringBuffer();
             stringBuffer.append("wwangxianhou");
-            if(i<100){
+            if(i<10){
+                stringBuffer.append("00");
+            }else if(10<=i &&i<100){
                 stringBuffer.append(0);
             }else{}
             stringBuffer.append(i);
@@ -75,7 +82,9 @@ public class preJob {
             //学生编号
             stringBuffer = new StringBuffer();
             stringBuffer.append("WXS00");
-            if(i<100){
+            if(i<10){
+                stringBuffer.append("00");
+            }else if(10<=i &&i<100){
                 stringBuffer.append(0);
             }else{}
             stringBuffer.append(i);
@@ -84,7 +93,9 @@ public class preJob {
             //老师编号
             stringBuffer = new StringBuffer();
             stringBuffer.append("TE00");
-            if(i<100){
+            if(i<10){
+                stringBuffer.append("00");
+            }else if(10<=i &&i<100){
                 stringBuffer.append(0);
             }else{}
             stringBuffer.append(i/10);
@@ -93,7 +104,9 @@ public class preJob {
             //老师姓名
             stringBuffer = new StringBuffer();
             stringBuffer.append("XSW00");
-            if(i<100){
+            if(i<10){
+                stringBuffer.append("00");
+            }else if(10<=i &&i<100){
                 stringBuffer.append(0);
             }else{}
             stringBuffer.append(i);
@@ -102,7 +115,9 @@ public class preJob {
             //班级
             stringBuffer = new StringBuffer();
             stringBuffer.append("B1601");
-            if(i<300){
+            if(i<10){
+                stringBuffer.append("00");
+            }else if(10<=i &&i<100){
                 stringBuffer.append(0);
             }else{}
             stringBuffer.append(i/30+1);
@@ -136,10 +151,13 @@ public class preJob {
 
     public void preData(){
         Data data = new Data();
-        for(int i =21;i<=840;i++){
+        List<Data> list = new ArrayList<>();
+        for(int i =1;i<=840;i++){
             StringBuffer stringBuffer = new StringBuffer();
             stringBuffer.append("SEN00");
-            if(i<100){
+            if(i<10){
+                stringBuffer.append("00");
+            }else if(10<=i &&i<100){
                 stringBuffer.append(0);
             }else{}
             stringBuffer.append(i);
@@ -148,7 +166,9 @@ public class preJob {
             //学生姓名
             stringBuffer = new StringBuffer();
             stringBuffer.append("wwangxianhou");
-            if(i<100){
+            if(i<10){
+                stringBuffer.append("00");
+            }else if(10<=i &&i<100){
                 stringBuffer.append(0);
             }else{}
             stringBuffer.append(i);
@@ -157,28 +177,29 @@ public class preJob {
             data.setDormitory_id(1);
             data.setStudent_id(1);
             data.setHave_attend(1);
+
             Random random = new Random();
-            int j =random.nextInt(11);
-            if(j<=5){
+            int j =random.nextInt(50);
+            if(j<=48){
                 data.setHave_noise(1);
             }else{
                 data.setHave_noise(0);
-            }
-            int k =random.nextInt(11);
-            if(k<=5){
-                data.setHave_noise(1);
+            }//
+            int k =random.nextInt(50);
+            if(k<=48){
+                data.setHave_inbed(1);
             }else{
-                data.setHave_noise(0);
-            }
-            int z =random.nextInt(11);
-            if(z<=5){
+                data.setHave_inbed(0);
+            }//
+            int z =random.nextInt(50);
+            if(z<=48){
                 data.setHave_used(1);
             }else {
                 data.setHave_used(0);
             }
-            dataJpa.save(data);
-            data =new Data();
-
+            list.add(data);
+            data = new Data();
         }
+        dataJpa.saveAll(list);
     }
 }

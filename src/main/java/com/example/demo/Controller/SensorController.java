@@ -3,18 +3,16 @@ package com.example.demo.Controller;/*
  *  time : 2020-05-2020/5/4-8:36 下午
  *
  */
+
 import com.example.demo.Dao.*;
 import com.example.demo.Services.Jpa.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 @RestController
 @RequestMapping(value = "sensor")
@@ -58,10 +56,9 @@ public class SensorController {
         if(null == data){
             return new ArrayList<>();
         }else{
+            Student_Info studentInfo = studentinfoJpa.getBySensorName(data.getSensor_id());
             badSensorInfo.setStudent_name(data.getStudent_name());
-            badSensorInfo.setTeacher_name(studentinfoJpa
-                    .getBySensorName(data.getSensor_id())
-                    .getTeacher_name());
+            badSensorInfo.setTeacher_name(studentInfo.getTeacher_name());
             badSensorInfo.setSensor_id(data.getSensor_id());
             badSensorInfo.setIs_light(data.getHave_used()==1);
             badSensorInfo.setIs_bed(data.getHave_inbed()==1);
