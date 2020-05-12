@@ -11,10 +11,94 @@
     <script src="js/f.js"></script>
     <title>统计信息管理</title>
 </head>
-<body>
+<body onload="firstLoad()">
 <script>
+    function firstLoad() {
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("get","countMessage/getLoucengInfo",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    var value = xmlhttp.responseText;
+                    var json = eval("("+value+")");
+                    result=disPlayLoncen(json);
+                    $("#test").html(result);
+                }
+            }
+        }
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlhttp.send();
+    }
+
+    function disPlayLoncen(json) {
+        content="<div class='InquireSelectTableCount'>";
+        for(j=0;j<json.length;j+=5){
+            content+="<table>";
+            content+="<thead><tr>";
+            for(i=0;i<5;i++){
+                content+="<td><div>";
+                if(json[i+j].flag==true){
+                    content+="<a class='push_button red'   onclick='getInfoSushe(\""+json[i+j].dormitory_louceng+"\")'>宿舍楼编号："+json[i+j].dormitory_louceng+"</a>";
+                }else if(json[i+j].flag==false){
+                    content+="<a class='push_button blue'  onclick='test()'>宿舍楼编号："+json[i+j].dormitory_louceng+"</a>";
+                }
+                content+="</div></td>";
+            }
+            content+="</tr></thead>";
+            content+="</table>";
+            content+="<div id='sushe'></div>"
+        }
+        content+="</div>";
+        return content;
+    }
+
+    function getInfoSushe(dormitory_louceng) {
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("Post","countMessage/getSusheInfo",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    var value = xmlhttp.responseText;
+                    var json = eval("("+value+")");
+                    result=displaySushe(json,dormitory_louceng);
+                    $("#sushe").html(result);
+                }
+            }
+        }
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlhttp.send("dormitory="+dormitory_louceng);
+    }
     function test() {
-        alert("测试成功");
+        alert("无违纪");
+    }
+
+    function displaySushe(json,dormitory) {
+        //content="<div class='InquireSelectTableCount'>";
+        content="<table>";
+        content+="<thead><tr>";
+        content+="<td ><div style='height: 25px' ><a >楼层:"+dormitory+"</a></div></td>";
+            for(i=0;i<json.length;i++){
+                content+="<td><div>";
+                if(json[i].flag==true){
+                    content+="<a class='push_button_dormitory red'   onclick='test()'>楼层编号："+json[i].dormitory_sushe+"</a>";
+                }else if(json[i].flag==false){
+                    content+="<a class='push_button_dormitory blue'  onclick='test()'>楼层编号："+json[i].dormitory_sushe+"</a>";
+                }
+                content+="</div></td>";
+            }
+        content+="</tr></thead>";
+        content+="</table>";
+        content+="<div id='sushe'></div>";
+        content+="</div>";
+        return content;
     }
 </script>
 <div class="PublicHead clearfix">
@@ -81,42 +165,8 @@
             </div>
 
             <!--查询到的表格-->
-
-            <div class="InquireSelectTableCount">
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>
-                                    <div>
-                                        <a class="push_button red" onclick="test()">宿舍楼编号：01</a>
-                                    </div>
-                                </td>
-                                <td >
-                                    <div>
-                                        <a class="push_button blue" href="#">宿舍楼编号：02</a>
-                                    </div>
-                                </td>
-                                <td >
-                                    <div>
-                                        <a class="push_button red" href="#">宿舍楼编号：03</a>
-                                    </div>
-                                </td>
-                                <td >
-                                    <div>
-                                        <a class="push_button blue" href="#">宿舍楼编号：04</a>
-                                    </div>
-                                </td>
-
-                                <td >
-                                    <div>
-                                        <a class="push_button blue" href="#">宿舍楼编号：06</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </thead>
-                    </table>
-
-                <table>
+            <div id="test"></div>
+                <!--table>
                     <thead>
                     <tr>
                         <td >
@@ -155,8 +205,6 @@
                                 <a class="push_button_dormitory blue" href="#">楼层编号：06</a>
                             </div>
                         </td>
-
-
                         <td >
                             <div>
                                 <a class="push_button_dormitory blue" href="#">楼层编号：07</a>
@@ -166,104 +214,8 @@
                     </thead>
                 </table>
 
-                        <table>
-                            <thead>
-                            <tr>
-                                <td>
-                                    <div>
-                                        <a class="push_button red" onclick="test()">宿舍楼编号：01</a>
-                                    </div>
-                                </td>
-                                <td >
-                                    <div>
-                                        <a class="push_button blue" href="#">宿舍楼编号：02</a>
-                                    </div>
-                                </td>
-                                <td >
-                                    <div>
-                                        <a class="push_button red" href="#">宿舍楼编号：03</a>
-                                    </div>
-                                </td>
-                                <td >
-                                    <div>
-                                        <a class="push_button blue" href="#">宿舍楼编号：04</a>
-                                    </div>
-                                </td>
 
-                                <td >
-                                    <div>
-                                        <a class="push_button blue" href="#">宿舍楼编号：06</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            </thead>
-                        </table>
-                <table>
-                    <thead>
-                    <tr>
-                        <td>
-                            <div>
-                                <a class="push_button red" onclick="test()">宿舍楼编号：01</a>
-                            </div>
-                        </td>
-                        <td >
-                            <div>
-                                <a class="push_button blue" href="#">宿舍楼编号：02</a>
-                            </div>
-                        </td>
-                        <td >
-                            <div>
-                                <a class="push_button red" href="#">宿舍楼编号：03</a>
-                            </div>
-                        </td>
-                        <td >
-                            <div>
-                                <a class="push_button blue" href="#">宿舍楼编号：04</a>
-                            </div>
-                        </td>
-
-                        <td >
-                            <div>
-                                <a class="push_button blue" href="#">宿舍楼编号：06</a>
-                            </div>
-                        </td>
-                    </tr>
-                    </thead>
-                </table>
-
-                <table>
-                    <thead>
-                    <tr>
-                        <td>
-                            <div>
-                                <a class="push_button red" onclick="test()">宿舍楼编号：01</a>
-                            </div>
-                        </td>
-                        <td >
-                            <div>
-                                <a class="push_button blue" href="#">宿舍楼编号：02</a>
-                            </div>
-                        </td>
-                        <td >
-                            <div>
-                                <a class="push_button red" href="#">宿舍楼编号：03</a>
-                            </div>
-                        </td>
-                        <td >
-                            <div>
-                                <a class="push_button blue" href="#">宿舍楼编号：04</a>
-                            </div>
-                        </td>
-
-                        <td >
-                            <div>
-                                <a class="push_button blue" href="#">宿舍楼编号：06</a>
-                            </div>
-                        </td>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
+            </div-->
             <!--底层-->
             <div class="PageNumber">
                 <div class="NumbersBox">
