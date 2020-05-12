@@ -6,6 +6,7 @@ package com.example.demo.Controller;/*
 
 import com.example.demo.Dao.Dormitory;
 import com.example.demo.Dao.MySelfDao.DormitoryLoucengDao;
+import com.example.demo.Dao.MySelfDao.Dormitory_People;
 import com.example.demo.Dao.MySelfDao.Dormitory_living;
 import com.example.demo.Dao.MySelfDao.Dormitory_sushe;
 import com.example.demo.Services.Jpa.AllInfoJpa;
@@ -82,7 +83,6 @@ public class CountMessage {
                 dormitory_sushe.setFlag(false);
             }
             result.add(dormitory_sushe);
-
         }
         return result;
     }
@@ -91,7 +91,8 @@ public class CountMessage {
     //获取宿舍违纪信息
     @PostMapping(value = "/getLivingInfo")
     @ResponseBody
-    public List<Dormitory_living> getLivingInfo(@RequestParam("dormitory") String dormitory,@RequestParam("dormitory_cen") String dormitory_cen){
+    public List<Dormitory_living> getLivingInfo(@RequestParam("dormitory") String dormitory,
+                                                @RequestParam("dormitory_cen") String dormitory_cen){
         List<String> allInfoList = getCache.getAllInfo();
         List<Dormitory_living> result = new ArrayList<>();
         for(int i=1; i<=5;i++){
@@ -114,7 +115,40 @@ public class CountMessage {
                 dormitoryLiving.setFlag(false);
             }
             result.add(dormitoryLiving);
+        }
+        return result;
+    }
 
+    //获取宿舍违纪信息
+    @PostMapping(value = "/getPeopleInfo")
+    @ResponseBody
+    public List<Dormitory_People> getLivingInfo(@RequestParam("dormitory") String dormitory,
+                                                @RequestParam("dormitory_cen") String dormitory_cen
+                                               ,@RequestParam("living") String living){
+        List<String> allInfoList = getCache.getAllInfo();
+        List<Dormitory_People> result = new ArrayList<>();
+        for(int i=1; i<=6;i++){
+            Dormitory_People dormitory_people = new Dormitory_People();
+            StringBuffer stringBuffer =new StringBuffer();
+            stringBuffer.append(i);
+            dormitory_people.setDormitory_People(stringBuffer.toString());
+
+            stringBuffer =new StringBuffer();
+            stringBuffer.append(dormitory);
+            stringBuffer.append("-0");
+            stringBuffer.append(dormitory_cen);
+            stringBuffer.append("0");
+            stringBuffer.append(living);
+            stringBuffer.append("-");
+            stringBuffer.append(i);
+            List<String> list = studentinfoJpa.getInfoByLike(stringBuffer.toString());
+            list.retainAll(allInfoList);
+            if(!list.isEmpty()){
+                dormitory_people.setFlag(true);
+            }else {
+                dormitory_people.setFlag(false);
+            }
+            result.add(dormitory_people);
         }
         return result;
     }
