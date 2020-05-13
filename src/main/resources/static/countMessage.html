@@ -13,6 +13,12 @@
 </head>
 <body onload="firstLoad()">
 <script>
+
+    function jump() {
+        confirm("进入学生管理页面");
+        window.location.href=("studentInfo.html");
+    }
+
     function firstLoad() {
         if(window.XMLHttpRequest){
             xmlhttp = new XMLHttpRequest();
@@ -84,7 +90,7 @@
         //content="<div class='InquireSelectTableCount'>";
         content="<table>";
         content+="<thead><tr>";
-        content+="<td ><div style='height: 25px' ><a >楼层:"+dormitory+"</a></div></td>";
+        content+="<td ><div style='height: 25px' ><a >宿舍楼:"+dormitory+"</a></div></td>";
             for(i=0;i<json.length;i++){
                 content+="<td><div>";
                 if(json[i].flag==true){
@@ -130,8 +136,11 @@
     <!--左侧-->
     <div class="leftBox Js_leftBox">
         <ul>
-            <a href="ClassificationManagement.html">
-                <li class="Select"><i class="iconfont icon-fenlei"></i><span>统计信息管理</span></li>
+            <a href="countMessage.html">
+                <li class="Select"><i class="iconfont icon-fenlei"></i><span>实时监控信息管理</span></li>
+            </a>
+            <a href="History.html">
+                <li><i class="iconfont icon-tubiao_dingdan"></i><span>历史违纪信息管理</span></li>
             </a>
            </ul>
     </div>
@@ -166,60 +175,10 @@
 
             <!--查询到的表格-->
             <div id="test"></div>
-                <!--table>
-                    <thead>
-                    <tr>
-                        <td >
-                            <div style="height: 25px" >
-                                <a >楼层: </a>
-                            </div>
-                        </td>
-
-                        <td>
-                            <div>
-                                <a class="push_button_dormitory red" onclick="test()">楼层编号：01</a>
-                            </div>
-                        </td>
-                        <td >
-                            <div>
-                                <a class="push_button_dormitory blue" href="#">楼层编号：02</a>
-                            </div>
-                        </td>
-                        <td >
-                            <div>
-                                <a class="push_button_dormitory red" href="#">楼层编号：03</a>
-                            </div>
-                        </td>
-                        <td >
-                            <div>
-                                <a class="push_button_dormitory blue" href="#">楼层编号：04</a>
-                            </div>
-                        </td>
-                        <td >
-                            <div>
-                                <a class="push_button_dormitory blue" href="#">楼层编号：05</a>
-                            </div>
-                        </td>
-                        <td >
-                            <div>
-                                <a class="push_button_dormitory blue" href="#">楼层编号：06</a>
-                            </div>
-                        </td>
-                        <td >
-                            <div>
-                                <a class="push_button_dormitory blue" href="#">楼层编号：07</a>
-                            </div>
-                        </td>
-                    </tr>
-                    </thead>
-                </table>
-
-
-            </div-->
             <!--底层-->
             <div class="PageNumber">
                 <div class="NumbersBox">
-                    <div class="LeftArrow">
+                    <div class="LeftArrow" onclick="jump()" >
                         进入后台管理系统
                     </div>
                 </div>

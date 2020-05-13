@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link href="css/reset.css" rel="stylesheet" />
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <link href="css/index.css" rel="stylesheet" />
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/f.js"></script>
+    <title>历史违纪信息管理</title>
+</head>
+<body onload="firstLoad()">
+<script>
+
+    function firstLoad() {
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("get","history/findInfo",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    var value = xmlhttp.responseText;
+                    var json = eval("("+value+")");
+                    result=display(json);
+                    $("#test").html(result);
+                }
+            }
+        }
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlhttp.send();
+    }
+
+    function display(json) {
+        content="<div class='InquireSelectTable'>";
+        content+="<table class='PublicTableCss'>";
+        content+="<thead>";
+        content+="<tr>";
+        content+="<td>";
+        content+="<input id='inputcheck' class='inputcheck' type='checkbox' name='inputcheck' />";
+        content+="<label for='inputcheck'></label>";
+        content+="<span></span>";
+        content+="</td>";
+        content+="<td width='300'>ID</td>";
+        content+="<td width='300'>学生学号</td>";
+        content+="<td width='300'>学生姓名</td>";
+        content+="<td width='300'>违纪时间</td>";
+        content+=" </tr>";
+        content+="</thead>";
+        content+="<tbody>";
+        for(i=0;i<json.length;i++){
+            content+="<tr>";
+            content+="<td><input id='a' class='inputcheck' type='checkbox' name='inputcheck' />";
+            content+="<label for='aa'></label>";
+            content+="</td> " ;
+            content+="<td>"+json[i].id            +"</td>";//编号
+            content+="<td>"+json[i].student_id    +"</td>";//传感器编号
+            content+="<td>"+json[i].student_name  +"</td>";//宿舍
+            content+="<td>"+json[i].time          +"</td>";//时间
+            content+="</tr>";
+        }
+        content+="</tbody>";
+        content+="</table>";
+        content+="</div>";
+        return content;
+    }
+</script>
+<div class="PublicHead clearfix">
+    <div class="leftBox clearfix">
+        <div class="companyText">
+            宿舍就寝管理系统
+        </div>
+    </div>
+    <div class="RightBox clearfix">
+        <div class="UserPhotoBox">
+            <div class="UserPic">
+                <img src="images/user.jpg" />
+            </div>
+            <div class="UserName">
+                管理员
+            </div>
+        </div>
+        <a href="index.html">
+            <div class="dropOutBox">
+                <i class="iconfont icon-app_icons--">
+                </i>
+                <span>退出</span>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="PublicDownWhole clearfix">
+    <!--左侧-->
+    <div class="leftBox Js_leftBox">
+        <ul>
+            <a href="countMessage.html"> <li><i class="iconfont icon-yonghuguanli"></i><span>实时监控信息管理</span></li></a>
+            <a href="History.html">
+                <li><i class="iconfont icon-tubiao_dingdan"></i><span>历史违纪信息管理</span></li>
+            </a>
+        </ul>
+    </div>
+    <!--右侧-->
+    <div class="RightBoxCount Js_RightBox">
+        <div class="PublicContentBox">
+            <!--公用指向页面名字-->
+            <div class="PublicPointToAgeText">
+                <span class="span1">历史违纪信息 </span> <span class="span2">默认展示最近十条记录</span>
+            </div>
+            <!--查询-->
+            <div class="InquireBox clearfix">
+                <div class="InquireleftBox">
+                    <div class="Text">学生姓名：</div>
+                    <div class="InputDiv">   <input class="phoneInput"  id="sensorName" name="sensorName" placeholder="请输入学生姓名" /></div>
+                </div>
+                <div class="PublicBtnIcon Color1Btn fr">
+                    <i class="iconfont icon-icon-add" onclick="addSensor()"></i>
+                    <span>查询</span>
+                </div>
+                <div class="InquireleftBox">
+                    <div class="Text">时间：</div>
+                    <div class="InputDiv">   <input class="phoneInput"  id="time" name="sensorName" placeholder="输入时间（yyyy-mm-dd格式）" /></div>
+                </div>
+                <div class="PublicBtnIcon Color1Btn fr">
+                    <i class="iconfont icon-icon-add" onclick="addSensor()"></i>
+                    <span>查询</span>
+                </div>
+            </div>
+
+        </div>
+        <!--表修改-->
+        <div class="InquireTableBox">
+            <div class="headbox">
+                <div class="headboxtext">
+                    <span class="span1">违纪记录</span>
+                </div>
+            </div>
+            <div id="test"></div>
+            <!--分页-->
+            <div class="PageNumber">
+                <div class="NumbersBox">
+                    <div class="LeftArrow">
+                        上一页
+                    </div>
+                    <ul>
+                        <li class="Select">1</li>
+                        <li class="">2</li>
+                        <li class="">...</li>
+                        <li class="">4</li>
+                        <li class="">5</li>
+                    </ul>
+                    <div class="RightArrow ">
+                        下一页
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!--返回顶部-->
+<a href="javaScript:void();" class="back-to-top"><i class="iconfont icon-fanhuidingbu"></i> </a>
+</body>
+</html>

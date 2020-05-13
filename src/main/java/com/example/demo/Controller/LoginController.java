@@ -6,19 +6,21 @@ package com.example.demo.Controller;/*
 
 import com.example.demo.Dao.*;
 import com.example.demo.Services.Jpa.*;
+import com.example.demo.Services.PreStament.GetCache;
 import com.example.demo.Services.PreStament.preJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.BufferedReader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "login")
 public class LoginController {
+    @Autowired
+    HistoryJpa historyJpa;
+    @Autowired
+    GetCache getCache;
 
     @Autowired
     DormitoryJpa dormitoryJpa;
@@ -61,7 +63,7 @@ public class LoginController {
         /*if(allInfoJpa.count()<1){
             preLogin();
         }*/
-        Dormitory dormitory = new Dormitory();
+        //Dormitory dormitory = new Dormitory();
         /*for(int i =1;i<=20;i++){
             StringBuffer stringBuffer = new StringBuffer();
             stringBuffer.append(i);
@@ -70,6 +72,7 @@ public class LoginController {
             dormitory=new Dormitory();
 
         }*/
+        //postSignOut();
         LoginInfo loginInfo = loginInfoJpa.findbyUsername(user_name);
         if(null == loginInfo){
             return false;
@@ -125,8 +128,25 @@ public class LoginController {
     }
 
     public void postSignOut(){
-        allInfoJpa.deleteAll();
-        badSensorInfoJpa.deleteAll();
+        Calendar cal = Calendar.getInstance();
+        Date data = cal.getTime();
+        String DEFAULT_PATTERN ="yyyy-MM-dd-hh"; //时间格式
+        SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_PATTERN);
+        String time = sdf.format(data);
+        History history = new History();
+        List<String> list = getCache.getAllInfo();
+        for(String sensor_id:list){
+            Student_Info studentInfo = studentinfoJpa.getBySensorName(sensor_id);
+            history.setTime(time);
+            history.setStudent_id(studentInfo.getStudent_id());
+            history.setStudent_name(studentInfo.getStudent_name());
+            historyJpa.save(history);
+            history=new History();
+
+        }
+
+        //allInfoJpa.deleteAll();
+        //badSensorInfoJpa.deleteAll();
     }
 
 
