@@ -62,6 +62,8 @@
         return content;
     }
 
+    var dormitoryJumPLou;
+
     function getInfoSushe(dormitory_louceng) {
         if(window.XMLHttpRequest){
             xmlhttp = new XMLHttpRequest();
@@ -87,14 +89,14 @@
     }
 
     function displaySushe(json,dormitory) {
-        //content="<div class='InquireSelectTableCount'>";
+        dormitoryJumPLou = dormitory;
         content="<table>";
         content+="<thead><tr>";
         content+="<td ><div style='height: 25px' ><a >宿舍楼:"+dormitory+"</a></div></td>";
             for(i=0;i<json.length;i++){
                 content+="<td><div>";
                 if(json[i].flag==true){
-                    content+="<a class='push_button_dormitory red'   onclick='test()'>楼层编号："+json[i].dormitory_sushe+"</a>";
+                    content+="<a class='push_button_dormitory red'   onclick='jumpNext(\""+json[i].dormitory_sushe+"\")'>楼层编号："+json[i].dormitory_sushe+"</a>";
                 }else if(json[i].flag==false){
                     content+="<a class='push_button_dormitory blue'  onclick='test()'>楼层编号："+json[i].dormitory_sushe+"</a>";
                 }
@@ -106,6 +108,14 @@
         content+="</div>";
         return content;
     }
+
+
+    function jumpNext(dormitory_cen) {
+        confirm("进入"+dormitoryJumPLou+"栋"+dormitory_cen+"层监控界面");
+        url = "DormitoryInfo.html?dormitory_lou="+dormitoryJumPLou+"&dormitory_cen="+dormitory_cen; //拼接即可。
+        window.open(url,"","height=550, width=450");
+    }
+
 </script>
 <div class="PublicHead clearfix">
     <div class="leftBox clearfix">
