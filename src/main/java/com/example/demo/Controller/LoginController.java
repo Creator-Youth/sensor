@@ -57,14 +57,14 @@ public class LoginController {
     @ResponseBody
     public Boolean getPasswordByUsername(@RequestParam("user_name") String user_name, @RequestParam("password") String password){
 
-       //prejob.preData();
-       // prejob.preforSensor();
-        //prejob.preStudentInfo();
-        /*if(allInfoJpa.count()<1){
+       /*prejob.preData();
+         prejob.preforSensor();
+         prejob.preStudentInfo();
+        if(allInfoJpa.count()<1){
             preLogin();
         }*/
-        //Dormitory dormitory = new Dormitory();
-        /*for(int i =1;i<=20;i++){
+        /*Dormitory dormitory = new Dormitory();
+          for(int i =1;i<=20;i++){
             StringBuffer stringBuffer = new StringBuffer();
             stringBuffer.append(i);
             dormitory.setDormitory_loucen(stringBuffer.toString());
@@ -83,6 +83,12 @@ public class LoginController {
             return false;
         }
     }
+
+   @GetMapping(value = "/loginOut")
+   @ResponseBody
+   public void loginOut(){
+        postSignOut();
+   }
 
     public void preLogin(){
 
@@ -144,13 +150,9 @@ public class LoginController {
             history=new History();
 
         }
-
-        //allInfoJpa.deleteAll();
-        //badSensorInfoJpa.deleteAll();
+        allInfoJpa.deleteAll();
+        badSensorInfoJpa.deleteAll();
     }
-
-
-
 
 
 }

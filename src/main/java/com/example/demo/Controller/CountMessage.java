@@ -119,7 +119,7 @@ public class CountMessage {
         return result;
     }
 
-    //获取宿舍违纪信息
+    //获取宿学生违纪信息
     @PostMapping(value = "/getPeopleInfo")
     @ResponseBody
     public List<Dormitory_People> getLivingInfo(@RequestParam("dormitory") String dormitory,

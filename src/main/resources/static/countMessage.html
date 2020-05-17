@@ -9,7 +9,7 @@
     <link href="css/index.css" rel="stylesheet" />
     <script src="js/jquery-1.9.1.min.js"></script>
     <script src="js/f.js"></script>
-    <title>统计信息管理</title>
+    <title>监控</title>
 </head>
 <body onload="firstLoad()">
 <script>
@@ -92,11 +92,11 @@
         dormitoryJumPLou = dormitory;
         content="<table>";
         content+="<thead><tr>";
-        content+="<td ><div style='height: 25px' ><a >宿舍楼:"+dormitory+"</a></div></td>";
+        content+="<td ><div style='width: 30px' ><a >"+dormitory+"栋:"+"</a></div></td>";
             for(i=0;i<json.length;i++){
                 content+="<td><div>";
                 if(json[i].flag==true){
-                    content+="<a class='push_button_dormitory red'   onclick='jumpNext(\""+json[i].dormitory_sushe+"\")'>楼层编号："+json[i].dormitory_sushe+"</a>";
+                    content+="<a class='push_button_dormitory red'   onclick='getInfoLiving(\""+json[i].dormitory_sushe+"\")'>楼层编号："+json[i].dormitory_sushe+"</a>";
                 }else if(json[i].flag==false){
                     content+="<a class='push_button_dormitory blue'  onclick='test()'>楼层编号："+json[i].dormitory_sushe+"</a>";
                 }
@@ -104,17 +104,132 @@
             }
         content+="</tr></thead>";
         content+="</table>";
-        content+="<div id='sushe'></div>";
+        content+="<div id='living'></div>";
         content+="</div>";
         return content;
     }
 
 
-    function jumpNext(dormitory_cen) {
-        confirm("进入"+dormitoryJumPLou+"栋"+dormitory_cen+"层监控界面");
+    function getInfoLiving(dormitory_cen) {
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("Post","countMessage/getLivingInfo",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    var value = xmlhttp.responseText;
+                    var json = eval("("+value+")");
+                    result=displayLiving(json,dormitoryJumPLou,dormitory_cen);
+                    $("#living").html(result);
+                }
+            }
+        }
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlhttp.send("dormitory="+dormitoryJumPLou+"&dormitory_cen="+dormitory_cen);
+    }
+
+    var distoryLou;
+    var distoryCen;
+
+    function displayLiving(json,dormitory_lou,dormitory_ceng) {
+        distoryLou=dormitory_lou;
+        distoryCen=dormitory_ceng;
+        content="<table>";
+        content+="<thead><tr>";
+        content+="<td ><div style='width: 60px' ><a >"+dormitory_lou+"栋"+dormitory_ceng+"层："+"</a></div></td>";
+        for(i=0;i<json.length;i++){
+            content+="<td><div>";
+            if(json[i].flag==true){
+                content+="<a class='push_button_dormitory red'  onclick='getInfoPerSion(\""+json[i].living+"\")'>宿舍编号："+json[i].living+"</a>";
+            }else if(json[i].flag==false){
+                content+="<a class='push_button_dormitory blue'  onclick='test()'>宿舍编号："+json[i].living+"</a>";
+            }
+            content+="</div></td>";
+        }
+        content+="</tr></thead>";
+        content+="</table>";
+        content+="<div id='person'></div>";
+        content+="</div>";
+        return content;
+    }
+
+    function getInfoPerSion(dormitory_living) {
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("Post","countMessage/getPeopleInfo",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    var value = xmlhttp.responseText;
+                    var json = eval("("+value+")");
+                    result=displayPerson(json,dormitoryJumPLou,distoryCen,dormitory_living);
+                    $("#person").html(result);
+                }
+            }
+        }
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlhttp.send("dormitory="+dormitoryJumPLou+"&dormitory_cen="+distoryCen+"&living="+dormitory_living);
+    }
+
+    var dormitoryPerson;
+    function displayPerson(json,dormitory_lou,dormitory_ceng,dormitory_living) {
+        content="<table>";
+        content+="<thead><tr>";
+        content+="<td ><div style='width: 120px' ><a >"+dormitory_lou+"栋"+dormitory_ceng+"层"+dormitory_living+"宿舍"+"</a></div></td>";
+        for(i=0;i<json.length;i++){
+            content+="<td><div>";
+            if(json[i].flag==true){
+                content+="<a class='push_button_dormitory red'   onclick='handleInfo()'>床位号："+json[i].dormitory_People+"</a>";
+                dormitoryPerson= json[i].dormitory_People;
+            }else if(json[i].flag==false){
+                content+="<a class='push_button_dormitory blue'  onclick='test()'>床位号："+json[i].dormitory_People+"</a>";
+            }
+            content+="</div></td>";
+        }
+        content+="</tr></thead>";
+        content+="</table>";
+        content+="<div id='handle'>";
+        content+="</div>";
+        return content;
+    }
+
+    function handleInfo() {
+       var result=disPlayHandle();
+        $("#handle").html(result);
+    }
+
+    function disPlayHandle() {
+       content= "<div class=\"NumbersBox\">\n" +
+        "                    <div class=\"LeftArrow\" onclick=\"jump()\" >\n" +
+        "                        通知老师\n" +
+        "                    </div>\n" +
+        "                </div>";
+       content+="<div class=\"NumbersBox\">\n" +
+           "                    <div class=\"LeftArrow\" onclick=\"jump()\" >\n" +
+           "                        通知学生\n" +
+           "                    </div>\n" +
+           "                </div>";
+       content+="<div class=\"NumbersBox\">\n" +
+           "                    <div class=\"LeftArrow\" onclick=\"jump()\" >\n" +
+           "                        自己处理\n" +
+           "                    </div>\n" +
+           "                </div>";
+       return content;
+    }
+
+    /*var flag ="进入"+dormitoryJumPLou+"栋"+dormitory_cen+"层监控界面?";
+    if(confirm(flag) == false){
+        window.location.href=("countMessage.html");
+    }else{
         url = "DormitoryInfo.html?dormitory_lou="+dormitoryJumPLou+"&dormitory_cen="+dormitory_cen; //拼接即可。
         window.open(url,"","height=550, width=450");
-    }
+    }*/
 
 </script>
 <div class="PublicHead clearfix">
@@ -147,10 +262,10 @@
     <div class="leftBox Js_leftBox">
         <ul>
             <a href="countMessage.html">
-                <li class="Select"><i class="iconfont icon-fenlei"></i><span>实时监控信息管理</span></li>
+                <li class="Select"><i class="iconfont icon-fenlei"></i><span>实时监控</span></li>
             </a>
             <a href="History.html">
-                <li><i class="iconfont icon-tubiao_dingdan"></i><span>历史违纪信息管理</span></li>
+                <li><i class="iconfont icon-tubiao_dingdan"></i><span>历史违纪</span></li>
             </a>
            </ul>
     </div>
