@@ -4,18 +4,13 @@ package com.example.demo.Services.PreStament;/*
  *
  */
 
-import com.example.demo.Dao.Data;
-import com.example.demo.Dao.Sensor;
-import com.example.demo.Dao.Student_Info;
-import com.example.demo.Services.Jpa.DataJpa;
-import com.example.demo.Services.Jpa.SensorJpa;
-import com.example.demo.Services.Jpa.StudentinfoJpa;
+import com.example.demo.Dao.*;
+import com.example.demo.Services.Jpa.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class preJob {
@@ -27,6 +22,40 @@ public class preJob {
 
     @Autowired
     DataJpa dataJpa;
+
+    @Autowired
+    GetCache getCache;
+
+    @Autowired
+    HistoryJpa historyJpa;
+
+    @Autowired
+    AllInfoJpa allInfoJpa;
+
+    @Autowired
+    BadSensorInfoJpa badSensorInfoJpa;
+
+    public void postSignOut(){
+        Calendar cal = Calendar.getInstance();
+        Date data = cal.getTime();
+        String DEFAULT_PATTERN ="yyyy-MM-dd-hh"; //时间格式
+        SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_PATTERN);
+        String time = sdf.format(data);
+        History history = new History();
+        List<String> list = getCache.getAllInfo();
+        for(String sensor_id:list){
+            Student_Info studentInfo = studentinfoJpa.getBySensorName(sensor_id);
+            history.setTime(time);
+            history.setStudent_id(studentInfo.getStudent_id());
+            history.setStudent_name(studentInfo.getStudent_name());
+            historyJpa.save(history);
+            history=new History();
+
+        }
+        //allInfoJpa.deleteAll();
+        //badSensorInfoJpa.deleteAll();
+    }
+
 
     //楼层
     int stu_j =1;
@@ -201,5 +230,47 @@ public class preJob {
             data = new Data();
         }
         dataJpa.saveAll(list);
+    }
+
+    public void preLogin(){
+
+        //获取数据库里面的所有传感器传感器
+        List<String> sensorList = sensorJpa.findAllSensorId();
+
+        //获取能够接收信息的所有传感器
+        List<String > dataList = dataJpa.findAllSensorId();
+
+        List<String> list1 = dataJpa.getByNoise(0);
+        List<String> list2 = dataJpa.getByBed(0);
+        List<String> list3 = dataJpa.getByUsed(0);
+        list1.addAll(list2);
+        list1.addAll(list3);
+        HashSet<String> ser_allInfo = new HashSet<>(list1);  //违纪信息
+        List<All_Info> allinfoList = new ArrayList<>();
+        All_Info allInfo = new All_Info();
+        for (String sensorId : ser_allInfo
+        ) {
+            allInfo.setSensor_id(sensorId);
+            allInfo.setJudge(false);
+            allinfoList.add(allInfo);
+            allInfo = new All_Info();
+        }
+        allInfoJpa.saveAll(allinfoList); //更新违纪信息表
+
+        sensorList.removeAll(dataList);
+        List<BadSensor_Info> list = new ArrayList<>();
+        for(String sensorid : sensorList){
+            BadSensor_Info badSensorInfo = new BadSensor_Info();
+            badSensorInfo.setIs_bed(false);
+            badSensorInfo.setIs_good(false);
+            badSensorInfo.setIs_noise(false);
+            badSensorInfo.setIs_light(false);
+            badSensorInfo.setSensor_id(sensorid);
+            Student_Info studentInfo = studentinfoJpa.getBySensorName(sensorid);
+            badSensorInfo.setStudent_name(studentInfo.getStudent_name()); // 学生姓名;
+            badSensorInfo.setTeacher_name(studentInfo.getTeacher_name()); //  获取老师姓名
+            list.add(badSensorInfo);
+        }
+        badSensorInfoJpa.saveAll(list); //更新损坏信息
     }
 }
