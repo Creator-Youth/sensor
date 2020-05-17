@@ -39,33 +39,38 @@ public class SensorController {
     public List<BadSensor_Info> getAllInfo(){
         Pageable pageable =PageRequest.of(0,20);
         Page<BadSensor_Info> page = badSensorInfoJpa.findAll(pageable);
-        return page .getContent();
+        return page.getContent();
     }
 
-    //查询传感器违纪信息
+    //查询传感器信息
     @PostMapping(value = "getInfoBySensorID")
     @ResponseBody
     public List<BadSensor_Info> getInfoBySensorID(@RequestParam("sensorId")String sensorId){
         List<BadSensor_Info> list = new ArrayList<>();
-        BadSensor_Info badSensorInfo =new BadSensor_Info();
+        BadSensor_Info badSensorInfo =null;
         Data data = null;
         try{
+              badSensorInfo = badSensorInfoJpa.getById(sensorId);
               data=dataJpa.getDataBySensorID (sensorId);
         }catch (Exception e){
         }
-        if(null == data){
-            return new ArrayList<>();
-        }else{
+        if(null == data && badSensorInfo!=null){
+            list.add(badSensorInfo);
+            return list;
+        }else if(data !=null && badSensorInfo==null){
+            badSensorInfo = new BadSensor_Info();
             Student_Info studentInfo = studentinfoJpa.getBySensorName(data.getSensor_id());
             badSensorInfo.setStudent_name(data.getStudent_name());
             badSensorInfo.setTeacher_name(studentInfo.getTeacher_name());
             badSensorInfo.setSensor_id(data.getSensor_id());
-            badSensorInfo.setIs_light(data.getHave_used()==1);
-            badSensorInfo.setIs_bed(data.getHave_inbed()==1);
-            badSensorInfo.setIs_noise(data.getHave_noise()==1);
+            badSensorInfo.setIs_light(data.getHave_used()==0);
+            badSensorInfo.setIs_bed(data.getHave_inbed()==0);
+            badSensorInfo.setIs_noise(data.getHave_noise()==0);
             badSensorInfo.setIs_good(true);
             list.add(badSensorInfo);
             return list;
+        }else {
+            return new ArrayList<>();
         }
     }
 

@@ -14,7 +14,7 @@
 <body onload="Load()">
 <script type="text/javascript">
 
-    //加载数据
+    //加载所有违纪传感器数据
     function firstLoad() {
         var result='';
         if(window.XMLHttpRequest){
@@ -68,11 +68,14 @@
         }
         return theRequest;
     }
+
+    //页面跳转
     function jump(studentName) {
         alert("开始跳转页面，学生姓名为："+studentName);
         url = "studentInfo.html?studentName="+studentName; //拼接即可。
         window.location.href= url;
     }
+
     function display(json) {
         content="<div class='InquireSelectTable'>";
         content+="<table class='PublicTableCss'>";
@@ -122,6 +125,7 @@
         return content;
     }
 
+    //通过ID获取传感器信息
     function selectInfo() {
         sensorId = document.getElementById("sensorId").value;
         if(window.XMLHttpRequest){
@@ -172,6 +176,49 @@
         alert("开始刷新数据")
     }
 
+    //添加传感器
+    function addSensor() {
+        sensorName = document.getElementById("sensorId").value;
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("post","sensor/saveSensor",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    var value = xmlhttp.responseText;
+                    alert(value);
+                }
+            }
+        }
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlhttp.send("sensorName="+sensorName);
+    }
+
+    function deleteByName() {
+        alert("确定删除？传感器对应学生信息也将一并删除");
+        sensorName = document.getElementById("sensorId").value;
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("post","sensor/deleteByName",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    var value = xmlhttp.responseText;
+                    alert(value);
+                }
+
+            }
+        }
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlhttp.send("sensorName="+sensorName);
+    }
+
 </script>
     <div class="PublicHead clearfix">
         <div class="leftBox clearfix">
@@ -188,11 +235,11 @@
                     管理员
                 </div>
             </div>
-            <a href="index.html">
+            <a href="countMessage.html">
                 <div class="dropOutBox">
                     <i class="iconfont icon-app_icons--">
                     </i>
-                    <span>退出</span>
+                    <span>返回监控</span>
                 </div>
             </a>
         </div>
@@ -202,14 +249,14 @@
         <!--左侧-->
         <div class="leftBox">
             <ul>
-                <a href="studentInfo.html"> <li class=""><i class="iconfont icon-yonghuguanli"></i><span>学生信息管理</span></li></a>
+                <a href="studentInfo.html"> <li class=""><i class="iconfont icon-yonghuguanli"></i><span>学生信息</span></li></a>
                 <a href="sensorInfo.html">
                     <li class="Select"><i class="iconfont icon-tubiao_dingdan"></i><span>传感器信息管理</span></li>
                 </a>
-                <a href="message.html">
+                <!--a href="message.html">
                     <li><i class="iconfont icon-fenlei"></i><span>统计信息管理</span></li>
-                </a>
-                <a href="teacherInfo.html">      <li><i class="iconfont icon-weibiaoti1"></i><span>联系方式管理</span></li></a>
+                </a-->
+                <a href="teacherInfo.html"> <li><i class="iconfont icon-weibiaoti1"></i><span>老师信息管理</span></li></a>
             </ul>
         </div>
         <!--右侧-->
@@ -222,29 +269,32 @@
                 <!--查询-->
                 <div class="InquireBox clearfix">
                     <div class="InquireleftBox">
-                        <div class="Text">传感器ID：</div>
+                        <div class="Text">传感器ID</div>
                         <div class="InputDiv">  <input class="phoneInput" id ="sensorId" name="sensorId" placeholder="请输入你需要查询的传感器ID" /></div>
                     </div>
                     <div class="PublicBtnIcon Color1Btn fr">
                         <i class="iconfont icon-icon-chaxun" onclick="selectInfo()"></i>
                         <span>查询</span>
                     </div>
+
+                    <div class="PublicBtnIcon Color1Btn fr">
+                        <i class="iconfont icon-icon-add" onclick="addSensor()"></i>
+                        <span>添加</span>
+                    </div>
+                    <div class="PublicBtnIcon Color5Btn">
+                        <i class="iconfont  icon-shanchuicon" onclick="deleteByName()"></i>
+                        <span>删除</span>
+                    </div>
                 </div>
                 <!--表修改-->
                 <div class="InquireTableBox">
                     <div class="headbox">
+
                         <div class="headboxtext">
                             <span class="span1">传感器信息具体展示界面：&nbsp</span>
                         </div>
-                        <!--批量删除-->
-                        <div class="headboxtext">
-                            <span>展示所有损坏的传感器信息列表（可通过具体查询得到具体传感器信息）</span>
-                        </div>
 
-                        <!--<div class="PublicBtnIcon Color2Btn fr Js_edit">
-                            <i class="iconfont icon-changyongtubiao-mianxing-"></i>
-                            <span>添加</span>
-                        </div>-->
+                        <div class="headboxtext">
                     </div>
 
                     <!--查询到的表格-->
@@ -277,82 +327,5 @@
         </div>
     </div>
 
-
-    <!-- alert通用 提示是否删除-->
-    <div class="PublicFloatBox f_delete">
-        <div class="f_MiddleBox wid260">
-            <div class="f_Head">
-                <span>提示消息</span>
-                <i class="Js_closeBtn iconfont icon-buoumaotubiao20 fr"></i>
-            </div>
-            <div class="f_content clearfix">
-                <!--提示消息内容-->
-                <div class="f_someText">
-                    <i class="iconfont icon-tishi"></i>
-                    <span>确定删除此信息？</span>
-                </div>
-                <!--按钮-->
-                <div class="f_pormatBtn  clearfix">
-                    <div class="f_pormatBtn1">
-                        确定
-                    </div>
-                    <div class="f_pormatBtn2">
-                        删除
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--添加用户浮层-->
-    <div class="PublicFloatBox adduser">
-        <div class="f_MiddleBox wid400">
-            <div class="f_Head">
-                <span>添加用户</span>
-                <i class="Js_closeBtn iconfont icon-buoumaotubiao20 fr"></i>
-            </div>
-            <div class="f_content">
-                <div class="f_alonediv">
-                    <div class="f_alone_name">
-                        ID:
-                    </div>
-                    <div class="f_alone_input">
-                        <input class="f_p_input" />
-                    </div>
-                    <!--提示消息-->
-                    <div class="f_pormat">
-                        请输入正确的ID
-                    </div>
-                </div>
-                <div class="f_alonediv">
-                    <div class="f_alone_name">
-                        手机号:
-                    </div>
-                    <div class="f_alone_input">
-                        <input class="f_p_input" />
-                    </div>
-                    <!--提示消息-->
-                    <div class="f_pormat">
-                        请输入正确的手机号
-                    </div>
-                </div>
-                <div class="f_alonediv1">
-                    <div class="f_alone_name">
-                    </div>
-                    <div class="f_alone_input1">
-                        <!--publicbtn-->
-                        <div class="publicf_btn">
-                            <div class="publicf_btn1">
-                                确定
-                            </div>
-                            <div class="publicf_btn2 fr Js_closeBtn">
-                                取消
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
 </body>
 </html>
