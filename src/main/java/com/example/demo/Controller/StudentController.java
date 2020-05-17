@@ -108,12 +108,13 @@ public class StudentController {
     }
 
     //查询所有学生信息
-    @GetMapping(value = "/findAll")
+    @PostMapping(value = "/findStuInfo")
     @ResponseBody
-    public List<Student_Info> findAll(){
-        Pageable pageable = PageRequest.of(0,20);
-        Page<Student_Info> page = studentinfoJpa.findAll(pageable);
-        return page.getContent();
+    public List<Student_Info> findAll(@RequestParam("page") String page){
+        Integer pageIndex = Integer.valueOf(page);
+        Pageable pageable = PageRequest.of(pageIndex,20);
+        Page<Student_Info> pagelist = studentinfoJpa.findAll(pageable);
+        return pagelist.getContent();
     }
 
     @PostMapping(value = "/deleteById")

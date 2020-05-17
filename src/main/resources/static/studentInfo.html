@@ -15,6 +15,27 @@
 <body onload="firstLoad()">
 <SCRIPT type="text/javascript">
 
+    var page =0;
+
+    function devPage() {
+        if(page==0){
+            page=0;
+        }else{
+            page++;
+        }
+        myfuction(page);
+    }
+
+    function addpage(indexPage) {
+        page=indexPage;
+        myfuction(page);
+    }
+
+    function addPage() {
+        page++;
+        myfuction(page);
+    }
+
     function returnLast() {
         window.location.href=("studentInfo.html");
     }
@@ -28,7 +49,7 @@
             studentName = index['studentName'];
         }
         if(studentName ==null){
-            myfuction();
+            myfuction(0);
         }else{
             selectInfoByName(studentName);
         }
@@ -77,14 +98,14 @@
         window.open(url,"","height=550, width=450");
     }
 
-    function myfuction() {
+    function myfuction(pageIndex) {
         var result='';
         if(window.XMLHttpRequest){
             xmlhttp = new XMLHttpRequest();
         }else{
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        xmlhttp.open("get","student/findAll",true);
+        xmlhttp.open("post","student/findStuInfo",true);
         xmlhttp.onreadystatechange=function(){
             if (xmlhttp.status == 200) {
                 if (xmlhttp.readyState == 4) {
@@ -99,8 +120,8 @@
                 }
             }
         }
-        xmlhttp.send();
-        alert("准备开始获取最新数据");
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlhttp.send("page="+pageIndex);
     }
 
     function display(json) {
@@ -337,27 +358,26 @@
                 <!--查询到的表格-->
                 <div id ="test"></div>
 
-                <!--分页-->
                 <div class="PageNumber">
                     <div class="NumbersBox">
-                        <div class="LeftArrow">
+                        <div class="LeftArrow" onclick="devPage()">
                             上一页
                         </div>
                         <ul>
-                            <li class="Select">1</li>
-                            <li class="">2</li>
-                            <li class="">...</li>
-                            <li class="">4</li>
-                            <li class="">5</li>
+                            <li class="Select" onclick="addpage(1)">1</li>
+                            <li class="" onclick="addpage(2)">2</li>
+                            <li class="" onclick="addpage(3)">3</li>
+                            <li class="" onclick="addpage(4)">4</li>
+                            <li class="" onclick="addpage(5)">5</li>
                         </ul>
-                        <div class="RightArrow ">
+                        <div class="RightArrow " onclick="addPage()">
                             下一页
                         </div>
                     </div>
                 </div>
 
 
-            </div>
+            </>
         </div>
 
     </div>
