@@ -8,6 +8,7 @@ import com.example.demo.Services.Jpa.AllInfoJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 @Service
@@ -16,6 +17,22 @@ public class GetCache {
     AllInfoJpa allInfoJpa;
 
     private HashMap<String, List> hashMap =new HashMap<>();
+
+    public List<String> getAddInfo(){
+        if (hashMap.get("add")==null) {
+            return new ArrayList<>();
+        }
+        return hashMap.get("add");
+    }
+
+    public void setAddInfo(List<String> list){
+        if(hashMap.get("add") ==null){
+            hashMap.put("add",list);
+        }else{
+            hashMap.remove("add");
+            hashMap.put("add",list);
+        }
+    }
 
     public List<String> getAllInfo(){
         if (hashMap.get("allInfo")==null) {
