@@ -37,4 +37,13 @@ public class HistoryController {
         List<History> list = new ArrayList<>();
         return historyJpa.getInfoByStudentName(Name);
     }
+
+    @ResponseBody
+    @PostMapping(value = "/getInfoByTime")
+    public List<History> getInfoByTime(@RequestParam("Time") String Time){
+        List<History> list = new ArrayList<>();
+        return historyJpa.getInfoByTime(Time);
+    }
+
+
 }

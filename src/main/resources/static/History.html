@@ -13,7 +13,6 @@
 </head>
 <body onload="firstLoad()">
 <script>
-
     function firstLoad() {
         if(window.XMLHttpRequest){
             xmlhttp = new XMLHttpRequest();
@@ -68,6 +67,59 @@
         content+="</div>";
         return content;
     }
+
+
+    function selectInfoByStudentName(){
+        student_name = document.getElementById("studentName").value;
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("post","history/getInfoByName",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+                    var value = xmlhttp.responseText;
+                    var json = eval("("+value+")");
+                    var result=display(json);
+                    $("#test").html(result);
+                }
+
+            }
+        }
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlhttp.send("studentName="+student_name);
+    }
+    function selectInfoByTime(){
+        time = document.getElementById("time").value;
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("post","history/getInfoByTime",true);
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.status == 200) {
+                if (xmlhttp.readyState == 4) {
+
+                    var value = xmlhttp.responseText;
+                    var json = eval("("+value+")");
+                    if(json.length<=0){
+                        alert("输入时间格式有问题或该时间段无违纪");
+                    }else
+                    {
+                        var result=display(json);
+                        $("#test").html(result);
+                    }
+
+                }
+
+            }
+        }
+        xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlhttp.send("Time="+time);
+    }
 </script>
 <div class="PublicHead clearfix">
     <div class="leftBox clearfix">
@@ -115,18 +167,18 @@
             <div class="InquireBox clearfix">
                 <div class="InquireleftBox">
                     <div class="Text">学生姓名：</div>
-                    <div class="InputDiv">   <input class="phoneInput"  id="sensorName" name="sensorName" placeholder="请输入学生姓名" /></div>
+                    <div class="InputDiv">   <input class="phoneInput"  id="studentName" name="studentName" placeholder="请输入学生姓名" /></div>
                 </div>
                 <div class="PublicBtnIcon Color1Btn fr">
-                    <i class="iconfont icon-icon-add" onclick="addSensor()"></i>
+                    <i class="iconfont icon-icon-add" onclick="selectInfoByStudentName()"></i>
                     <span>查询</span>
                 </div>
                 <div class="InquireleftBox">
                     <div class="Text">时间：</div>
-                    <div class="InputDiv">   <input class="phoneInput"  id="time" name="sensorName" placeholder="输入时间（yyyy-mm-dd格式）" /></div>
+                    <div class="InputDiv">   <input class="phoneInput"  id="time" name="time" placeholder="输入时间（yyyy-mm-dd格式）" /></div>
                 </div>
                 <div class="PublicBtnIcon Color1Btn fr">
-                    <i class="iconfont icon-icon-add" onclick="addSensor()"></i>
+                    <i class="iconfont icon-icon-add" onclick="selectInfoByTime()"></i>
                     <span>查询</span>
                 </div>
             </div>

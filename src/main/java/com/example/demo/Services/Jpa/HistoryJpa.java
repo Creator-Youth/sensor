@@ -16,4 +16,8 @@ public interface HistoryJpa extends JpaRepository<History,Integer> {
 
     @Query("select history from  History history where student_name=?1")
     List<History> getInfoByStudentName (String name);
+
+
+    @Query("select history from  History history where time=?1")
+    List<History> getInfoByTime (String time);
 }
