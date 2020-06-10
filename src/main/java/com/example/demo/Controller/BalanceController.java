@@ -5,12 +5,13 @@ package com.example.demo.Controller;/*
  */
 
 import com.example.demo.Services.Jpa.BankCardBalanceJpa;
+import com.example.demo.Utils.Expection.BizException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "balance")
-public class balanceController {
+public class BalanceController {
 
     @Autowired
     BankCardBalanceJpa bankCardBalanceJpa;
