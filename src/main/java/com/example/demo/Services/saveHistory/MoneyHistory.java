@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class saveHistory {
+public class MoneyHistory {
 
     final static String  ADD_MONLY = "addMoney";
 
