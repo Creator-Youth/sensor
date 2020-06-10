@@ -20,7 +20,7 @@ public class Admin {
             Integer id;
 
     @Column
-    String user_ud;
+    String user_id;
 
     @Column
     String admin_password;

@@ -7,12 +7,8 @@ package com.example.demo.Utils.Data;/*
 public enum ResultCode {
 
     /* 成功状态码 */
-    SUCCESS(0, "成功"),
+    SUCCESS(200, "成功"),
 
-
-
-    /* 参数错误：10001-19999 */
-    PARAM_IS_INVALID(10001, "参数无效"),
 
     USER_NOT_EXIT(500,"用户不存在"),
 

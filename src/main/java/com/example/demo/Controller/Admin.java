@@ -7,8 +7,6 @@ package com.example.demo.Controller;/*
 import com.example.demo.Dao.User_Account;
 import com.example.demo.Services.Jpa.UserAccountJpa;
 import com.example.demo.Utils.Data.ResResult;
-import com.example.demo.Utils.Data.ResultCode;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,20 +14,20 @@ import static com.example.demo.Utils.Data.ResultCode.USER_FALSE_PASSWORD;
 import static com.example.demo.Utils.Data.ResultCode.USER_NOT_EXIT;
 
 @RestController
-@RequestMapping(value = "admin")
+@RequestMapping(value = "user")
 public class Admin {
 
     @Autowired
     UserAccountJpa userAccountJpa;
 
-    @GetMapping(value = "getPassword")
+    @GetMapping(value = "/login")
     @ResponseBody
-    public ResResult getPassword(@RequestParam("userName")String userName, @RequestParam("password")String password){
+    public ResResult getPassword(@RequestParam("username")String userName, @RequestParam("userpassword")String password){
         User_Account user_account = userAccountJpa.getByUserName(userName);
         if(null == user_account){
             return ResResult.fail(USER_NOT_EXIT);
         }else{
-            if(user_account.getUser_password()!=password){
+            if(!user_account.getUser_password().equals(password)){
                 return ResResult.fail(USER_FALSE_PASSWORD);
             }else{
                 return ResResult.suc();
