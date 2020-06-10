@@ -1,4 +1,4 @@
-package com.example.demo.Utils.Data;
+package com.example.demo.Utils.ResponseResult;
 /*
  *  @author huajishaonian
  *  time : 2020-06-2020/6/10-2:35 下午

@@ -13,6 +13,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "User_Account")
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+
+//银行用户登录表
 public class User_Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +22,11 @@ public class User_Account {
             Integer id;
 
     @Column
+            //用户名
     String user_name;
 
     @Column
+            //密码
     String user_password;
 
 }

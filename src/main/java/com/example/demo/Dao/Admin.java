@@ -17,7 +17,7 @@ public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     //自增ID；主键。
-            Integer id;
+    Integer id;
 
     @Column
     String user_id;
