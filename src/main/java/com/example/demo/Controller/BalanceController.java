@@ -18,6 +18,7 @@ public class BalanceController {
 
     @ResponseBody
     @GetMapping(value = "/getBalance")
+    //查余额
     public Double getBalance(@RequestParam("bankCard_id") String bankCard_id){
         return bankCardBalanceJpa.getBankCard_balancesByBankCard_id(bankCard_id);
 
