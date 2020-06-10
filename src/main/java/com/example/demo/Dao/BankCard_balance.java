@@ -11,9 +11,9 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "bankCard_balance")
+@Table(name = "BankCard_balance")
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
-public class bankCard_balance {
+public class BankCard_balance {
 
 
     @Id
