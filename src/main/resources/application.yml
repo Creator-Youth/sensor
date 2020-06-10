@@ -3,7 +3,7 @@ spring:
     url: jdbc:mysql://47.105.194.138:3306/Bank
     username: root
     password: 655424wxsywsh
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     initialSize: 50
     maxActive: 200
     maxWait: 60000
@@ -35,7 +35,7 @@ spring:
     open-in-view: true
     hibernate:
       #更新或者创建数据表结构
-      ddl-auto: update
+      ddl-auto: none
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
