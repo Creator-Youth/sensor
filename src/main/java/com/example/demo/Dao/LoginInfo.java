@@ -20,7 +20,7 @@ public class LoginInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column
+    @Column//列名
     private String user_name;
 
     @Column
