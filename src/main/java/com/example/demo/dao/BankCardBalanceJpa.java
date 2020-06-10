@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface BankCardBalanceJpa extends JpaRepository<BankCardBalance, Integer> {
 
   @Query("select bankCard_balance.money from BankCardBalance bankCard_balance where bankCardId=?1")
-  public Double getBankCard_balancesByBankCard_id(String bankCard_id);
+  public Double getBankCard_balancesByBankCard_id(String bankCardId);
 
   BankCardBalance findByBankCardId(String bankCard_id);
 }

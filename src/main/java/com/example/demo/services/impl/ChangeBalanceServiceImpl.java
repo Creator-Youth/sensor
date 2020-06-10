@@ -71,17 +71,21 @@ public class ChangeBalanceServiceImpl implements ChangeBalanceService {
 
   private Double changeBalance(ChangeBalanceView changeBalanceView, String type) {
     //TODO 正则表达式校验
-    ObjectUtils.requireNonEmpty(changeBalanceView.getBankCard_id(), "银行卡号不能为空");
+    ObjectUtils.requireNonEmpty(changeBalanceView.getBankcardId(), "银行卡号不能为空");
     //判断金额
     ObjectUtils.requireNonNull(changeBalanceView.getMoney(), "交易金额不能为空");
 
     if (changeBalanceView.getMoney() < 0.0) {
-      throw new BizException("交易金额不能小于0");
+      throw new BizException("400", "交易金额不能小于0");
     }
+
+    //尝试加锁
+    LOCK.tryLock();
 
     //获取卡实例
     BankCard card = this.bankCardJpa
-        .findByBankCardNumber(changeBalanceView.getBankCard_id());
+        .findByBankCardNumber(changeBalanceView.getBankcardId());
+
     if (Objects.isNull(card)) {
       throw new BizException("卡片不存在");
     }
@@ -89,12 +93,16 @@ public class ChangeBalanceServiceImpl implements ChangeBalanceService {
       throw new BizException("卡片已注销");
     }
 
-    //尝试加锁
-    LOCK.tryLock();
+    //校验密码
+    if (!card.getBankCardPassword().equals(changeBalanceView.getBankCardPassword())) {
+      //密码校验失败
+      throw new BizException("500", "密码错误");
+    }
+
     try {
       //获取余额实例
       BankCardBalance cardBalance = this.bankCardBalanceJpa
-          .findByBankCardId(changeBalanceView.getBankCard_id());
+          .findByBankCardId(changeBalanceView.getBankcardId());
 
       //获取卡里余额
       Double balance = cardBalance.getMoney();
@@ -108,7 +116,7 @@ public class ChangeBalanceServiceImpl implements ChangeBalanceService {
       if (TYPE_OF_WITHDRAW.equals(type)) {
         //取钱
         if (balance < changeBalanceView.getMoney()) {
-          throw new BizException("余额不足");
+          throw new BizException("500", "余额不足");
         }
         balanceChanged = balance - changeBalanceView.getMoney();
       }

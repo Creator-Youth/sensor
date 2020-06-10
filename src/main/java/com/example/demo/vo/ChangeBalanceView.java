@@ -2,15 +2,22 @@ package com.example.demo.vo
     ;
 
 /**
+ * 存取钱request封装
+ *
  * @author Liu YaXue
  * @since 1.0.0
  */
 public class ChangeBalanceView {
 
   /**
+   * 银行卡密码
+   */
+  private String bankCardPassword;
+
+  /**
    * 卡号
    */
-  private String bankCard_id;
+  private String bankcardId;
 
   /**
    * 需要
@@ -20,21 +27,27 @@ public class ChangeBalanceView {
   public ChangeBalanceView() {
   }
 
-  public ChangeBalanceView setBankCard_id(String bankCard_id) {
-    this.bankCard_id = bankCard_id;
-    return this;
+  public void setBankcardId(String bankcardId) {
+    this.bankcardId = bankcardId;
   }
 
-  public ChangeBalanceView setMoney(Double money) {
+  public void setMoney(Double money) {
     this.money = money;
-    return this;
   }
 
-  public String getBankCard_id() {
-    return bankCard_id;
+  public void setBankCardPassword(String bankCardPassword) {
+    this.bankCardPassword = bankCardPassword;
+  }
+
+  public String getBankcardId() {
+    return bankcardId;
   }
 
   public Double getMoney() {
     return money;
+  }
+
+  public String getBankCardPassword() {
+    return bankCardPassword;
   }
 }

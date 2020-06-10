@@ -10,15 +10,15 @@ import com.google.common.base.Strings;
 public final class ObjectUtils {
 
   public static <T> T requireNonNull(T t, String message) {
-    if (t == null){
-      throw new BizException(message);
+    if (t == null) {
+      throw new BizException("400", message);
     }
     return t;
   }
 
-  public static String requireNonEmpty(String s, String message){
-    if (Strings.isNullOrEmpty(s)){
-      throw new BizException(message);
+  public static String requireNonEmpty(String s, String message) {
+    if (Strings.isNullOrEmpty(s)) {
+      throw new BizException("400", message);
     }
     return s;
   }
