@@ -15,7 +15,7 @@ import static com.example.demo.Utils.Data.ResultCode.USER_NOT_EXIT;
 
 @RestController
 @RequestMapping(value = "user")
-public class Admin {
+public class AdminController {
 
     @Autowired
     UserAccountJpa userAccountJpa;
