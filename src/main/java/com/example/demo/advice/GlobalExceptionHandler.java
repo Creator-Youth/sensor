@@ -4,8 +4,8 @@ package com.example.demo.advice;/*
  *
  */
 
-import com.example.demo.expection.BizException;
-import com.example.demo.expection.CommonException;
+import com.example.demo.exception.BizException;
+import com.example.demo.exception.CommonException;
 import com.example.demo.domain.ResultBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

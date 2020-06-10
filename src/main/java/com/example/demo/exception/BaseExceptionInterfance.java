@@ -1,4 +1,4 @@
-package com.example.demo.expection;/*
+package com.example.demo.exception;/*
  *  @author huajishaonian
  *  time : 2020-06-2020/6/10-1:12 下午
  *

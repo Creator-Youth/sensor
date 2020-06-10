@@ -4,8 +4,8 @@ package com.example.demo.domain;/*
  *
  */
 
-import com.example.demo.expection.BaseExceptionInterfance;
-import com.example.demo.expection.CommonException;
+import com.example.demo.exception.BaseExceptionInterfance;
+import com.example.demo.exception.CommonException;
 import lombok.SneakyThrows;
 import org.json.JSONObject;
 

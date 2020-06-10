@@ -2,10 +2,11 @@ package com.example.demo.services.impl;
 
 import com.example.demo.dao.BankCardBalanceJpa;
 import com.example.demo.dao.BankCardJpa;
-import com.example.demo.expection.BizException;
+import com.example.demo.exception.BizException;
 import com.example.demo.po.BankCard;
 import com.example.demo.po.BankCardBalance;
 import com.example.demo.services.ChangeBalanceService;
+import com.example.demo.services.saveHistory.MoneyHistoryService;
 import com.example.demo.utils.ObjectUtils;
 import com.example.demo.vo.ChangeBalanceView;
 import java.util.Objects;
@@ -41,10 +42,14 @@ public class ChangeBalanceServiceImpl implements ChangeBalanceService {
 
   private final BankCardJpa bankCardJpa;
 
+  private final MoneyHistoryService moneyHistoryService;
+
   public ChangeBalanceServiceImpl(
-      BankCardBalanceJpa bankCardBalanceJpa, BankCardJpa bankCardJpa) {
+      BankCardBalanceJpa bankCardBalanceJpa, BankCardJpa bankCardJpa,
+      MoneyHistoryService moneyHistoryService) {
     this.bankCardBalanceJpa = bankCardBalanceJpa;
     this.bankCardJpa = bankCardJpa;
+    this.moneyHistoryService = moneyHistoryService;
   }
 
   /**
@@ -69,8 +74,15 @@ public class ChangeBalanceServiceImpl implements ChangeBalanceService {
     return changeBalance(changeBalanceView, TYPE_OF_WITHDRAW);
   }
 
+  /**
+   * 改变余额
+   *
+   * @param changeBalanceView controller层传入的请求数据
+   * @param type              定义存取钱类型
+   * @return 卡内余额
+   */
   private Double changeBalance(ChangeBalanceView changeBalanceView, String type) {
-    //TODO 正则表达式校验
+
     ObjectUtils.requireNonEmpty(changeBalanceView.getBankcardId(), "银行卡号不能为空");
     //判断金额
     ObjectUtils.requireNonNull(changeBalanceView.getMoney(), "交易金额不能为空");
@@ -113,6 +125,7 @@ public class ChangeBalanceServiceImpl implements ChangeBalanceService {
         //存钱
         balanceChanged = balance + changeBalanceView.getMoney();
       }
+
       if (TYPE_OF_WITHDRAW.equals(type)) {
         //取钱
         if (balance < changeBalanceView.getMoney()) {
@@ -125,10 +138,30 @@ public class ChangeBalanceServiceImpl implements ChangeBalanceService {
 
       //回写数据库
       this.bankCardBalanceJpa.saveAndFlush(cardBalance);
-
+      this.insertMoneyHistory(changeBalanceView, type);
       return balanceChanged;
     } finally {
       LOCK.unlock();
+    }
+  }
+
+  /**
+   * 保存钱存取记录
+   *
+   * @param changeBalanceView controller层传入的请求数据
+   * @param type              定义存取钱类型
+   */
+  private void insertMoneyHistory(ChangeBalanceView changeBalanceView, String type) {
+    if (TYPE_OF_DEPOSIT.equals(type)) {
+      //保存存钱记录
+      this.moneyHistoryService
+          .saveAddMoney(changeBalanceView.getMoney().toString(), changeBalanceView.getBankcardId());
+    }
+
+    if (TYPE_OF_WITHDRAW.equals(type)) {
+      //保存取钱记录
+      this.moneyHistoryService
+          .saveDevMoney(changeBalanceView.getMoney().toString(), changeBalanceView.getBankcardId());
     }
   }
 

@@ -1,6 +1,6 @@
 package com.example.demo.utils;
 
-import com.example.demo.expection.BizException;
+import com.example.demo.exception.BizException;
 import com.google.common.base.Strings;
 
 /**
