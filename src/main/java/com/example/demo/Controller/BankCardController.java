@@ -1,10 +1,8 @@
 package com.example.demo.Controller;
 
-import com.example.demo.Dao.BankCard_balance;
 import com.example.demo.Dao.Bank_Card;
-import com.example.demo.Services.Jpa.BankCardBalanceJpa;
 import com.example.demo.Services.Jpa.BankCardJpa;
-import com.example.demo.Utils.Data.ResResult;
+import com.example.demo.Utils.ResponseResult.ResResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

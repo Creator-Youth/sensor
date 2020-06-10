@@ -9,6 +9,9 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * 银行用户登录表
+ */
 @Data
 @Entity
 @Table(name = "User_Account")

@@ -1,6 +1,6 @@
 package com.example.demo.Dao;/*
  *  @author huajishaonian
- *  time : 2020-06-2020/6/10-11:11 上午
+ *  time : 2020-06-2020/6/10-5:26 下午
  *
  */
 
@@ -11,22 +11,27 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "Admin")
+@Table(name = "Card_History")
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
-public class Admin {
+public class Card_History {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     //自增ID；主键。
-    Integer id;
+            Integer id;
 
+    //操作时间
     @Column
-    String user_id;
+    String data;
 
+    //操作人
     @Column
-    String admin_password;
+    String user;
 
+    //具体操作
     @Column
-    String admin_number;
+    String action;
 
-
+    //银行卡号
+    @Column
+    String bankID;
 }

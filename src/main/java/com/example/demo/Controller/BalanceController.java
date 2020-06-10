@@ -6,8 +6,8 @@ package com.example.demo.Controller;/*
 
 import com.example.demo.Services.ChangeBalanceService;
 import com.example.demo.Services.Jpa.BankCardBalanceJpa;
-import com.example.demo.Utils.Data.ResResult;
 import com.example.demo.Utils.ObjectUtils;
+import com.example.demo.Utils.ResponseResult.ResResult;
 import com.example.demo.vo.ChangeBalanceView;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
