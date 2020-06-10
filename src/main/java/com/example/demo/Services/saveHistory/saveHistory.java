@@ -44,7 +44,7 @@ public class saveHistory {
     }
 
     //取款记录
-    public void saveDevMoney(String money , String bankID){
+    public void saveDevMoney(String money, String bankID){
         String formatString = "yyyy/MM/dd hh:mm.ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatString);
 

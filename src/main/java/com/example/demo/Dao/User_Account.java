@@ -12,17 +12,17 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "User_Account")
-@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 public class User_Account {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //自增ID；主键。
-            Integer id;
 
-    @Column
-    String user_name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  Integer id;
 
-    @Column
-    String user_password;
+  @Column
+  String user_name;
+
+  @Column
+  String user_password;
 
 }
