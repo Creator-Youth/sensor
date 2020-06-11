@@ -13,6 +13,9 @@ public enum CommonException implements BaseExceptionInterfance {
     DATA_ERROR("444","数据格式错误"),
     ID_CARD_Error("1001","身份证号有误或已实名认证"),
     EXIT_USERNAME("10004","账号已存在"),
+    BANLANCE_LESS("20004","您的余额不足"),
+    FILED_TRANSTER("10004","转账失败")
+
     ;
 
 

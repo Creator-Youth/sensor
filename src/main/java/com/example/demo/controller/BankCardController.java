@@ -1,18 +1,16 @@
 package com.example.demo.controller;
 
-import com.example.demo.dao.UserAccountJpa;
-import com.example.demo.po.BankCard;
+import com.example.demo.dao.BankCardBalanceJpa;
 import com.example.demo.dao.BankCardJpa;
+import com.example.demo.dao.UserAccountJpa;
 import com.example.demo.domain.ResResult;
+import com.example.demo.po.BankCard;
+import com.example.demo.po.BankCardBalance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static com.example.demo.domain.ResultCode.USER_CARDPASSWORD_CARDPASSWORD;
 
@@ -24,6 +22,9 @@ public class BankCardController {
 
     @Autowired
     UserAccountJpa userAccountJpa;
+
+    @Autowired
+    BankCardBalanceJpa bankCardBalanceJpa;
 
     @ResponseBody
     @GetMapping(value = "/save")
@@ -37,11 +38,15 @@ public class BankCardController {
         if( bankCardPassword==null ){
             return ResResult.fail(USER_CARDPASSWORD_CARDPASSWORD);
         }else {
+            BankCardBalance bankCardBalance = new BankCardBalance();
             BankCard bank_card = new BankCard();
             String bankCardNumber= com.example.demo.Utils.IDUtil.CardIdUtils.getCardId();
+            bankCardBalance.setBankCardId(bankCardNumber);
             bank_card.setBankCardNumber(bankCardNumber);
             bank_card.setBankCardPassword(bankCardPassword);
             bank_card.setBankCardBalance(0.0);
+            bankCardBalance.setMoney(0.0);
+            bankCardBalanceJpa.save(bankCardBalance);
             bank_card.setCardFlag(false);
             bank_card.setUserId(userId);
             bankCardJpa.save(bank_card);
