@@ -9,6 +9,7 @@ import com.example.demo.dao.BankCardBalanceJpa;
 import com.example.demo.utils.ObjectUtils;
 import com.example.demo.domain.ResResult;
 import com.example.demo.vo.ChangeBalanceView;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,22 +22,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "balance")
 public class BalanceController {
 
-    private final BankCardBalanceJpa bankCardBalanceJpa;
+    @Autowired
+    private  BankCardBalanceJpa bankCardBalanceJpa;
 
-    private final ChangeBalanceService changeBalanceService;
+    @Autowired
+    private  ChangeBalanceService changeBalanceService;
 
-    public BalanceController(
-            BankCardBalanceJpa bankCardBalanceJpa,
-            ChangeBalanceService changeBalanceService) {
-        this.bankCardBalanceJpa = bankCardBalanceJpa;
-        this.changeBalanceService = changeBalanceService;
-    }
 
     @ResponseBody
     @GetMapping(value = "/getBalance")
     //查余额
-    public Double getBalance(@RequestParam("bankCard_id") String bankCard_id) {
-        return bankCardBalanceJpa.getBankCard_balancesByBankCard_id(bankCard_id);
+    public ResResult getBalance(@RequestParam("bankCard_id") String bankCard_id) {
+        Double balance = bankCardBalanceJpa.getBankCard_balancesByBankCard_id(bankCard_id);
+        return ResResult.suc().setData(balance);
     }
 
     /**
