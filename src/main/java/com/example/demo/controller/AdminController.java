@@ -4,30 +4,23 @@ package com.example.demo.controller;/*
  *
  */
 
-import static com.example.demo.domain.ResultCode.USER_FALSE_PASSWORD;
-import static com.example.demo.domain.ResultCode.USER_NOT_EXIT;
-import static com.example.demo.exception.CommonException.DATA_ERROR;
-import static com.example.demo.exception.CommonException.ID_CARD_Error;
-
 import com.example.demo.Utils.IDUtil.UserIdUtils;
+import com.example.demo.dao.UserAccountJpa;
 import com.example.demo.dao.UserInfoJpa;
+import com.example.demo.domain.ResResult;
 import com.example.demo.exception.BizException;
 import com.example.demo.po.UserAccount;
-import com.example.demo.dao.UserAccountJpa;
-import com.example.demo.domain.ResResult;
-import javax.servlet.http.HttpSession;
-
 import com.example.demo.po.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.Random;
+import javax.servlet.http.HttpSession;
+
+import static com.example.demo.domain.ResultCode.USER_FALSE_PASSWORD;
+import static com.example.demo.domain.ResultCode.USER_NOT_EXIT;
+import static com.example.demo.exception.CommonException.ID_CARD_Error;
 
 @RestController
 @RequestMapping(value = "user")
@@ -107,7 +100,7 @@ public class AdminController {
     }
 
     @ResponseBody
-    @GetMapping(value = "/creatAccount")
+    @PostMapping (value = "/creatAccount")
 
     // 获取校验码
     //账号，密码
