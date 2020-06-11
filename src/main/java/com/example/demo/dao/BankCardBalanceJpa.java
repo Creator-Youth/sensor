@@ -13,5 +13,7 @@ public interface BankCardBalanceJpa extends JpaRepository<BankCardBalance, Integ
   @Query("select bankCardBalance.money from BankCardBalance bankCardBalance where bankCardId=?1")
   Double getBankCard_balancesByBankCard_id(String bankCardId);
 
-  BankCardBalance findByBankCardId(String bankCard_id);
+  @Query("select bankCardBalance from BankCardBalance bankCardBalance where bankCardId=?1")
+  BankCardBalance getBankCardByBankCard_id(String bankCardId);
+
 }

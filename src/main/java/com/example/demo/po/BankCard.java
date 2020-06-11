@@ -5,6 +5,8 @@ package com.example.demo.po;/*
  */
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +21,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "bank_card")
+@Data
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 public class BankCard {
 
@@ -42,6 +45,10 @@ public class BankCard {
   //删卡标记
   @Column(name = "card_flag")
   private Boolean cardFlag;
+
+  //银行卡余额
+  @Column(name = "bank_card_balance")
+  private Double bankCardBalance;
 
   public BankCard() {
   }

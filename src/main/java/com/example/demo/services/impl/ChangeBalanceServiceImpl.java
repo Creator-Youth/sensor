@@ -12,6 +12,8 @@ import com.example.demo.vo.ChangeBalanceView;
 import java.util.Objects;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,21 +38,17 @@ public class ChangeBalanceServiceImpl implements ChangeBalanceService {
   /**
    * 加锁
    */
-  private final Lock LOCK = new ReentrantLock();
+  private  Lock lock = new ReentrantLock();
 
-  private final BankCardBalanceJpa bankCardBalanceJpa;
+  @Autowired
+  private  BankCardBalanceJpa bankCardBalanceJpa;
 
-  private final BankCardJpa bankCardJpa;
+  @Autowired
+  private  BankCardJpa bankCardJpa;
 
-  private final MoneyHistoryService moneyHistoryService;
+  @Autowired
+  private  MoneyHistoryService moneyHistoryService;
 
-  public ChangeBalanceServiceImpl(
-      BankCardBalanceJpa bankCardBalanceJpa, BankCardJpa bankCardJpa,
-      MoneyHistoryService moneyHistoryService) {
-    this.bankCardBalanceJpa = bankCardBalanceJpa;
-    this.bankCardJpa = bankCardJpa;
-    this.moneyHistoryService = moneyHistoryService;
-  }
 
   /**
    * 存钱逻辑
@@ -92,11 +90,10 @@ public class ChangeBalanceServiceImpl implements ChangeBalanceService {
     }
 
     //尝试加锁
-    LOCK.tryLock();
+    lock.tryLock();
 
     //获取卡实例
-    BankCard card = this.bankCardJpa
-        .findByBankCardNumber(changeBalanceView.getBankcardId());
+    BankCard card = this.bankCardJpa.getBankCardByBankCardNumber(changeBalanceView.getBankcardId());
 
     if (Objects.isNull(card)) {
       throw new BizException("卡片不存在");
@@ -113,8 +110,7 @@ public class ChangeBalanceServiceImpl implements ChangeBalanceService {
 
     try {
       //获取余额实例
-      BankCardBalance cardBalance = this.bankCardBalanceJpa
-          .findByBankCardId(changeBalanceView.getBankcardId());
+      BankCardBalance cardBalance = bankCardBalanceJpa.getBankCardByBankCard_id(changeBalanceView.getBankcardId());
 
       //获取卡里余额
       Double balance = cardBalance.getMoney();
@@ -141,7 +137,7 @@ public class ChangeBalanceServiceImpl implements ChangeBalanceService {
       this.insertMoneyHistory(changeBalanceView, type);
       return balanceChanged;
     } finally {
-      LOCK.unlock();
+      lock.unlock();
     }
   }
 

@@ -1,14 +1,17 @@
 package com.example.demo.controller;
 
+import com.example.demo.dao.UserAccountJpa;
 import com.example.demo.po.BankCard;
 import com.example.demo.dao.BankCardJpa;
 import com.example.demo.domain.ResResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static com.example.demo.domain.ResultCode.USER_CARDPASSWORD_CARDPASSWORD;
 
 @RestController
 @RequestMapping(value = "bankCard")
@@ -16,11 +19,50 @@ public class BankCardController {
     @Autowired
     BankCardJpa bankCardJpa;
 
+    @Autowired
+    UserAccountJpa userAccountJpa;
+
     @ResponseBody
-    @GetMapping(value = "/getBankCard")
-    public ResResult getBankCard(@RequestParam("use_id") Integer use_id, @RequestParam("bankCard") String bankcard, @RequestParam("flag") Integer flag) {
-        BankCard bankCard = new BankCard();
-        bankCardJpa.save(bankCard);
+    @GetMapping(value = "/save")
+    public ResResult saveBankCard(@RequestParam("userName") String userName,  @RequestParam("flag") Integer flag ,@RequestParam("bankCardPassword")String bankCardPassword) {
+        int userId=userAccountJpa.getByUserName(userName).getId();
+        if( bankCardPassword==null ){
+            return ResResult.fail(USER_CARDPASSWORD_CARDPASSWORD);
+        }else {
+            BankCard bank_card = new BankCard();
+            String bankCardNumber= com.example.demo.Utils.IDUtil.CardIdUtils.getCardId();
+            bank_card.setBankCardNumber(bankCardNumber);
+            bank_card.setBankCardPassword(bankCardPassword);
+            bank_card.setBankCardBalance(0.0);
+            bank_card.setCardFlag(false);
+            bank_card.setUserId(userId);
+            bankCardJpa.save(bank_card);
+            ArrayList<String> bankCardNum = new ArrayList<>();
+            bankCardNum.add(bankCardNumber);
+            return ResResult.suc().setData(bankCardNum);
+        }
+
+    }
+
+    //展示用户的所有账号信息
+    @ResponseBody
+    @GetMapping(value = "/showAllBankCard")
+    public ResResult showAllBankCard(@RequestParam("userName")String userName){
+        int userId=userAccountJpa.getByUserName(userName).getId();
+        List<BankCard> bank_cardList= bankCardJpa.findBankCardByUserId(userId);
+        return  ResResult.suc().setData(bank_cardList);
+    }
+
+    @ResponseBody
+    @GetMapping (value = "/deleteBanKCard")
+    public ResResult deleteBankCard(@RequestParam("bankCardNumber")String bankCardNumber){
+        BankCard bank_card= bankCardJpa.getBankCardByBankCardNumber(bankCardNumber);
+        if(bank_card.getBankCardBalance()==0) {
+            bankCardJpa.delete(bank_card);
+        }else{
+            return  ResResult.fail(10005,"卡有余额");
+        }
         return ResResult.suc();
+
     }
 }
