@@ -14,7 +14,6 @@ public enum ResultCode {
 
     USER_FALSE_PASSWORD(10002,"密码错误"),
 
-
     /* 用户错误：20001-29999*/
     USER_HAS_EXISTED(20001, "用户已存在");
 

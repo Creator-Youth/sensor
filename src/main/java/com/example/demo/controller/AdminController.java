@@ -31,6 +31,7 @@ public class AdminController {
 
     @GetMapping(value = "/login")
     @ResponseBody
+    //用户登录
     public ResResult getPassword(@RequestParam("username")String userName, @RequestParam("userpassword")String password){
         UserAccount user_account = userAccountJpa.getByUserName(userName);
         if(null == user_account){
@@ -48,9 +49,10 @@ public class AdminController {
     }
 
 
-    @GetMapping(value = "/RealName")
-    @ResponseBody
-    public ResResult realName(@RequestParam("username")String userName, @RequestParam("userpassword")String password){
+  //  @GetMapping(value = "/RealName")
+   // @ResponseBody
+    //实名认证
+    /*public ResResult realName(@RequestParam("realname")String realName, @RequestParam("userpassword")String password){
         UserAccount user_account = userAccountJpa.getByUserName(userName);
         if(null == user_account){
             return ResResult.fail(USER_NOT_EXIT);
@@ -64,10 +66,11 @@ public class AdminController {
                 return ResResult.suc();
             }
         }
-    }
+    }*/
 
-    @GetMapping(value = "/getCheckCode")
     @ResponseBody
+    @GetMapping(value = "/getCheckCode")
+
     // 获取校验码
     public ResResult getCheckCode(){
         Integer checCode = (int)Math.random()*10000;

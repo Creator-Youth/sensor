@@ -22,18 +22,23 @@ public class UserInfo {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
+
   @Column(name = "user_id")
   private String userId;
 
+  //真实姓名
   @Column(name = "user_real_name")
   private String userRealName;
 
+  //身份证号
   @Column(name = "user_id_card")
   private String userIdCard;
 
+  //用户电话号码
   @Column(name = "user_tel")
   private String userTel;
 
+  //用户地址
   @Column(name = "user_address")
   private String userAddress;
 
