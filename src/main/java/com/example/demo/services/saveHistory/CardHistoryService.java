@@ -4,9 +4,8 @@ package com.example.demo.Services.saveHistory;/*
  *
  */
 
-import com.example.demo.Dao.Card_History;
-import com.example.demo.Dao.Money_History;
-import com.example.demo.Services.Jpa.CardHistoryJpa;
+import com.example.demo.dao.CardHistoryJpa;
+import com.example.demo.po.CardHistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -16,10 +15,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class CardHistory {
+public class CardHistoryService {
 
+    //申请卡
     final static String  ADD_CARD = "addCard";
-
+    //注销卡
     final static String  DEV_CARD = "devCard";
 
     @Autowired
@@ -35,9 +35,9 @@ public class CardHistory {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession();
         String user = session.getAttribute("USER").toString();
-        Card_History cardHistory = new Card_History();
+        CardHistory cardHistory =new CardHistory();
         cardHistory.setAction(ADD_CARD);
-        cardHistory.setBankID(bankID);
+        cardHistory.setBankId(bankID);
         cardHistory.setUser(user);
         cardHistory.setData(formattedDate);
         cardHistoryJpa.save(cardHistory);
@@ -52,9 +52,9 @@ public class CardHistory {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession();
         String user = session.getAttribute("USER").toString();
-        Card_History cardHistory = new Card_History();
+        CardHistory cardHistory =new CardHistory();
         cardHistory.setAction(DEV_CARD);
-        cardHistory.setBankID(bankID);
+        cardHistory.setBankId(bankID);
         cardHistory.setUser(user);
         cardHistory.setData(formattedDate);
         cardHistoryJpa.save(cardHistory);

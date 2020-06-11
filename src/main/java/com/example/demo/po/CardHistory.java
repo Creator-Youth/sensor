@@ -5,16 +5,14 @@ package com.example.demo.po;/*
  */
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.Data;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "card_history")
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
+@Data
 public class CardHistory {
 
   //自增ID；主键。
@@ -41,43 +39,4 @@ public class CardHistory {
   public CardHistory() {
   }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public void setData(String data) {
-    this.data = data;
-  }
-
-  public void setUser(String user) {
-    this.user = user;
-  }
-
-  public void setAction(String action) {
-    this.action = action;
-  }
-
-  public void setBankId(String bankId) {
-    this.bankId = bankId;
-  }
-
-  public Integer getId() {
-    return id;
-  }
-
-  public String getData() {
-    return data;
-  }
-
-  public String getUser() {
-    return user;
-  }
-
-  public String getAction() {
-    return action;
-  }
-
-  public String getBankId() {
-    return bankId;
-  }
 }
