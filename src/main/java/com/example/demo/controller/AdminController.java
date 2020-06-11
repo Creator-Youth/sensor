@@ -102,7 +102,7 @@ public class AdminController {
     @ResponseBody
     @PostMapping (value = "/creatAccount")
 
-    // 获取校验码
+    //注册
     //账号，密码
     public ResResult creatAccount(@RequestParam("username")String userName,
                                   @RequestParam("Inputpassword")String password){
