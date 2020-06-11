@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.vo.ChangeBalanceView;
+import org.springframework.stereotype.Service;
 
 /**
  * 改变余额
@@ -8,6 +9,7 @@ import com.example.demo.vo.ChangeBalanceView;
  * @author Liu YaXue
  * @since 1.0.0
  */
+@Service
 public interface ChangeBalanceService {
 
   /**
@@ -26,3 +28,5 @@ public interface ChangeBalanceService {
    */
   Double withdrawMoney(ChangeBalanceView changeBalanceView);
 }
+
+

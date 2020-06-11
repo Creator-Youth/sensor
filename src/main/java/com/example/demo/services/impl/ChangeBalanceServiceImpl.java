@@ -1,20 +1,20 @@
 package com.example.demo.services.impl;
 
+import com.example.demo.services.ChangeBalanceService;
 import com.example.demo.dao.BankCardBalanceJpa;
 import com.example.demo.dao.BankCardJpa;
 import com.example.demo.exception.BizException;
 import com.example.demo.po.BankCard;
 import com.example.demo.po.BankCardBalance;
-import com.example.demo.services.ChangeBalanceService;
 import com.example.demo.services.saveHistory.MoneyHistoryService;
 import com.example.demo.utils.ObjectUtils;
 import com.example.demo.vo.ChangeBalanceView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.Objects;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * 更改余额
@@ -26,12 +26,12 @@ import org.springframework.stereotype.Service;
 public class ChangeBalanceServiceImpl implements ChangeBalanceService {
 
   /**
-   * 存钱类型
+   * 存款类型
    */
   private static final String TYPE_OF_DEPOSIT = "deposit";
 
   /**
-   * 取钱类型
+   * 取款类型
    */
   private static final String TYPE_OF_WITHDRAW = "withdraw";
 
@@ -51,7 +51,7 @@ public class ChangeBalanceServiceImpl implements ChangeBalanceService {
 
 
   /**
-   * 取钱逻辑
+   * 存钱逻辑
    *
    * @param changeBalanceView {@link ChangeBalanceView} 实例
    * @return 卡里余额
