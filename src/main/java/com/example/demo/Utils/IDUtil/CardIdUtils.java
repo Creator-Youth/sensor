@@ -4,8 +4,11 @@ package com.example.demo.Utils.IDUtil;/*
  *
  */
 
-public class CardId {
-    public  synchronized String getCardId(){
+import org.springframework.stereotype.Service;
+
+@Service
+public class CardIdUtils {
+    public  synchronized  static String getCardId(){
         StringBuffer stringBuffer =new StringBuffer();
         stringBuffer.append("666666");
         StringBuffer tempString = new StringBuffer();

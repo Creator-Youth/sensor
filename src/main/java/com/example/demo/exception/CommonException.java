@@ -7,9 +7,11 @@ package com.example.demo.exception;/*
 public enum CommonException implements BaseExceptionInterfance {
 
     SUCCESS("200","成功"),
+
     BODY_NOT_MATCH("400","请求的数据格式不符!"),
     NOT_FOUND("404", "未找到该资源!"),
-    DATA_ERROR("444","数据格式错误")
+    DATA_ERROR("444","数据格式错误"),
+    ID_CARD_Error("1001","身份证号有误或已实名认证")
     ;
 
 

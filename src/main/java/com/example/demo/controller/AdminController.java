@@ -6,11 +6,18 @@ package com.example.demo.controller;/*
 
 import static com.example.demo.domain.ResultCode.USER_FALSE_PASSWORD;
 import static com.example.demo.domain.ResultCode.USER_NOT_EXIT;
+import static com.example.demo.exception.CommonException.DATA_ERROR;
+import static com.example.demo.exception.CommonException.ID_CARD_Error;
 
+import com.example.demo.Utils.IDUtil.UserIdUtils;
+import com.example.demo.dao.UserInfoJpa;
+import com.example.demo.exception.BizException;
 import com.example.demo.po.UserAccount;
 import com.example.demo.dao.UserAccountJpa;
 import com.example.demo.domain.ResResult;
 import javax.servlet.http.HttpSession;
+
+import com.example.demo.po.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +35,9 @@ public class AdminController {
 
     @Autowired
     UserAccountJpa userAccountJpa;
+
+    @Autowired
+    UserInfoJpa userInfoJpa;
 
     @GetMapping(value = "/login")
     @ResponseBody
@@ -49,24 +59,29 @@ public class AdminController {
     }
 
 
-  //  @GetMapping(value = "/RealName")
-   // @ResponseBody
+   @GetMapping(value = "/RealName")
+   @ResponseBody
     //实名认证
-    /*public ResResult realName(@RequestParam("realname")String realName, @RequestParam("userpassword")String password){
-        UserAccount user_account = userAccountJpa.getByUserName(userName);
-        if(null == user_account){
-            return ResResult.fail(USER_NOT_EXIT);
-        }else{
-            if(!user_account.getUserPassword().equals(password)){
-                return ResResult.fail(USER_FALSE_PASSWORD);
-            }else{
-                ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-                HttpSession session = attr.getRequest().getSession();
-                session.setAttribute("USER",userName);
-                return ResResult.suc();
-            }
-        }
-    }*/
+    public ResResult realName(@RequestParam("realname")String realName,
+                              @RequestParam("realid")String realId,
+                              @RequestParam("realaddress")String realaddress,
+                              @RequestParam("realphone")String realPhone){
+       UserInfo userInfo = new UserInfo();
+       userInfo.setUserIdCard(realId);
+       try{
+           userInfoJpa.save(userInfo);
+       }catch (Exception e){
+           //"1001","身份证号有误或已实名认证"
+           throw new BizException(ID_CARD_Error);
+       }
+       userInfo.setUserAddress(realaddress);
+       userInfo.setUserTel(realPhone);
+       userInfo.setUserRealName(realName);
+       String userID = UserIdUtils.creatUserID(realId);
+       userInfoJpa.save(userInfo);
+       return ResResult.suc();
+
+    }
 
     @ResponseBody
     @GetMapping(value = "/getCheckCode")
@@ -90,7 +105,6 @@ public class AdminController {
         session.setAttribute("checkCode",stringBuffer.toString());
         return ResResult.suc().setData(checCode);
     }
-
 
 
 }
