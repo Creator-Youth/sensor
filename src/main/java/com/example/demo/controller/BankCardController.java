@@ -6,7 +6,10 @@ import com.example.demo.dao.BankCardJpa;
 import com.example.demo.domain.ResResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +27,12 @@ public class BankCardController {
 
     @ResponseBody
     @GetMapping(value = "/save")
-    public ResResult saveBankCard(@RequestParam("userName") String userName,  @RequestParam("flag") Integer flag ,@RequestParam("bankCardPassword")String bankCardPassword) {
+    public ResResult saveBankCard(@RequestParam("bankCardPassword")String bankCardPassword,
+                                  @RequestParam("userName")String userName) {
+       /* ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession();
+        String userName= session.getAttribute("USER").toString();*/
+
         int userId=userAccountJpa.getByUserName(userName).getId();
         if( bankCardPassword==null ){
             return ResResult.fail(USER_CARDPASSWORD_CARDPASSWORD);

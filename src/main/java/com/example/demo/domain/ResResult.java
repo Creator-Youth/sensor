@@ -6,6 +6,7 @@ package com.example.demo.domain;
  */
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
@@ -14,12 +15,13 @@ import lombok.NoArgsConstructor;
  */
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class ResResult<T> {
 
   /**
    * 1.status状态值：代表本次请求response的状态结果。
    */
-  private Integer status;
+  private Integer code;
   /**
    * 2.response描述：对本次状态码的描述。
    */
@@ -29,8 +31,8 @@ public class ResResult<T> {
    */
   private T data;
 
-  public ResResult<T> setStatus(Integer status) {
-    this.status = status;
+  public ResResult<T> setStatus(Integer code) {
+    this.code = code;
     return this;
   }
 
@@ -44,17 +46,6 @@ public class ResResult<T> {
     return this;
   }
 
-  public Integer getStatus() {
-    return status;
-  }
-
-  public String getDesc() {
-    return desc;
-  }
-
-  public T getData() {
-    return data;
-  }
 
   /**
    * 成功，创建ResResult：没data数据
@@ -78,9 +69,9 @@ public class ResResult<T> {
   /**
    * 失败，指定status、desc
    */
-  public static ResResult fail(Integer status, String desc) {
+  public static ResResult fail(Integer code, String desc) {
     ResResult result = new ResResult();
-    result.setStatus(status);
+    result.setStatus(code);
     result.setDesc(desc);
     return result;
   }
@@ -98,7 +89,7 @@ public class ResResult<T> {
    * 把ResultCode枚举转换为ResResult
    */
   private void setResultCode(ResultCode code) {
-    this.status = code.code();
+    this.code = code.code();
     this.desc = code.message();
   }
 }

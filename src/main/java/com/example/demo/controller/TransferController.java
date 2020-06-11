@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dao.BankCardBalanceJpa;
-import com.example.demo.dao.InOutJpa;
+import com.example.demo.dao.TransferJpa;
 
 
 
@@ -24,7 +24,7 @@ import com.example.demo.dao.InOutJpa;
 @RequestMapping(value ="/getTransferAccount")
 public class TransferController {
 	@Autowired
-	private InOutJpa inOutJpa;
+	private TransferJpa transferJpa;
 	@Autowired
 	private  BankCardBalanceJpa bankCardBalanceJpa;
 	@ResponseBody
@@ -45,13 +45,13 @@ public class TransferController {
 			conn.setAutoCommit(false);// 设置自动提交为false(不自动提交)
 			stmt = conn.createStatement();
 			//扣除outer账户
-			inOutJpa.out(outer, money);
+			transferJpa.out(outer, money);
 
 			//模拟中途断电异常
 			//System.out.println(1/0);
 
 			//inner账户增加
-			inOutJpa.in(inner, money);
+			transferJpa.in(inner, money);
 			conn.commit();// 提交事务
 		}catch(Exception e){
 			conn.rollback();// 如果出异常，则回滚

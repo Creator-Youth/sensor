@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 
 import static com.example.demo.domain.ResultCode.USER_FALSE_PASSWORD;
 import static com.example.demo.domain.ResultCode.USER_NOT_EXIT;
+import static com.example.demo.exception.CommonException.EXIT_USERNAME;
 import static com.example.demo.exception.CommonException.ID_CARD_Error;
 
 @RestController
@@ -52,7 +53,7 @@ public class AdminController {
     }
 
 
-   @GetMapping(value = "/RealName")
+   @PostMapping(value = "/RealName")
    @ResponseBody
     //实名认证
     public ResResult realName(@RequestParam("realname")String realName,
@@ -71,6 +72,7 @@ public class AdminController {
        userInfo.setUserTel(realPhone);
        userInfo.setUserRealName(realName);
        String userID = UserIdUtils.creatUserID(realId);
+       userInfo.setUserId(userID);
        userInfoJpa.save(userInfo);
        return ResResult.suc();
 
@@ -112,7 +114,7 @@ public class AdminController {
         try{
             userAccountJpa.save(userAccount);
         }catch (Exception e){
-            throw new BizException("10004","账号已存在");
+            throw new BizException(EXIT_USERNAME);
         }
         userAccount.setUserPassword(password);
         userAccountJpa.save(userAccount);
