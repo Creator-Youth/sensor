@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Random;
+
 @RestController
 @RequestMapping(value = "user")
 public class AdminController {
@@ -44,6 +46,48 @@ public class AdminController {
             }
         }
     }
+
+
+    @GetMapping(value = "/RealName")
+    @ResponseBody
+    public ResResult realName(@RequestParam("username")String userName, @RequestParam("userpassword")String password){
+        UserAccount user_account = userAccountJpa.getByUserName(userName);
+        if(null == user_account){
+            return ResResult.fail(USER_NOT_EXIT);
+        }else{
+            if(!user_account.getUserPassword().equals(password)){
+                return ResResult.fail(USER_FALSE_PASSWORD);
+            }else{
+                ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+                HttpSession session = attr.getRequest().getSession();
+                session.setAttribute("USER",userName);
+                return ResResult.suc();
+            }
+        }
+    }
+
+    @GetMapping(value = "/getCheckCode")
+    @ResponseBody
+    // 获取校验码
+    public ResResult getCheckCode(){
+        Integer checCode = (int)Math.random()*10000;
+        StringBuffer stringBuffer = new StringBuffer();
+        if(checCode <10){
+            stringBuffer.append("000").append(checCode);
+        }else if(10<=checCode && checCode<100){
+            stringBuffer.append("00").append(checCode);
+        }else if(100<=checCode && checCode<1000){
+            stringBuffer.append("0").append(checCode);
+        }else{
+            stringBuffer.append(checCode);
+        }
+
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession();
+        session.setAttribute("checkCode",stringBuffer.toString());
+        return ResResult.suc().setData(checCode);
+    }
+
 
 
 }
