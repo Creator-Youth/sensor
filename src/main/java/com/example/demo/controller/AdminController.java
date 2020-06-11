@@ -106,5 +106,25 @@ public class AdminController {
         return ResResult.suc().setData(checCode);
     }
 
+    @ResponseBody
+    @GetMapping(value = "/creatAccount")
+
+    // 获取校验码
+    //账号，密码
+    public ResResult creatAccount(@RequestParam("username")String userName,
+                                  @RequestParam("Inputpassword")String password){
+
+        UserAccount userAccount= new UserAccount();
+        userAccount.setUserName(userName);
+        try{
+            userAccountJpa.save(userAccount);
+        }catch (Exception e){
+            throw new BizException("10004","账号已存在");
+        }
+        userAccount.setUserPassword(password);
+        userAccountJpa.save(userAccount);
+        return ResResult.suc();
+    }
+
 
 }
