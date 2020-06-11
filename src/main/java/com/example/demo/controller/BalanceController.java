@@ -9,6 +9,7 @@ import com.example.demo.dao.BankCardBalanceJpa;
 import com.example.demo.utils.ObjectUtils;
 import com.example.demo.domain.ResResult;
 import com.example.demo.vo.ChangeBalanceView;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
