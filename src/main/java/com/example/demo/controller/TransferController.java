@@ -1,12 +1,10 @@
 package com.example.demo.controller;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.Statement;
 
 import javax.sql.DataSource;
 
-import com.example.demo.dao.BankCardBalanceJpa;
 import com.example.demo.domain.ResResult;
 import com.example.demo.exception.BizException;
 
@@ -17,17 +15,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dao.BankCardBalanceJpa;
 import com.example.demo.dao.InOutJpa;
 
 
 
 @RestController
-@RequestMapping("/mp2")
+@RequestMapping(value ="/getTransferAccount")
 public class TransferController {
 	@Autowired
 	private InOutJpa inOutJpa;
 	@Autowired
-	private BankCardBalanceJpa bankCardBalanceJpa;
+	private  BankCardBalanceJpa bankCardBalanceJpa;
 	@ResponseBody
 	@GetMapping(value = "/transfer")
 	public ResResult trade(@RequestParam("bankCard_number_from") String outer,
@@ -35,13 +34,12 @@ public class TransferController {
 						   @RequestParam("money") Double money) throws Exception{
 		Connection conn = null;
 		Statement stmt = null;
-		ResultSet rs = null;
 		DataSource dataSource=null;
 		try {
 
 			Double balance=bankCardBalanceJpa.getBankCard_balancesByBankCard_id(outer);
 			if(balance<money){
-				throw new BizException("10004","您的余额不足");
+				throw new BizException("20004","您的余额不足");
 			}
 			conn=dataSource.getConnection();
 			conn.setAutoCommit(false);// 设置自动提交为false(不自动提交)
@@ -61,7 +59,6 @@ public class TransferController {
 
 		} finally {
 			//关闭资源
-			rs.close();
 			stmt.close();
 			conn.close();
 		}
