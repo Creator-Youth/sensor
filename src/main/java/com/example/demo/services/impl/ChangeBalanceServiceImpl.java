@@ -24,12 +24,12 @@ import org.springframework.stereotype.Service;
 public class ChangeBalanceServiceImpl implements ChangeBalanceService {
 
   /**
-   * 存钱类型
+   * 存款类型
    */
   private static final String TYPE_OF_DEPOSIT = "deposit";
 
   /**
-   * 取钱类型
+   * 取款类型
    */
   private static final String TYPE_OF_WITHDRAW = "withdraw";
 
@@ -53,7 +53,7 @@ public class ChangeBalanceServiceImpl implements ChangeBalanceService {
   }
 
   /**
-   * 取钱逻辑
+   * 存钱逻辑
    *
    * @param changeBalanceView {@link ChangeBalanceView} 实例
    * @return 卡里余额

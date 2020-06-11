@@ -40,7 +40,7 @@ public class BalanceController {
   }
 
   /**
-   * 取钱
+   * 取款
    *
    * @return
    */
@@ -52,7 +52,7 @@ public class BalanceController {
   }
 
   /**
-   * 取钱
+   * 存款
    *
    * @return
    */
@@ -63,3 +63,5 @@ public class BalanceController {
             ObjectUtils.requireNonNull(changeBalanceView, "取钱不能为空")));
   }
 }
+
+
